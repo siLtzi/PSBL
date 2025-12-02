@@ -88,7 +88,7 @@ export default function Hero({ content }: { content: HeroContent }) {
                   /* Mobile: Big text (13vw) looks good here because words are short */
                   text-[13vw] 
                   /* Desktop: Standard sizing */
-                  sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl
+                  sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl
                   sm:leading-[1.1]
                 "
               >
@@ -108,7 +108,7 @@ export default function Hero({ content }: { content: HeroContent }) {
                   /* Mobile: Smaller text (8.5vw) to accommodate 13 characters */
                   text-[8.5vw]
                   /* Desktop: Matches the line above */
-                  sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl
+                  sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl
                 "
               >
                 {titleLine2}
