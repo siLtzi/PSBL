@@ -15,33 +15,19 @@ export type HeroContent = {
   videoUrl: string;
 };
 
-// This helper splits the text by hyphen and ensures the pieces
-// NEVER break inside the word (fixing the "N" issue),
-// but ALWAYS break after the hyphen on mobile.
-function SplitText({ text }: { text: string }) {
-  if (!text.includes("-")) {
-    return <span className="whitespace-nowrap">{text}</span>;
-  }
-
-  const parts = text.split("-");
-  // We assume the first part includes the hyphen visually
-  const firstPart = parts[0] + "-";
-  const secondPart = parts[1];
+// 1. SPLIT LOGIC: Forces "POHJOIS-" and "SUOMEN" to stay as chunks.
+// On Mobile: Forces a break between them.
+// On Desktop: Sits on one line, but wraps cleanly between words if needed (never breaks the "N").
+function SplitTitle({ text }: { text: string }) {
+  if (!text.includes("-")) return <span>{text}</span>;
+  const [part1, part2] = text.split("-");
 
   return (
     <>
-      {/* Part 1: "POHJOIS-" */}
-      <span className="whitespace-nowrap inline-block">
-        {firstPart}
-      </span>
-      
-      {/* The Break: Visible on mobile (block), hidden on desktop */}
+      <span className="inline-block whitespace-nowrap">{part1}-</span>
+      {/* Mobile: Force break. Desktop: Hide break (allow flex wrap) */}
       <br className="block sm:hidden" />
-      
-      {/* Part 2: "SUOMEN" */}
-      <span className="whitespace-nowrap inline-block">
-        {secondPart}
-      </span>
+      <span className="inline-block whitespace-nowrap">{part2}</span>
     </>
   );
 }
@@ -62,7 +48,6 @@ export default function Hero({ content }: { content: HeroContent }) {
 
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-black text-zinc-50">
-      {/* Background video */}
       <video
         className="absolute inset-0 h-full w-full object-cover"
         autoPlay
@@ -73,63 +58,61 @@ export default function Hero({ content }: { content: HeroContent }) {
         <source src={videoUrl} type="video/mp4" />
       </video>
 
-      {/* Dark overlay */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/80" />
 
-      {/* Content */}
       <div className="relative z-10 flex min-h-screen flex-col">
         <div className="flex flex-1 items-center justify-center">
           <div
             ref={rootRef}
             className="
-              flex
-              w-full
-              flex-col
-              items-center
-              text-center
-              px-4
-              sm:px-0
-              pb-20
-              md:pb-24
+              flex w-full flex-col items-center text-center 
+              px-2 sm:px-0 pb-20 md:pb-24
             "
           >
-            {/* TITLE */}
+            {/* TITLE CONTAINER */}
             <h1
               ref={titleRef}
               className={`
                 ${scienceGothic.className}
-                /* MOBILE FONT SIZE: */
-                /* Reduced from 13vw to 11vw to ensure BETONILATTIAT fits without breaking */
-                text-[11vw]
-                
-                /* DESKTOP FONT SIZES: */
-                sm:text-6xl
-                md:text-7xl
-                lg:text-8xl
-                xl:text-9xl
-                
-                font-bold
-                sm:font-black
-                leading-[0.9]
-                sm:leading-[1.1]
-                tracking-[-0.02em]
-                drop-shadow-2xl
+                font-bold sm:font-black
                 uppercase
-                flex
-                flex-col
-                items-center
-                w-full
+                text-balance
+                flex flex-col items-center
+                drop-shadow-2xl
               `}
             >
-              {/* Line 1: Handle the hyphen split manually */}
-              <div className="block">
-                 <SplitText text={titleLine1} />
+              {/* LINE 1 & 2: POHJOIS- SUOMEN */}
+              <div
+                className="
+                  leading-[0.9] tracking-tighter
+                  /* Mobile: Big text (13vw) looks good here because words are short */
+                  text-[13vw] 
+                  /* Desktop: Standard sizing */
+                  sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl
+                  sm:leading-[1.1]
+                "
+              >
+                <SplitTitle text={titleLine1} />
               </div>
 
-              {/* Line 2: Ensure it doesn't wrap locally if possible */}
-              <span className="block whitespace-nowrap mt-1 sm:mt-0">
+              {/* LINE 3: BETONILATTIAT */}
+              {/* CRITICAL FIX: We make this SPECIFIC word smaller on mobile 
+                  so it fits on one line (nowrap) without overflowing. 
+                  (8.5vw fits 13 chars nicely, vs 13vw which explodes). 
+              */}
+              <div
+                className="
+                  leading-[0.9] tracking-tighter
+                  whitespace-nowrap
+                  mt-1 sm:mt-0
+                  /* Mobile: Smaller text (8.5vw) to accommodate 13 characters */
+                  text-[8.5vw]
+                  /* Desktop: Matches the line above */
+                  sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl
+                "
+              >
                 {titleLine2}
-              </span>
+              </div>
             </h1>
 
             {/* SUBTITLE */}
@@ -137,18 +120,10 @@ export default function Hero({ content }: { content: HeroContent }) {
               ref={subtitleRef}
               className={`
                 ${exo2.className}
-                mt-6
-                text-base
-                sm:text-lg
-                md:text-xl
-                lg:text-2xl
-                font-medium
-                text-zinc-200
-                max-w-[90%]
-                sm:max-w-2xl
-                mx-auto
-                drop-shadow-lg
-                leading-relaxed
+                mt-6 text-base sm:text-lg md:text-xl lg:text-2xl
+                font-medium text-zinc-200
+                max-w-[90%] sm:max-w-2xl mx-auto
+                drop-shadow-lg leading-relaxed
               `}
             >
               {subtitle}
@@ -158,16 +133,9 @@ export default function Hero({ content }: { content: HeroContent }) {
             <div
               className={`
                 ${scienceGothic.className}
-                mt-8
-                sm:mt-12
-                flex
-                flex-col
-                items-center
-                gap-4
-                sm:flex-row
-                sm:justify-center
-                w-full
-                px-4
+                mt-8 sm:mt-12
+                flex flex-col sm:flex-row items-center justify-center
+                gap-4 w-full px-4
               `}
             >
               <a
