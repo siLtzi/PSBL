@@ -84,6 +84,7 @@ export default function Hero({ content }: { content: HeroContent }) {
                 sm:leading-[1.1]
                 tracking-[-0.02em]
                 text-balance
+                drop-shadow-2xl
               `}
             >
               {/* Line 1 with smart hyphen wrapping */}
@@ -117,6 +118,7 @@ export default function Hero({ content }: { content: HeroContent }) {
                 text-zinc-100
                 max-w-3xl
                 mx-auto
+                drop-shadow-lg
               `}
             >
               {subtitle}
