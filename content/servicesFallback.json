@@ -1,0 +1,41 @@
+{
+  "heading": "PALVELUT",
+  "services": [
+    {
+      "title": "Betonilattiatyöt, lattiavalut",
+      "imageUrl": "/images/services/betonilattiat.jpg",
+      "ctaLabel": "Lue lisää",
+      "ctaHref": "/palvelut/betonilattiat"
+    },
+    {
+      "title": "Kuivasirotelattiat, MasterTop-lattiat",
+      "imageUrl": "/images/services/kuivasirotelattiat.jpg",
+      "ctaLabel": "Lue lisää",
+      "ctaHref": "/palvelut/kuivasirotelattiat"
+    },
+    {
+      "title": "Kuviobetonoinnit",
+      "imageUrl": "/images/services/kuviobetonointi.jpg",
+      "ctaLabel": "Lue lisää",
+      "ctaHref": "/palvelut/kuviobetonointi"
+    },
+    {
+      "title": "Lattiapinnoitukset",
+      "imageUrl": "/images/services/lattiapinnoitukset.jpg",
+      "ctaLabel": "Lue lisää",
+      "ctaHref": "/palvelut/lattiapinnoitukset"
+    },
+    {
+      "title": "Kovabetonointi",
+      "imageUrl": "/images/services/kovabetonointi.jpg",
+      "ctaLabel": "Lue lisää",
+      "ctaHref": "/palvelut/kovabetonointi"
+    },
+    {
+      "title": "Kiillotettu betonilattia",
+      "imageUrl": "/images/services/kiillotettu-betonilattia.jpg",
+      "ctaLabel": "Lue lisää",
+      "ctaHref": "/palvelut/kiillotettu-betonilattia"
+    }
+  ]
+}
