@@ -39,13 +39,36 @@ export const servicesSettingsQuery = `
   }
 `;
 
-export const contactSettingsQuery = `
+export const contactSettingsQuery = groq`
   *[_type == "contactSettings"][0]{
     heroMediaType,
     "heroImageUrl": heroImage.asset->url,
-    "heroVideoUrl": heroVideo.asset->url
+    "heroVideoUrl": heroVideo.asset->url,
+
+    heroTitle,
+    heroSubtitle,
+    introTitle,
+    introBody,
+
+    company {
+      name,
+      businessId,
+      location,
+      email,
+      phone
+    },
+
+    billing {
+      eInvoiceAddress,
+      operatorName,
+      operatorCode
+    },
+
+    formTitle,
+    formIntro
   }
 `;
+
 
 
 export const servicePageSlugsQuery = groq`
