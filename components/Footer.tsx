@@ -6,12 +6,12 @@ import { ArrowBigRightDash } from "lucide-react";
 
 export default function Footer() {
   const serviceLinks = [
-    { label: "Betonilattiatyöt", href: "/betonilattiatyot" },
-    { label: "Kuivasirote­lattiat", href: "/kuivasirotelattiat" },
-    { label: "Kuvio­betonointi", href: "/kuviobetonointi" },
-    { label: "Lattia­pinnoitukset", href: "/lattiapinnoitukset" },
-    { label: "Kova­betonointi", href: "/kovabetonointi" },
-    { label: "Kiillotettu betonilattia", href: "/kiillotettu-betonilattia" },
+    { label: "Betonilattiatyöt", href: "/palvelut/betonilattiatyot-lattiavalut" },
+    { label: "Kuivasirotelattiat", href: "/palvelut/kuivasirotelattiat-mastertoplattiat" },
+    { label: "Kuviobetonointi", href: "/palvelut/kuviobetonointi" },
+    { label: "Lattiapinnoitukset", href: "/palvelut/lattiapinnoitukset" },
+    { label: "Kovabetonointi", href: "/palvelut/kovabetonointi" },
+    { label: "Kiillotettu betonilattia", href: "/palvelut/kiillotettu-betonilattia" },
   ];
 
   return (
@@ -53,19 +53,6 @@ export default function Footer() {
 
               {/* Socials */}
               <div className="flex gap-4 items-center">
-                <a
-                  href="https://www.facebook.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Facebook"
-                  className="group transition-transform hover:scale-110"
-                >
-                  <img
-                    src="/fb.svg"
-                    alt="Facebook"
-                    className="h-6 w-6"
-                  />
-                </a>
                 <a
                   href="https://www.instagram.com/psbl.fi/"
                   target="_blank"

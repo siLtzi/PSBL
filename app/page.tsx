@@ -24,12 +24,16 @@ export const metadata: Metadata = {
 
 type SanityServicesSettings = {
   heading?: string | null;
+  heroTitle?: string | null;      // new (for /palvelut)
+  heroSubtitle?: string | null;   // new (for /palvelut)
+  heroImageUrl?: string | null;   // new (for /palvelut)
   services?: {
     title?: string | null;
     imageUrl?: string | null;
     ctaHref?: string | null;
   }[];
 };
+
 
 export default async function HomePage() {
   const [heroSettings, aboutSettings, servicesSettings] = await Promise.all([

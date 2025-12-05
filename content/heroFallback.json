@@ -4,7 +4,7 @@
   "titleLine2": "BETONILATTIAT",
   "subtitle": "Lattiaurakat laatutakuulla yrityksille ja yksityisille.",
   "primaryCtaLabel": "PALVELUT",
-  "primaryCtaHref": "#Services",
+  "primaryCtaHref": "/palvelut",
   "secondaryCtaLabel": "OTA YHTEYTTÄ",
   "secondaryCtaHref": "/yhteystiedot",
   "videoUrl": "/psbl-hero.mp4"

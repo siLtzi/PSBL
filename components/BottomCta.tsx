@@ -84,7 +84,7 @@ export default function BottomCta() {
 
         {/* CTA button - No GSAP, pure CSS Hover */}
         <Link
-          href="#yhteystiedot"
+          href="/yhteystiedot"
           className={`
             ${scienceGothic.className}
             relative inline-flex items-center justify-start
