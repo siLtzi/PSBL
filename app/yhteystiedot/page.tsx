@@ -60,8 +60,7 @@ export default async function ContactPage() {
     "Täytäthän kaikki kentät, niin osaamme vastata sinulle mahdollisimman hyvin.";
 
   return (
-    // Added max-w-[100vw] to strictly prevent horizontal overflow
-    <main className="bg-white text-zinc-900 w-full max-w-[100vw] overflow-x-hidden">
+    <main className="bg-white text-zinc-900">
       {/* HERO */}
       <section className="relative h-[320px] sm:h-[360px] md:h-[400px] lg:h-[500px] w-full overflow-hidden">
         {heroMediaType === "video" && heroVideoUrl ? (
@@ -110,21 +109,21 @@ export default async function ContactPage() {
       </section>
 
       {/* MAIN CONTENT */}
-      {/* Added overflow-hidden here to ensure children don't cause scroll leeway */}
-      <section className="py-12 md:py-16 lg:py-20 w-full overflow-hidden">
-        <div className="relative mx-auto w-full max-w-5xl px-4">
-          {/* FLOATING MAP (DESKTOP) */}
-          <div className="pointer-events-none hidden lg:block absolute inset-x-0 top-20 flex justify-center overflow-hidden">
-            <div className="max-w-[260px]">
-              <FinlandMap className="w-full drop-shadow-[0_18px_35px_rgba(0,0,0,0.25)]" />
-            </div>
+      <section className="py-12 md:py-16 lg:py-20">
+        <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+          
+          {/* FLOATING MAP (DESKTOP ONLY) */}
+          {/* FIX: Added 'z-0' to keep map strictly in background */}
+          <div className="pointer-events-none hidden lg:block absolute left-1/2 top-20 -translate-x-1/2 z-0">
+            <FinlandMap className="w-52 xl:w-64 drop-shadow-[0_18px_35px_rgba(0,0,0,0.25)]" />
           </div>
 
           {/* 2 COLUMNS */}
-          <div className="grid gap-12 lg:gap-16 lg:grid-cols-2 items-start">
-            {/* LEFT COLUMN - Text Info */}
-            {/* Added break-words to prevent long emails from breaking layout */}
-            <div className="max-w-xl mx-auto text-center lg:text-left break-words">
+          {/* FIX: Added 'relative z-10' to ensure text & form sit ABOVE the map */}
+          <div className="relative z-10 grid gap-12 lg:gap-20 lg:grid-cols-2 items-start">
+            
+            {/* LEFT COLUMN */}
+            <div className="max-w-xl mx-auto text-center lg:text-left">
               <h2
                 className={`
                   ${scienceGothic.className}
@@ -143,44 +142,51 @@ export default async function ContactPage() {
                 {introBody}
               </p>
 
-              {/* COMPANY INFO */}
-              <div
-                className={`
-                  ${exo2.className}
-                  mt-8 space-y-2 text-sm sm:text-base
-                `}
-              >
-                {company.name && (
-                  <p className="font-semibold">{company.name}</p>
-                )}
-                {company.businessId && (
-                  <p>Y-tunnus: {company.businessId}</p>
-                )}
-                {company.location && <p>{company.location}</p>}
+              {/* COMPANY INFO + MOBILE MAP INLINE */}
+              <div className="mt-8 flex items-start gap-4 lg:block">
+                {/* Mobile map next to company info */}
+                <div className="shrink-0 lg:hidden">
+                  <FinlandMap className="w-20 sm:w-24 drop-shadow-[0_12px_25px_rgba(0,0,0,0.25)]" />
+                </div>
 
-                <div className="mt-4 space-y-1">
-                  {company.email && (
-                    <p>
-                      <span className="font-semibold">Sähköposti: </span>
-                      <a
-                        href={`mailto:${company.email}`}
-                        className="underline underline-offset-2 hover:text-zinc-600 break-all sm:break-normal"
-                      >
-                        {company.email}
-                      </a>
-                    </p>
+                <div
+                  className={`
+                    ${exo2.className}
+                    space-y-2 text-sm sm:text-base
+                  `}
+                >
+                  {company.name && (
+                    <p className="font-semibold">{company.name}</p>
                   )}
-                  {company.phone && (
-                    <p>
-                      <span className="font-semibold">Puhelin: </span>
-                      <a
-                        href={`tel:${company.phone.replace(/\s/g, "")}`}
-                        className="underline underline-offset-2 hover:text-zinc-600"
-                      >
-                        {company.phone}
-                      </a>
-                    </p>
+                  {company.businessId && (
+                    <p>Y-tunnus: {company.businessId}</p>
                   )}
+                  {company.location && <p>{company.location}</p>}
+
+                  <div className="mt-4 space-y-1">
+                    {company.email && (
+                      <p>
+                        <span className="font-semibold">Sähköposti: </span>
+                        <a
+                          href={`mailto:${company.email}`}
+                          className="underline underline-offset-2 hover:text-zinc-600"
+                        >
+                          {company.email}
+                        </a>
+                      </p>
+                    )}
+                    {company.phone && (
+                      <p>
+                        <span className="font-semibold">Puhelin: </span>
+                        <a
+                          href={`tel:${company.phone.replace(/\s/g, "")}`}
+                          className="underline underline-offset-2 hover:text-zinc-600"
+                        >
+                          {company.phone}
+                        </a>
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -204,7 +210,7 @@ export default async function ContactPage() {
                   {billing.eInvoiceAddress && (
                     <div>
                       <p className="font-semibold">Verkkolaskuosoite:</p>
-                      <p className="break-all">{billing.eInvoiceAddress}</p>
+                      <p>{billing.eInvoiceAddress}</p>
                     </div>
                   )}
 
@@ -221,16 +227,10 @@ export default async function ContactPage() {
               </div>
             </div>
 
-            {/* RIGHT COLUMN – FORM */}
-            {/* Added text-center lg:text-left to ensure mobile centering */}
-            <div className="mx-auto w-full max-w-xl text-center lg:text-left">
+            {/* RIGHT COLUMN – FORM (texts from Sanity) */}
+            <div className="lg:pl-10 mx-auto w-full max-w-xl text-center lg:text-left">
               <ContactForm heading={formTitle} intro={formIntro} />
             </div>
-          </div>
-
-          {/* MOBILE MAP BELOW */}
-          <div className="mt-10 flex justify-center lg:hidden">
-            <FinlandMap className="w-48 sm:w-56 drop-shadow-[0_18px_35px_rgba(0,0,0,0.25)]" />
           </div>
         </div>
       </section>
