@@ -12,29 +12,67 @@ type ContactFormProps = {
 
 export type LatLng = { lat: number; lng: number };
 
-// Client-only map modal (no SSR → no window error)
-const LocationMapModal = dynamic(
-  () => import("./LocationMapModal"),
-  { ssr: false }
-);
+// Client-only map modal
+const LocationMapModal = dynamic(() => import("./LocationMapModal"), {
+  ssr: false,
+});
 
 export default function ContactForm({ heading, intro }: ContactFormProps) {
   const [siteLocation, setSiteLocation] = useState("");
   const [coords, setCoords] = useState<LatLng | null>(null);
   const [isMapOpen, setIsMapOpen] = useState(false);
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
   const handleOpenMap = () => {
     setIsMapOpen(true);
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setSubmitError(null);
+    setSubmitSuccess(false);
+    setIsSubmitting(true);
 
-    // Later: send to API
-    console.log("Site location text:", siteLocation);
-    console.log("Coordinates:", coords);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
 
-    alert("Kiitos viestistä!");
+    const payload = {
+      name: String(formData.get("name") || ""),
+      email: String(formData.get("email") || ""),
+      company: String(formData.get("company") || ""),
+      phone: String(formData.get("phone") || ""),
+      siteLocation,
+      message: String(formData.get("message") || ""),
+      coords,
+    };
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data?.error || "Lähetys epäonnistui.");
+      }
+
+      setSubmitSuccess(true);
+      form.reset();
+      setSiteLocation("");
+      setCoords(null);
+    } catch (err: any) {
+      console.error(err);
+      setSubmitError(err.message || "Lähetys epäonnistui.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -60,7 +98,7 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
       <form
         className={`
           ${exo2.className}
-          mt-6 space-y-4
+          mt-6 space-y-4 text-left
         `}
         onSubmit={handleSubmit}
       >
@@ -127,22 +165,23 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
             Työmaan osoite tai sijainti
           </label>
 
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row">
             <input
               type="text"
-              name="siteLocation"
+              name="siteLocationText"
               required
               value={siteLocation}
               onChange={(e) => setSiteLocation(e.target.value)}
               placeholder="Esim. katuosoite, paikkakunta tai karttakuvaus"
-              className="flex-1 rounded-md border border-zinc-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+              className="w-full sm:flex-1 rounded-md border border-zinc-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
             />
 
             <button
               type="button"
               onClick={handleOpenMap}
               className="
-                inline-flex items-center gap-1 whitespace-nowrap
+                w-full sm:w-auto
+                inline-flex items-center justify-center sm:justify-start gap-1
                 rounded-md border border-zinc-300 px-3 py-2 text-[11px] sm:text-xs
                 font-semibold uppercase tracking-[0.12em]
                 text-zinc-700 hover:bg-zinc-100 transition
@@ -181,22 +220,35 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
           />
         </div>
 
-        {/* FOOTER SECTION */}
-        <div className="pt-2 flex flex-col gap-3">
-          <p className="text-[11px] leading-snug text-zinc-500">
+        {/* STATUS MESSAGES */}
+        <div className="text-center lg:text-left">
+            {submitError && <p className="text-xs text-red-600">{submitError}</p>}
+            {submitSuccess && (
+            <p className="text-xs text-emerald-600">
+                Kiitos viestistä! Otamme sinuun yhteyttä mahdollisimman pian.
+            </p>
+            )}
+        </div>
+
+        {/* FOOTER SECTION - CENTERED ON MOBILE, LEFT ON DESKTOP */}
+        <div className="pt-2 flex flex-col gap-3 items-center lg:items-start">
+          <p className="text-[11px] leading-snug text-zinc-500 text-center lg:text-left">
             Tämä lomake voidaan suojata esim. Google reCAPTCHA -palvelulla.
           </p>
 
           <button
             type="submit"
-            className="
+            disabled={isSubmitting}
+            // Removed self-end, relied on parent items-center (mobile) / lg:items-start (desktop)
+            className={`
               hero-cta relative inline-flex items-center justify-start
               py-4 pl-8 pr-16 overflow-hidden font-bold text-base
               text-zinc-900 transition-all duration-150 ease-in-out
               rounded-xl bg-yellow-400 group hover:pl-10 hover:pr-14
-              w-full sm:w-auto max-w-xs self-end
+              w-full sm:w-auto max-w-xs
               uppercase tracking-wide cursor-pointer
-            "
+              ${isSubmitting ? "opacity-70 cursor-wait" : ""}
+            `}
           >
             <span className="absolute bottom-0 left-0 w-full h-1 bg-zinc-900 transition-all duration-150 ease-in-out group-hover:h-full" />
 
@@ -211,7 +263,7 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
             <span
               className={`${scienceGothic.className} relative w-full text-left transition-colors duration-200 ease-in-out group-hover:text-white`}
             >
-              Lähetä
+              {isSubmitting ? "Lähetetään…" : "Lähetä"}
             </span>
           </button>
         </div>
