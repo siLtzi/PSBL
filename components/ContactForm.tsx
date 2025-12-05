@@ -32,44 +32,56 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitError(null);
-    setSubmitSuccess(false);
-    setIsSubmitting(true);
 
     const form = e.currentTarget;
     const formData = new FormData(form);
 
     const payload = {
-      name: String(formData.get("name") || ""),
-      email: String(formData.get("email") || ""),
-      company: String(formData.get("company") || ""),
-      phone: String(formData.get("phone") || ""),
-      siteLocation,
-      message: String(formData.get("message") || ""),
+      name: formData.get("name") as string | null,
+      email: formData.get("email") as string | null,
+      phone: formData.get("phone") as string | null,
+      company: formData.get("company") as string | null,
+      siteLocationText: formData.get("siteLocationText") as string | null,
+      message: formData.get("message") as string | null,
       coords,
     };
+
+    setIsSubmitting(true);
+    setSubmitError(null);
+    setSubmitSuccess(false);
 
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data?.error || "Lähetys epäonnistui.");
+        let extra = "";
+        try {
+          const data = await res.json();
+          if (data?.error) {
+            extra = ` (${typeof data.error === "string" ? data.error : data.error.message ?? ""})`;
+          }
+        } catch {
+          // ignore
+        }
+
+        console.error("Contact API failed:", res.status, extra);
+        setSubmitError(
+          "Viestin lähetys epäonnistui. Yritä hetken päästä uudelleen."
+        );
+        return;
       }
 
       setSubmitSuccess(true);
       form.reset();
       setSiteLocation("");
       setCoords(null);
-    } catch (err: any) {
-      console.error(err);
-      setSubmitError(err.message || "Lähetys epäonnistui.");
+    } catch (err) {
+      console.error("Contact submit error", err);
+      setSubmitError("Viestin lähetys epäonnistui. Tarkista verkkoyhteys.");
     } finally {
       setIsSubmitting(false);
     }
@@ -221,16 +233,18 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
         </div>
 
         {/* STATUS MESSAGES */}
-        <div className="text-center lg:text-left">
-            {submitError && <p className="text-xs text-red-600">{submitError}</p>}
-            {submitSuccess && (
+        <div className="text-center lg:text-left min-h-[1.25rem]">
+          {submitError && (
+            <p className="text-xs text-red-600">{submitError}</p>
+          )}
+          {submitSuccess && !submitError && (
             <p className="text-xs text-emerald-600">
-                Kiitos viestistä! Otamme sinuun yhteyttä mahdollisimman pian.
+              Kiitos viestistä! Otamme sinuun yhteyttä mahdollisimman pian.
             </p>
-            )}
+          )}
         </div>
 
-        {/* FOOTER SECTION - CENTERED ON MOBILE, LEFT ON DESKTOP */}
+        {/* FOOTER SECTION */}
         <div className="pt-2 flex flex-col gap-3 items-center lg:items-start">
           <p className="text-[11px] leading-snug text-zinc-500 text-center lg:text-left">
             Tämä lomake voidaan suojata esim. Google reCAPTCHA -palvelulla.
@@ -239,7 +253,6 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
           <button
             type="submit"
             disabled={isSubmitting}
-            // Removed self-end, relied on parent items-center (mobile) / lg:items-start (desktop)
             className={`
               hero-cta relative inline-flex items-center justify-start
               py-4 pl-8 pr-16 overflow-hidden font-bold text-base
@@ -275,8 +288,8 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
           initialCoords={coords}
           onCancel={() => setIsMapOpen(false)}
           onConfirm={(c) => {
+            // only store pure coords; don't overwrite address text
             setCoords(c);
-            setSiteLocation(`${c.lat.toFixed(6)}, ${c.lng.toFixed(6)}`);
             setIsMapOpen(false);
           }}
         />
