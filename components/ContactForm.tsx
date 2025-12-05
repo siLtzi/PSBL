@@ -1,14 +1,42 @@
 "use client";
 
+import { useState, FormEvent } from "react";
+import dynamic from "next/dynamic";
 import { exo2, scienceGothic } from "@/app/fonts";
-import { ArrowBigRightDash } from "lucide-react";
+import { ArrowBigRightDash, MapPin, CheckCircle2 } from "lucide-react";
 
 type ContactFormProps = {
   heading: string;
   intro: string;
 };
 
+export type LatLng = { lat: number; lng: number };
+
+// Client-only map modal (no SSR → no window error)
+const LocationMapModal = dynamic(
+  () => import("./LocationMapModal"),
+  { ssr: false }
+);
+
 export default function ContactForm({ heading, intro }: ContactFormProps) {
+  const [siteLocation, setSiteLocation] = useState("");
+  const [coords, setCoords] = useState<LatLng | null>(null);
+  const [isMapOpen, setIsMapOpen] = useState(false);
+
+  const handleOpenMap = () => {
+    setIsMapOpen(true);
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // Later: send to API
+    console.log("Site location text:", siteLocation);
+    console.log("Coordinates:", coords);
+
+    alert("Kiitos viestistä!");
+  };
+
   return (
     <div className="lg:pl-6">
       <h2
@@ -34,10 +62,7 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
           ${exo2.className}
           mt-6 space-y-4
         `}
-        onSubmit={(e) => {
-          e.preventDefault();
-          alert("Kiitos viestistä!");
-        }}
+        onSubmit={handleSubmit}
       >
         {/* FIRST ROW: Name + Email */}
         <div className="grid gap-4 sm:grid-cols-2">
@@ -96,22 +121,50 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
           </div>
         </div>
 
-        {/* WORKSITE LOCATION */}
+        {/* WORKSITE LOCATION + MAP PICKER */}
         <div>
           <label className="block text-xs font-semibold uppercase tracking-[0.15em] text-zinc-600 mb-1">
             Työmaan osoite tai sijainti
           </label>
-          <input
-            type="text"
-            name="siteLocation"
-            required
-            placeholder="Esim. katuosoite, paikkakunta tai Google Maps -linkki"
-            className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
-          />
+
+          <div className="flex gap-2">
+            <input
+              type="text"
+              name="siteLocation"
+              required
+              value={siteLocation}
+              onChange={(e) => setSiteLocation(e.target.value)}
+              placeholder="Esim. katuosoite, paikkakunta tai karttakuvaus"
+              className="flex-1 rounded-md border border-zinc-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+            />
+
+            <button
+              type="button"
+              onClick={handleOpenMap}
+              className="
+                inline-flex items-center gap-1 whitespace-nowrap
+                rounded-md border border-zinc-300 px-3 py-2 text-[11px] sm:text-xs
+                font-semibold uppercase tracking-[0.12em]
+                text-zinc-700 hover:bg-zinc-100 transition
+              "
+            >
+              <MapPin className="w-4 h-4" />
+              Valitse kartalta
+            </button>
+          </div>
+
           <p className="mt-1 text-[11px] text-zinc-500">
-            Anna mahdollisimman tarkka sijainti – osoite tai suora linkki
-            karttaan auttaa meitä hinnoittelemaan työn oikein.
+            Uusille työmaille voit valita sijainnin suoraan kartalta – tarkat
+            koordinaatit auttavat hinnoittelussa.
           </p>
+
+          {coords && (
+            <p className="mt-1 text-[11px] text-emerald-600 flex items-center gap-1">
+              <CheckCircle2 className="w-3 h-3" />
+              Sijainti tallennettu ({coords.lat.toFixed(5)},{" "}
+              {coords.lng.toFixed(5)}).
+            </p>
+          )}
         </div>
 
         {/* MESSAGE FIELD */}
@@ -134,9 +187,6 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
             Tämä lomake voidaan suojata esim. Google reCAPTCHA -palvelulla.
           </p>
 
-          {/* ---------------------------------------------------------------- */}
-          {/*           Animated PSBL CTA Button         */}
-          {/* ---------------------------------------------------------------- */}
           <button
             type="submit"
             className="
@@ -148,26 +198,37 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
               uppercase tracking-wide cursor-pointer
             "
           >
-            {/* Hover background grow */}
             <span className="absolute bottom-0 left-0 w-full h-1 bg-zinc-900 transition-all duration-150 ease-in-out group-hover:h-full" />
 
-            {/* Arrow sliding OUT */}
             <span className="absolute right-0 pr-6 duration-200 ease-out group-hover:translate-x-12">
               <ArrowBigRightDash className="w-6 h-6" />
             </span>
 
-            {/* Arrow sliding IN */}
             <span className="absolute left-0 pl-4 -translate-x-12 duration-200 ease-out group-hover:translate-x-0">
               <ArrowBigRightDash className="w-6 h-6 text-yellow-400" />
             </span>
 
-            {/* Button label */}
-            <span className={`${scienceGothic.className} relative w-full text-left transition-colors duration-200 ease-in-out group-hover:text-white`}>
+            <span
+              className={`${scienceGothic.className} relative w-full text-left transition-colors duration-200 ease-in-out group-hover:text-white`}
+            >
               Lähetä
             </span>
           </button>
         </div>
       </form>
+
+      {/* MAP MODAL (client-only) */}
+      {isMapOpen && (
+        <LocationMapModal
+          initialCoords={coords}
+          onCancel={() => setIsMapOpen(false)}
+          onConfirm={(c) => {
+            setCoords(c);
+            setSiteLocation(`${c.lat.toFixed(6)}, ${c.lng.toFixed(6)}`);
+            setIsMapOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 }
