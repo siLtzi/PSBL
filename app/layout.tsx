@@ -26,7 +26,7 @@ export default function RootLayout({
         {/* --- Plausible Analytics --- */}
         <Script
           defer
-          data-domain="psbl.fi"               // <-- your real domain
+          data-domain="psbl-ten.vercel.app"               // <-- your real domain
           src="https://plausible.io/js/script.js"
         />
       </head>
