@@ -99,3 +99,53 @@ export const servicePageBySlugQuery = groq`
     seoDescription
   }
 `;
+export const referencesSettingsQuery = groq`
+  *[_type == "referencesSettings"][0]{
+    heading,
+    subheading,
+    items[] {
+      _key,
+      caption,
+      tag,
+      location,
+      "imageUrl": image.asset->url
+    }
+  }
+`;
+export const allReferencesQuery = groq`
+  *[_type == "projectReference"]
+  | order(featured desc, year desc, _createdAt desc) {
+    _id,
+    title,
+    "slug": slug.current,
+    tag,
+    location,
+    year,
+    sizeM2,
+    excerpt,
+    "imageUrl": mainImage.asset->url
+  }
+`;
+export const referenceBySlugQuery = groq`
+  *[_type == "projectReference" && slug.current == $slug][0]{
+    _id,
+    title,
+    tag,
+    location,
+    year,
+    sizeM2,
+    excerpt,
+    body,
+    "mainImage": mainImage,
+    "gallery": gallery[]
+  }
+`;
+export const referencesPageSettingsQuery = groq`
+  *[_type == "referencesPageSettings"][0]{
+    heroTitle,
+    heroSubtitle,
+    heroImage,
+    "heroVideoUrl": heroVideo.asset->url
+  }
+`;
+

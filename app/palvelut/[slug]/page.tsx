@@ -8,7 +8,7 @@ import {
   servicePageBySlugQuery,
 } from "@/sanity/queries";
 import { urlFor } from "@/sanity/lib/image";
-import { exo2, scienceGothic } from "@/app/fonts";
+import { exo2, scienceGothic, scienceGothicCaps } from "@/app/fonts";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -118,6 +118,13 @@ export default async function ServicePage({
   const hasSpecs = specsTitle || specsBody;
   const hasCoverage = coverageTitle || coverageBody;
   const hasReferences = references && references.length > 0;
+  const coveragePlaces = coverageBody
+    ? coverageBody
+        .split(/[\n,]/) // pilkut tai rivinvaihdot
+        .map((item) => item.trim())
+        .filter(Boolean)
+        .map((item) => item.replace(/[.;:]+$/g, "")) // siivoa . ; : lopusta
+    : [];
 
   return (
     <main className="bg-white text-zinc-900">
@@ -141,7 +148,7 @@ export default async function ServicePage({
             <div>
               <h1
                 className={`
-                  ${scienceGothic.className}
+                  ${scienceGothicCaps}
                   text-3xl sm:text-4xl md:text-5xl lg:text-6xl
                   font-black tracking-tight
                 `}
@@ -171,7 +178,7 @@ export default async function ServicePage({
             <div>
               {contentTitle && (
                 <h2
-                  className={`${scienceGothic.className} text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-4`}
+                  className={`${scienceGothicCaps} text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-4`}
                 >
                   {contentTitle}
                 </h2>
@@ -199,52 +206,56 @@ export default async function ServicePage({
             )}
           </div>
 
-          {/* Specs + Coverage in a two-column band (if any) */}
-          {(hasSpecs || hasCoverage) && (
-            <div className="grid gap-8 md:grid-cols-2 bg-zinc-50 border border-zinc-200 rounded-2xl px-6 py-8 sm:px-8 sm:py-10">
-              {hasSpecs && (
-                <div>
-                  {specsTitle && (
-                    <h3
-                      className={`${scienceGothic.className} text-xl sm:text-2xl font-black mb-3`}
-                    >
-                      {specsTitle}
-                    </h3>
-                  )}
-
-                  {/* FIX 2: specsBody */}
-                  {specsBody && (
-                    <div
-                      className={`${exo2.className} text-sm sm:text-base text-zinc-700 leading-relaxed`}
-                    >
-                      <PortableText value={specsBody} />
-                    </div>
-                  )}
-                </div>
+          {/* Suositukset (tekniset tiedot) */}
+          {hasSpecs && (
+            <div className="bg-zinc-50 border border-zinc-200 rounded-2xl px-6 py-8 sm:px-8 sm:py-10">
+              {specsTitle && (
+                <h3
+                  className={`${scienceGothicCaps} text-xl sm:text-2xl font-black mb-3`}
+                >
+                  {specsTitle}
+                </h3>
               )}
 
-              {hasCoverage && (
-                <div>
-                  {coverageTitle && (
-                    <h3
+              {specsBody && (
+                <div
+                  className={`${exo2.className} text-sm sm:text-base text-zinc-700 leading-relaxed`}
+                >
+                  <PortableText value={specsBody} />
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Toiminta-alue / paikkakunnat erillisenä keltaisena SEO-laattana */}
+          {hasCoverage && (
+            <div className="rounded-2xl border border-yellow-300 bg-yellow-50 px-6 py-8 sm:px-8 sm:py-10">
+              {coverageTitle && (
+                <h3
+                  className={`
+          ${scienceGothicCaps}
+          text-xl sm:text-2xl font-black mb-3
+        `}
+                >
+                  {coverageTitle}
+                </h3>
+              )}
+
+              {coveragePlaces.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {coveragePlaces.map((place, i) => (
+                    <span
+                      key={`${place}-${i}`}
                       className={`
-                        ${scienceGothic.className}
-                        text-xl sm:text-2xl font-black mb-3
-                      `}
+              ${exo2.className}
+              inline-flex items-center rounded-full 
+              bg-yellow-400 text-zinc-900 
+              px-3 py-1 text-xs sm:text-sm font-semibold
+            `}
                     >
-                      {coverageTitle}
-                    </h3>
-                  )}
-                  {coverageBody && (
-                    <p
-                      className={`
-                        ${exo2.className}
-                        text-sm sm:text-base text-zinc-700 leading-relaxed whitespace-pre-line
-                      `}
-                    >
-                      {coverageBody}
-                    </p>
-                  )}
+                      {place}
+                    </span>
+                  ))}
                 </div>
               )}
             </div>
@@ -255,11 +266,11 @@ export default async function ServicePage({
             <section>
               <h3
                 className={`
-                  ${scienceGothic.className}
+                  ${scienceGothicCaps}
                   text-xl sm:text-2xl md:text-3xl font-black tracking-tight mb-6
                 `}
               >
-                Referenssit
+                REFERENSSIT
               </h3>
 
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

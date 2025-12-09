@@ -42,6 +42,8 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
       phone: formData.get("phone") as string | null,
       company: formData.get("company") as string | null,
       siteLocationText: formData.get("siteLocationText") as string | null,
+      // 🔹 NEW: m² field from form
+      squareMeters: formData.get("squareMeters") as string | null,
       message: formData.get("message") as string | null,
       coords,
     };
@@ -62,7 +64,11 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
         try {
           const data = await res.json();
           if (data?.error) {
-            extra = ` (${typeof data.error === "string" ? data.error : data.error.message ?? ""})`;
+            extra = ` (${
+              typeof data.error === "string"
+                ? data.error
+                : data.error.message ?? ""
+            })`;
           }
         } catch {
           // ignore
@@ -119,7 +125,7 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
           {/* NIMI */}
           <div>
             <label className="block text-xs font-semibold uppercase tracking-[0.15em] text-zinc-600 mb-1">
-              Nimi
+              Nimi*
             </label>
             <input
               type="text"
@@ -132,7 +138,7 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
           {/* SÄHKÖPOSTI */}
           <div>
             <label className="block text-xs font-semibold uppercase tracking-[0.15em] text-zinc-600 mb-1">
-              Sähköpostiosoite
+              Sähköpostiosoite*
             </label>
             <input
               type="email"
@@ -148,7 +154,7 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
           {/* YRITYS */}
           <div>
             <label className="block text-xs font-semibold uppercase tracking-[0.15em] text-zinc-600 mb-1">
-              Yritys (ei pakollinen)
+              Yritys
             </label>
             <input
               type="text"
@@ -160,7 +166,7 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
           {/* PUHELIN */}
           <div>
             <label className="block text-xs font-semibold uppercase tracking-[0.15em] text-zinc-600 mb-1">
-              Puhelin
+              Puhelin*
             </label>
             <input
               type="tel"
@@ -171,10 +177,30 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
           </div>
         </div>
 
+        {/* THIRD ROW: Area (m²) */}
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label className="block text-xs font-semibold uppercase tracking-[0.15em] text-zinc-600 mb-1">
+              Neliömäärä (m²)
+            </label>
+            <input
+              type="number"
+              name="squareMeters"
+              min={0}
+              step="1"
+              placeholder="Esim. 120"
+              className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+            />
+            <p className="mt-1 text-[11px] text-zinc-500">
+              Arvioitu pinta-ala.
+            </p>
+          </div>
+        </div>
+
         {/* WORKSITE LOCATION + MAP PICKER */}
         <div>
           <label className="block text-xs font-semibold uppercase tracking-[0.15em] text-zinc-600 mb-1">
-            Työmaan osoite tai sijainti
+            Työmaan osoite tai sijainti*
           </label>
 
           <div className="flex flex-col gap-2 sm:flex-row">
@@ -184,7 +210,7 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
               required
               value={siteLocation}
               onChange={(e) => setSiteLocation(e.target.value)}
-              placeholder="Esim. katuosoite, paikkakunta tai karttakuvaus"
+              placeholder="Esim. katuosoite ja paikkakunta"
               className="w-full sm:flex-1 rounded-md border border-zinc-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
             />
 
@@ -205,8 +231,7 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
           </div>
 
           <p className="mt-1 text-[11px] text-zinc-500">
-            Uusille työmaille voit valita sijainnin suoraan kartalta – tarkat
-            koordinaatit auttavat hinnoittelussa.
+            Uusille työmaille voit valita sijainnin suoraan kartalta
           </p>
 
           {coords && (
@@ -221,7 +246,7 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
         {/* MESSAGE FIELD */}
         <div>
           <label className="block text-xs font-semibold uppercase tracking-[0.15em] text-zinc-600 mb-1">
-            Viestisi
+            Viestisi*
           </label>
           <textarea
             name="message"

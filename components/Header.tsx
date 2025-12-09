@@ -67,20 +67,15 @@ const DropdownItem = ({
 export default function Header() {
   const pathname = usePathname();
   // Detect current route to highlight active menu items.
+
   // Hide the site header completely inside Sanity Studio
-if (pathname.startsWith("/studio")) {
-  return null;
-}
+  if (pathname.startsWith("/studio")) {
+    return null;
+  }
 
   const [scrolled, setScrolled] = useState(false);
-  // True when user scrolls down even a little.
-  // Used to change header background style.
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // Controls mobile menu visibility.
-
   const menuRef = useRef<HTMLDivElement>(null);
-  // Needed for GSAP context scoping.
 
   // ---------------------------------------------------------------------------
   // 1. Scroll detection (changes header transparency and shadow)
@@ -98,7 +93,6 @@ if (pathname.startsWith("/studio")) {
 
   // ---------------------------------------------------------------------------
   // 2. Lock body scroll when mobile menu is open
-  // Prevents the page behind the overlay from scrolling
   // ---------------------------------------------------------------------------
   useEffect(() => {
     document.body.style.overflow = isMenuOpen ? "hidden" : "unset";
@@ -106,21 +100,17 @@ if (pathname.startsWith("/studio")) {
 
   // ---------------------------------------------------------------------------
   // 3. GSAP ANIMATION for mobile menu open
-  // Runs only when menu is opened
   // ---------------------------------------------------------------------------
   useEffect(() => {
     if (!isMenuOpen || !menuRef.current) return;
 
-    // gsap.context ensures animations only touch this component's DOM
     const ctx = gsap.context(() => {
-      // Fade in background
       gsap.fromTo(
         ".mobile-menu-bg",
         { opacity: 0 },
         { opacity: 1, duration: 0.3, ease: "power2.out" }
       );
 
-      // Slide & fade links one by one
       gsap.fromTo(
         ".mobile-link",
         { y: 20, opacity: 0 },
@@ -143,6 +133,7 @@ if (pathname.startsWith("/studio")) {
   const isContact = pathname === "/yhteystiedot";
   const isServices =
     pathname === "/palvelut" || pathname?.startsWith("/palvelut/");
+  const isReferences = pathname === "/referenssit"; // 👈 NEW
 
   // List of services for mobile menu
   const mobileServices = [
@@ -162,15 +153,15 @@ if (pathname.startsWith("/studio")) {
       {/* MAIN HEADER BAR */}
       <header
         className={`
-    fixed top-0 left-0 w-full z-50
-    transition-all duration-300 ease-in-out
-    max-w-[100vw]
-    ${
-      scrolled
-        ? "bg-black/90 backdrop-blur-md shadow-sm py-2"
-        : "bg-gradient-to-b from-black/80 via-black/40 to-transparent py-4"
-    }
-  `}
+          fixed top-0 left-0 w-full z-50
+          transition-all duration-300 ease-in-out
+          max-w-[100vw]
+          ${
+            scrolled
+              ? "bg-black/90 backdrop-blur-md shadow-sm py-2"
+              : "bg-gradient-to-b from-black/80 via-black/40 to-transparent py-4"
+          }
+        `}
       >
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 md:px-10">
           {/* LOGO */}
@@ -183,10 +174,7 @@ if (pathname.startsWith("/studio")) {
             <PsblLogo />
           </Link>
 
-          {/* ----------------------------------------------------------------- */}
           {/* DESKTOP NAVIGATION */}
-          {/* Hidden on mobile, visible on md+ screens */}
-          {/* ----------------------------------------------------------------- */}
           <nav
             className={`
               hidden md:flex items-center gap-8
@@ -194,13 +182,12 @@ if (pathname.startsWith("/studio")) {
               ${exo2.className}
             `}
           >
-            {/* Etusivu link */}
+            {/* Etusivu */}
             <Link
               href="/"
               className="group relative pb-1 text-zinc-300 hover:text-white transition-colors"
             >
               Etusivu
-              {/* Underline effect (active or hover) */}
               <span
                 className={`absolute inset-x-0 -bottom-0.5 h-[2px] bg-yellow-400 origin-left transition-transform duration-200 ${
                   isHome ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
@@ -208,7 +195,7 @@ if (pathname.startsWith("/studio")) {
               />
             </Link>
 
-            {/* SERVICES DROPDOWN */}
+            {/* Palvelut dropdown */}
             <div className="relative group">
               <button
                 type="button"
@@ -220,7 +207,6 @@ if (pathname.startsWith("/studio")) {
                 <ChevronDown className="h-3 w-3 transition-transform duration-300 group-hover:rotate-180" />
               </button>
 
-              {/* Underline */}
               <span
                 className={`absolute inset-x-0 -bottom-0.5 h-[2px] bg-yellow-400 origin-left transition-transform duration-200 ${
                   isServices
@@ -229,7 +215,6 @@ if (pathname.startsWith("/studio")) {
                 }`}
               />
 
-              {/* DROPDOWN PANEL */}
               <div className="absolute right-0 top-full w-72 pt-4 opacity-0 translate-y-4 invisible transition-all duration-200 ease-out group-hover:opacity-100 group-hover:translate-y-0 group-hover:visible">
                 <div className="rounded-lg overflow-hidden bg-zinc-950 border border-zinc-800 shadow-2xl">
                   {mobileServices.map((s, i) => (
@@ -240,6 +225,21 @@ if (pathname.startsWith("/studio")) {
                 </div>
               </div>
             </div>
+
+            {/* 👇 NEW: Referenssit link */}
+            <Link
+              href="/referenssit"
+              className="group relative pb-1 text-zinc-300 hover:text-white transition-colors"
+            >
+              Referenssit
+              <span
+                className={`absolute inset-x-0 -bottom-0.5 h-[2px] bg-yellow-400 origin-left transition-transform duration-200 ${
+                  isReferences
+                    ? "scale-x-100"
+                    : "scale-x-0 group-hover:scale-x-100"
+                }`}
+              />
+            </Link>
 
             {/* Yhteystiedot */}
             <Link
@@ -257,10 +257,7 @@ if (pathname.startsWith("/studio")) {
             </Link>
           </nav>
 
-          {/* ----------------------------------------------------------------- */}
           {/* MOBILE HAMBURGER BUTTON */}
-          {/* Only visible on mobile screens */}
-          {/* ----------------------------------------------------------------- */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="md:hidden relative z-50 p-2 text-white hover:text-yellow-400 transition-colors"
@@ -275,20 +272,15 @@ if (pathname.startsWith("/studio")) {
         </div>
       </header>
 
-      {/* --------------------------------------------------------------------- */}
       {/* FULLSCREEN MOBILE MENU (overlay) */}
-      {/* --------------------------------------------------------------------- */}
       {isMenuOpen && (
         <div
           ref={menuRef}
           className="fixed inset-0 z-40 flex justify-center md:hidden"
         >
-          {/* Background overlay (animated by GSAP) */}
           <div className="mobile-menu-bg absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-zinc-900 via-zinc-950 to-black opacity-0" />
 
-          {/* Right-side sliding panel */}
           <div className="relative flex flex-col w-full max-w-sm bg-zinc-950 border-l border-zinc-800 px-6 pt-24 pb-10 overflow-y-auto">
-            {/* MOBILE LINKS */}
             <nav className={`flex flex-col gap-6 ${scienceGothic.className}`}>
               {/* Home */}
               <Link
@@ -299,7 +291,7 @@ if (pathname.startsWith("/studio")) {
                 Etusivu
               </Link>
 
-              {/* SERVICES GROUP */}
+              {/* Services group */}
               <div className="mobile-link flex flex-col gap-3">
                 <span className="text-xs font-bold text-zinc-500 uppercase tracking-[0.2em] border-b border-zinc-800 pb-2">
                   Palvelut
@@ -318,6 +310,15 @@ if (pathname.startsWith("/studio")) {
                   ))}
                 </div>
               </div>
+
+              {/* 👇 NEW: Referenssit (mobile) */}
+              <Link
+                href="/referenssit"
+                onClick={() => setIsMenuOpen(false)}
+                className="mobile-link text-2xl sm:text-3xl font-black text-white uppercase tracking-tight hover:text-yellow-400 transition-colors break-words"
+              >
+                Referenssit
+              </Link>
 
               {/* Contact */}
               <Link

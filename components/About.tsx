@@ -47,14 +47,14 @@ export default function About({ content }: { content: AboutContent }) {
       {/* MAIN GRID: LEFT TEXT + RIGHT MAP */}
       {/* ----------------------------- */}
       <div
-        className="
-          mx-auto max-w-[110rem]
-          px-4 sm:px-8 lg:px-16
-          grid gap-12 lg:gap-20
-          lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] /* Ensures columns don't overflow */
-          items-center
-        "
-      >
+  className="
+    mx-auto max-w-7xl          /* narrower than 110rem → centers better */
+    px-4 sm:px-8 lg:px-12
+    grid gap-12 lg:gap-16
+    lg:grid-cols-[0.9fr_1.1fr]     /* pulls text toward map */
+    items-center
+  "
+>
         {/* LEFT SIDE — TEXT */}
         <div className="min-w-0">
           <div className="h-1 w-16 rounded-full bg-yellow-400 mb-6" />

@@ -11,6 +11,8 @@ type ContactPayload = {
   siteLocationText?: string | null;
   message?: string | null;
   coords?: { lat: number; lng: number } | null;
+  // 🔹 NEW: neliöt / m² from the form
+  squareMeters?: string | null;
 };
 
 export async function POST(req: Request) {
@@ -33,6 +35,7 @@ export async function POST(req: Request) {
       siteLocationText,
       message,
       coords,
+      squareMeters, // 🔹 grab from body
     } = body;
 
     const toEmail =
@@ -110,6 +113,11 @@ export async function POST(req: Request) {
           `
               : ""
           }
+
+          <!-- 🔹 NEW: Neliömäärä section -->
+          <p style="margin: 4px 0 12px; font-size: 14px;">
+            <strong>Neliömäärä (m²):</strong> ${squareMeters || "-"}
+          </p>
 
           <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 16px 0 20px;" />
 

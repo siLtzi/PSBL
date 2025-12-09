@@ -1,0 +1,20 @@
+{
+  "heading": "REFERENSSIT",
+  "subheading": "Ote toteutetuista lattiaurakoista eri puolilta Pohjois-Suomea.",
+  "items": [
+    {
+      "_key": "ref1",
+      "imageUrl": "/images/references/ref1.jpg",
+      "caption": "Teollisuushalli, Rovaniemi 2024",
+      "tag": "Teollisuuskohde",
+      "location": "Rovaniemi"
+    },
+    {
+      "_key": "ref2",
+      "imageUrl": "/images/references/ref2.jpg",
+      "caption": "Kerrostalon pihakansi, Oulu 2023",
+      "tag": "Asuinkohde",
+      "location": "Oulu"
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { exo2 } from "@/app/fonts";
-import { ArrowBigRightDash } from "lucide-react";
+import { ArrowBigRightDash, Mail, Phone } from "lucide-react";
 
 export default function Footer() {
   const serviceLinks = [
@@ -36,18 +36,52 @@ export default function Footer() {
                 <p className="text-zinc-500 text-xs">Y-tunnus: 3423998-4</p>
               </div>
 
+              {/* Contact */}
               <div className="space-y-1">
                 <a
                   href="mailto:toimisto@psbl.fi"
-                  className="block hover:text-zinc-600 transition-colors"
+                  className="
+                    group flex items-center gap-2
+                    hover:text-zinc-900
+                    transition-colors
+                  "
                 >
-                  toimisto@psbl.fi
+                  <span
+                    className="
+                      flex h-7 w-7 items-center justify-center
+                      rounded-full bg-zinc-100 text-zinc-500
+                      shadow-sm
+                      transition-all duration-200
+                      group-hover:bg-yellow-400 group-hover:text-zinc-900
+                      group-hover:-translate-y-0.5 group-hover:translate-x-0.5
+                    "
+                  >
+                    <Mail className="w-3.5 h-3.5" />
+                  </span>
+                  <span className="text-sm">toimisto@psbl.fi</span>
                 </a>
+
                 <a
                   href="tel:+358442480482"
-                  className="block hover:text-zinc-600 transition-colors"
+                  className="
+                    group flex items-center gap-2
+                    hover:text-zinc-900
+                    transition-colors
+                  "
                 >
-                  044 2480 482
+                  <span
+                    className="
+                      flex h-7 w-7 items-center justify-center
+                      rounded-full bg-zinc-100 text-zinc-500
+                      shadow-sm
+                      transition-all duration-200
+                      group-hover:bg-yellow-400 group-hover:text-zinc-900
+                      group-hover:-translate-y-0.5 group-hover:translate-x-0.5
+                    "
+                  >
+                    <Phone className="w-3.5 h-3.5" />
+                  </span>
+                  <span className="text-sm">044 2480 482</span>
                 </a>
               </div>
 
@@ -71,10 +105,16 @@ export default function Footer() {
 
             {/* Legal Links */}
             <div className="flex gap-4 text-xs text-zinc-500">
-              <Link href="/tietosuojaseloste" className="hover:text-zinc-900 underline underline-offset-2">
+              <Link
+                href="/tietosuojaseloste"
+                className="hover:text-zinc-900 underline underline-offset-2"
+              >
                 Tietosuojaseloste
               </Link>
-              <Link href="/evastekaytanto" className="hover:text-zinc-900 underline underline-offset-2">
+              <Link
+                href="/evastekaytanto"
+                className="hover:text-zinc-900 underline underline-offset-2"
+              >
                 Evästekäytäntö
               </Link>
             </div>
@@ -105,34 +145,36 @@ export default function Footer() {
                   <span className="absolute bottom-0 left-0 w-full h-0.5 transition-all duration-300 bg-zinc-900 group-hover:h-full -z-10" />
 
                   {/* 1. Enter Arrow (Coming from LEFT) */}
-                  <ArrowBigRightDash 
+                  <ArrowBigRightDash
                     className={`
                       absolute left-3 w-5 h-5 text-yellow-400
                       -translate-x-8 opacity-0
                       group-hover:translate-x-0 group-hover:opacity-100
                       transition-all duration-300 ease-out
                       z-20
-                    `} 
+                    `}
                   />
 
                   {/* 2. The Text (Moves RIGHT) */}
-                  <span className={`
-                    relative z-10 
-                    transition-all duration-300 ease-in-out
-                    group-hover:translate-x-6 group-hover:text-white
-                  `}>
+                  <span
+                    className={`
+                      relative z-10 
+                      transition-all duration-300 ease-in-out
+                      group-hover:translate-x-6 group-hover:text-white
+                    `}
+                  >
                     {service.label}
                   </span>
 
                   {/* 3. Exit Arrow (Leaving to RIGHT) */}
-                  <ArrowBigRightDash 
+                  <ArrowBigRightDash
                     className={`
                       absolute right-3 w-5 h-5 text-zinc-900 
                       translate-x-0 opacity-100
                       group-hover:translate-x-8 group-hover:opacity-0
                       transition-all duration-300 ease-in
                       z-20
-                    `} 
+                    `}
                   />
                 </Link>
               ))}
@@ -151,7 +193,9 @@ export default function Footer() {
             text-xs text-zinc-900
           `}
         >
-          <span className="opacity-90">© 2025 Pohjois-Suomen Betonilattiat Oy</span>
+          <span className="opacity-90">
+            © 2025 Pohjois-Suomen Betonilattiat Oy
+          </span>
           <span className="flex items-center gap-2 opacity-90">
             Toteutus:
             <img

@@ -32,9 +32,8 @@ type ContactSettings = {
 
 export default async function ContactPage() {
   const settings =
-    (await sanityClient.fetch<ContactSettings | null>(
-      contactSettingsQuery
-    )) ?? {};
+    (await sanityClient.fetch<ContactSettings | null>(contactSettingsQuery)) ??
+    {};
 
   const heroTitle = settings.heroTitle ?? "YHTEYSTIEDOT";
   const heroSubtitle =
@@ -111,19 +110,10 @@ export default async function ContactPage() {
       {/* MAIN CONTENT */}
       <section className="py-12 md:py-16 lg:py-20">
         <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-          
-          {/* FLOATING MAP (DESKTOP ONLY) */}
-          {/* FIX: Added 'z-0' to keep map strictly in background */}
-          <div className="pointer-events-none hidden lg:block absolute left-1/2 top-20 -translate-x-1/2 z-0">
-            <FinlandMap className="w-52 xl:w-64 drop-shadow-[0_18px_35px_rgba(0,0,0,0.25)]" />
-          </div>
-
           {/* 2 COLUMNS */}
-          {/* FIX: Added 'relative z-10' to ensure text & form sit ABOVE the map */}
-          <div className="relative z-10 grid gap-12 lg:gap-20 lg:grid-cols-2 items-start">
-            
-            {/* LEFT COLUMN */}
-            <div className="max-w-xl mx-auto text-center lg:text-left">
+          <div className="grid gap-12 lg:gap-20 lg:grid-cols-2 items-start">
+            {/* LEFT COLUMN: text + billing + MAP */}
+            <div className="max-w-xl mx-auto">
               <h2
                 className={`
                   ${scienceGothic.className}
@@ -142,92 +132,100 @@ export default async function ContactPage() {
                 {introBody}
               </p>
 
-              {/* COMPANY INFO + MOBILE MAP INLINE */}
-              <div className="mt-8 flex items-start gap-4 lg:block">
-                {/* Mobile map next to company info */}
-                <div className="shrink-0 lg:hidden">
-                  <FinlandMap className="w-20 sm:w-24 drop-shadow-[0_12px_25px_rgba(0,0,0,0.25)]" />
-                </div>
-
+              {/* COMPANY + BILLING + MAP WRAPPER */}
+              <div className="mt-8 flex flex-row gap-6 items-start">
+                {/* LEFT SIDE: company + billing */}
                 <div
-                  className={`
-                    ${exo2.className}
-                    space-y-2 text-sm sm:text-base
-                  `}
+                  className={`${exo2.className} flex-1 space-y-6 text-sm sm:text-base`}
                 >
-                  {company.name && (
-                    <p className="font-semibold">{company.name}</p>
-                  )}
-                  {company.businessId && (
-                    <p>Y-tunnus: {company.businessId}</p>
-                  )}
-                  {company.location && <p>{company.location}</p>}
-
-                  <div className="mt-4 space-y-1">
-                    {company.email && (
-                      <p>
-                        <span className="font-semibold">Sähköposti: </span>
-                        <a
-                          href={`mailto:${company.email}`}
-                          className="underline underline-offset-2 hover:text-zinc-600"
-                        >
-                          {company.email}
-                        </a>
-                      </p>
+                  {/* Company info */}
+                  <div>
+                    {company.name && (
+                      <p className="font-semibold">{company.name}</p>
                     )}
-                    {company.phone && (
-                      <p>
-                        <span className="font-semibold">Puhelin: </span>
-                        <a
-                          href={`tel:${company.phone.replace(/\s/g, "")}`}
-                          className="underline underline-offset-2 hover:text-zinc-600"
-                        >
-                          {company.phone}
-                        </a>
-                      </p>
+                    {company.businessId && (
+                      <p>Y-tunnus: {company.businessId}</p>
                     )}
-                  </div>
-                </div>
-              </div>
+                    {company.location && <p>{company.location}</p>}
 
-              {/* BILLING INFO */}
-              <div className="mt-10">
-                <h3
-                  className={`
-                    ${scienceGothic.className}
-                    text-xl sm:text-2xl font-black tracking-tight
-                  `}
-                >
-                  LASKUTUSTIEDOT
-                </h3>
-
-                <div
-                  className={`
-                    ${exo2.className}
-                    mt-4 space-y-3 text-sm sm:text-base
-                  `}
-                >
-                  {billing.eInvoiceAddress && (
-                    <div>
-                      <p className="font-semibold">Verkkolaskuosoite:</p>
-                      <p>{billing.eInvoiceAddress}</p>
-                    </div>
-                  )}
-
-                  {(billing.operatorName || billing.operatorCode) && (
-                    <div>
-                      <p className="font-semibold">Välittäjä:</p>
-                      {billing.operatorName && <p>{billing.operatorName}</p>}
-                      {billing.operatorCode && (
-                        <p>(Operaattoritunnus: {billing.operatorCode})</p>
+                    <div className="mt-4 space-y-1">
+                      {company.email && (
+                        <p>
+                          <span className="font-semibold">Sähköposti: </span>
+                          <a
+                            href={`mailto:${company.email}`}
+                            className="underline underline-offset-2 hover:text-zinc-600"
+                          >
+                            {company.email}
+                          </a>
+                        </p>
+                      )}
+                      {company.phone && (
+                        <p>
+                          <span className="font-semibold">Puhelin: </span>
+                          <a
+                            href={`tel:${company.phone.replace(/\s/g, "")}`}
+                            className="underline underline-offset-2 hover:text-zinc-600"
+                          >
+                            {company.phone}
+                          </a>
+                        </p>
                       )}
                     </div>
-                  )}
+                  </div>
+
+                  {/* Billing info */}
+                  <div className="pt-2 border-t border-zinc-200">
+                    <h3
+                      className={`
+                        ${scienceGothic.className}
+                        text-xl sm:text-2xl font-black tracking-tight mb-3
+                      `}
+                    >
+                      LASKUTUSTIEDOT
+                    </h3>
+
+                    <div className="space-y-3">
+                      {billing.eInvoiceAddress && (
+                        <div>
+                          <p className="font-semibold">Verkkolaskuosoite:</p>
+                          <p>{billing.eInvoiceAddress}</p>
+                        </div>
+                      )}
+
+                      {(billing.operatorName || billing.operatorCode) && (
+                        <div>
+                          <p className="font-semibold">Välittäjä:</p>
+                          {billing.operatorName && (
+                            <p>{billing.operatorName}</p>
+                          )}
+                          {billing.operatorCode && (
+                            <p>(Operaattoritunnus: {billing.operatorCode})</p>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* RIGHT SIDE: MAP (always visible, size depends on screen) */}
+                <div className="shrink-0 flex items-center justify-center">
+                  <FinlandMap
+                    className="
+                      w-24 
+                      xs:w-28
+                      sm:w-32
+                      md:w-40
+                      lg:w-52
+                      xl:w-60
+                      drop-shadow-[0_18px_35px_rgba(0,0,0,0.25)]
+                    "
+                  />
                 </div>
               </div>
             </div>
 
-            {/* RIGHT COLUMN – FORM (texts from Sanity) */}
+            {/* RIGHT COLUMN – FORM */}
             <div className="lg:pl-10 mx-auto w-full max-w-xl text-center lg:text-left">
               <ContactForm heading={formTitle} intro={formIntro} />
             </div>
