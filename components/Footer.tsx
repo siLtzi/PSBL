@@ -193,7 +193,7 @@ export default function Footer() {
             text-xs text-zinc-900
           `}
         >
-          <span className="opacity-90">
+          <span className="opacity-90"> 
             © 2025 Pohjois-Suomen Betonilattiat Oy
           </span>
           <span className="flex items-center gap-2 opacity-90">
