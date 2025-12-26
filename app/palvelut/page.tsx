@@ -1,4 +1,3 @@
-import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Services, { ServicesContent } from "@/components/Services";
 import { sanityClient } from "@/sanity/config";

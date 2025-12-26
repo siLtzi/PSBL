@@ -25,16 +25,18 @@ export function useHeroAnimations() {
       gsap.set(chars, {
         opacity: 0,
         y: "1em",
+        willChange: "transform, opacity",
       });
 
       if (subtitleRef.current) {
-        gsap.set(subtitleRef.current, { opacity: 0, y: 16 });
+        gsap.set(subtitleRef.current, { opacity: 0, y: 16, willChange: "transform, opacity" });
       }
 
       gsap.set(".hero-cta", {
         opacity: 0,
         y: 16,
         scale: 0.96,
+        willChange: "transform, opacity",
       });
 
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
@@ -43,8 +45,8 @@ export function useHeroAnimations() {
       tl.to(chars, {
         opacity: 1,
         y: 0,
-        duration: 0.65,
-        stagger: 0.02,
+        duration: 0.5,
+        stagger: 0.015,
       });
 
       // SUBTITLE: Start sooner + animate faster
@@ -53,9 +55,9 @@ export function useHeroAnimations() {
         {
           opacity: 1,
           y: 0,
-          duration: 0.45,      // faster
+          duration: 0.4,      // faster
         },
-        "-=0.55"               // start almost halfway through typewriter
+        "-=0.4"               // start almost halfway through typewriter
       );
 
       // BUTTONS: Start earlier + animate faster
@@ -68,7 +70,7 @@ export function useHeroAnimations() {
           duration: 0.1,      // faster
           stagger: 0,
         },
-        "-=0.35"               // overlap subtitle a bit
+        "-=0.3"               // overlap subtitle a bit
       );
     }, rootRef);
 
