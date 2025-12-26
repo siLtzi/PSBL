@@ -17,7 +17,7 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-// --- TYPE DEFINITIONS (TypeScript) ---
+// --- TYPE DEFINITIONS (TypeScript) ----
 // This acts like a blueprint. We define exactly what shape our data should have.
 export type ServiceItem = {
   title: string;
