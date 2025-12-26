@@ -1,3 +1,4 @@
+import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Services, { ServicesContent } from "@/components/Services";
 import { sanityClient } from "@/sanity/config";
@@ -18,8 +19,6 @@ type ServicesSettings = {
   }[];
 };
 
-export const revalidate = 60;
-
 export default async function PalvelutPage() {
   const settings =
     (await sanityClient.fetch<ServicesSettings | null>(
@@ -38,6 +37,8 @@ export default async function PalvelutPage() {
 
   return (
     <main className="relative flex-1 bg-black text-zinc-50 overflow-x-hidden w-full">
+      <Header />
+
       {/* HERO SECTION */}
       <section className="relative h-[260px] sm:h-[320px] md:h-[380px] lg:h-[450px] overflow-hidden">
         {/* Background: video > image > fallback */}
@@ -48,7 +49,6 @@ export default async function PalvelutPage() {
             loop
             muted
             playsInline
-            poster={settings.heroImageUrl || undefined}
             className="absolute inset-0 w-full h-full object-cover"
           />
         )}

@@ -128,7 +128,7 @@ export default function References({
                     src={ref.imageUrl}
                     alt={ref.caption || ref.tag || "Referenssikohde"}
                     fill
-                    sizes="(max-width: 768px) 260px, 320px"
+                    sizes="(min-width: 1280px) 320px, (min-width: 768px) 280px, 260px"
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
 

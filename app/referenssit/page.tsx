@@ -9,10 +9,9 @@ import {
   referencesPageSettingsQuery,
 } from "@/sanity/queries";
 import { exo2, scienceGothic } from "@/app/fonts";
+import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { urlFor } from "@/sanity/lib/image";
-
-export const revalidate = 60;
 
 type ReferenceItem = {
   _id: string;
@@ -60,6 +59,8 @@ export default async function ReferencesPage() {
 
   return (
     <main className="bg-black text-zinc-50 min-h-screen">
+      <Header />
+
       {/* HERO / HEADER */}
       <section className="relative w-full overflow-hidden bg-black">
         {/* 1) Video, 2) Image, 3) Plain black */}
@@ -70,7 +71,6 @@ export default async function ReferencesPage() {
             loop
             muted
             playsInline
-            poster={heroImageUrl || undefined}
             className="absolute inset-0 w-full h-full object-cover"
           />
         ) : heroImageUrl ? (

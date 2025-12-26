@@ -1,18 +1,14 @@
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
 import Header from "@/components/Header";
 import Hero, { HeroContent } from "@/components/Hero";
-
-// Dynamic imports for below-the-fold components
-const About = dynamic(() => import("@/components/About"));
-const Services = dynamic(() => import("@/components/Services"));
-const References = dynamic(() => import("@/components/References"));
-const BottomCta = dynamic(() => import("@/components/BottomCta"));
-const Footer = dynamic(() => import("@/components/Footer"));
-
-import { AboutContent } from "@/components/About";
-import { ServicesContent } from "@/components/Services";
-import { ReferencesContent, ReferenceItem } from "@/components/References";
+import About, { AboutContent } from "@/components/About";
+import Services, { ServicesContent } from "@/components/Services";
+import References, {
+  ReferencesContent,
+  ReferenceItem,
+} from "@/components/References";
+import BottomCta from "@/components/BottomCta";
+import Footer from "@/components/Footer";
 
 import { sanityFetch } from "@/sanity/lib/live";
 import {
@@ -26,8 +22,6 @@ import heroFallback from "@/content/heroFallback.json";
 import aboutFallback from "@/content/aboutFallback.json";
 import servicesFallback from "@/content/servicesFallback.json";
 import referencesFallback from "@/content/referencesFallback.json";
-
-export const revalidate = 60; // Revalidate every 60 seconds
 
 export const metadata: Metadata = {
   title: "Pohjois-Suomen Betonilattiat – Lattiaurakat laatutakuulla",
@@ -145,9 +139,7 @@ export default async function HomePage() {
   return (
     // FIX: Added overflow-x-hidden here to prevent horizontal scrolling issues from GSAP animations or wide content
     <main className="relative flex-1 bg-black text-zinc-50 overflow-x-hidden w-full">
-      {heroContent.posterUrl && (
-        <link rel="preload" as="image" href={heroContent.posterUrl} />
-      )}
+      <Header />
       <Hero content={heroContent} />
       <About content={aboutContent} />
       <Services content={servicesContent} />

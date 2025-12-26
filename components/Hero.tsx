@@ -28,7 +28,6 @@ export type HeroContent = {
   secondaryCtaLabel: string;
   secondaryCtaHref: string;
   videoUrl: string;
-  posterUrl?: string;
   heroMessage?: string;
 };
 
@@ -71,7 +70,6 @@ export default function Hero({ content }: { content: HeroContent }) {
     secondaryCtaLabel,
     secondaryCtaHref,
     videoUrl,
-    posterUrl,
     heroMessage,
   } = content;
 
@@ -91,7 +89,6 @@ export default function Hero({ content }: { content: HeroContent }) {
         loop
         muted
         playsInline
-        poster={posterUrl}
       >
         <source src={videoUrl} type="video/mp4" />
       </video>
@@ -135,12 +132,13 @@ export default function Hero({ content }: { content: HeroContent }) {
                 ${scienceGothic.className}
                 font-bold sm:font-black
                 uppercase
+                text-balance
                 flex flex-col items-center
+                drop-shadow-2xl
               `}
             >
               {/* FIRST LINE (e.g., POHJOIS-SUOMEN) */}
               <div
-                data-animate-target="hero-line"
                 className="
                   leading-[0.9] tracking-tighter
                   text-[13vw]              /* Very large on mobile */
@@ -154,7 +152,6 @@ export default function Hero({ content }: { content: HeroContent }) {
 
               {/* SECOND LINE (e.g., BETONILATTIAT) */}
               <div
-                data-animate-target="hero-line"
                 className="
                   leading-[0.9] tracking-tighter
                   whitespace-nowrap

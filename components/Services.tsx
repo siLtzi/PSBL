@@ -17,7 +17,7 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-// --- TYPE DEFINITIONS (TypeScript) ----
+// --- TYPE DEFINITIONS (TypeScript) ---
 // This acts like a blueprint. We define exactly what shape our data should have.
 export type ServiceItem = {
   title: string;
@@ -175,7 +175,7 @@ export default function Services({
                     src={service.imageUrl}
                     alt={service.title}
                     fill // In Next.js, this makes the image fill the container absolutely
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // Tells browser which image size to download
+                    sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw" // Tells browser which image size to download
                     className="object-cover transition-transform duration-500 group-hover:scale-105" // Zoom effect on hover
                   />
                   {/* Dark gradient overlay for readability */}

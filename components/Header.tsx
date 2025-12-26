@@ -82,12 +82,11 @@ export default function Header() {
   // ---------------------------------------------------------------------------
   useEffect(() => {
     const handleScroll = () => {
-      const isScrolled = window.scrollY > 10;
-      setScrolled((prev) => (prev !== isScrolled ? isScrolled : prev));
+      setScrolled(window.scrollY > 10);
     };
 
     handleScroll(); // Run immediately on load
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll);
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);

@@ -65,14 +65,5 @@ export default defineType({
         accept: "video/mp4,video/webm", // optional, restricts file picker
       },
     }),
-    defineField({
-      name: "heroImage",
-      title: "Videotaustan juliste (Poster)",
-      type: "image",
-      description: "Kuva, joka näkyy ennen kuin video latautuu. Tärkeä suorituskyvyn kannalta.",
-      options: {
-        hotspot: true,
-      },
-    }),
   ],
 });
