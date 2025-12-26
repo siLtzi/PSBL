@@ -139,7 +139,9 @@ export default async function HomePage() {
   return (
     // FIX: Added overflow-x-hidden here to prevent horizontal scrolling issues from GSAP animations or wide content
     <main className="relative flex-1 bg-black text-zinc-50 overflow-x-hidden w-full">
-      <Header />
+      {heroContent.posterUrl && (
+        <link rel="preload" as="image" href={heroContent.posterUrl} />
+      )}
       <Hero content={heroContent} />
       <About content={aboutContent} />
       <Services content={servicesContent} />

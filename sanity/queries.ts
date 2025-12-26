@@ -9,7 +9,8 @@ export const homeSettingsQuery = `*[_type == "homeSettings"][0]{
   secondaryCtaLabel,
   secondaryCtaHref,
   heroMessage,
-  "videoUrl": heroVideo.asset->url
+  "videoUrl": heroVideo.asset->url,
+  "posterUrl": heroImage.asset->url
 }`;
 
 export const aboutSettingsQuery = `

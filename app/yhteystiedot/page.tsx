@@ -70,6 +70,7 @@ export default async function ContactPage() {
             muted
             loop
             playsInline
+            poster={heroImageUrl || undefined}
           />
         ) : (
           <Image

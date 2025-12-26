@@ -59,8 +59,6 @@ export default async function ReferencesPage() {
 
   return (
     <main className="bg-black text-zinc-50 min-h-screen">
-      <Header />
-
       {/* HERO / HEADER */}
       <section className="relative w-full overflow-hidden bg-black">
         {/* 1) Video, 2) Image, 3) Plain black */}
@@ -71,6 +69,7 @@ export default async function ReferencesPage() {
             loop
             muted
             playsInline
+            poster={heroImageUrl || undefined}
             className="absolute inset-0 w-full h-full object-cover"
           />
         ) : heroImageUrl ? (

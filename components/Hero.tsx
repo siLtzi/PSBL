@@ -28,6 +28,7 @@ export type HeroContent = {
   secondaryCtaLabel: string;
   secondaryCtaHref: string;
   videoUrl: string;
+  posterUrl?: string;
   heroMessage?: string;
 };
 
@@ -70,6 +71,7 @@ export default function Hero({ content }: { content: HeroContent }) {
     secondaryCtaLabel,
     secondaryCtaHref,
     videoUrl,
+    posterUrl,
     heroMessage,
   } = content;
 
@@ -89,6 +91,7 @@ export default function Hero({ content }: { content: HeroContent }) {
         loop
         muted
         playsInline
+        poster={posterUrl}
       >
         <source src={videoUrl} type="video/mp4" />
       </video>
