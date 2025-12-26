@@ -9,17 +9,20 @@ export default defineType({
       name: "heroTitle",
       title: "Hero-otsikko",
       type: "string",
+      description: "Pääotsikko referenssisivun yläosassa (esim. REFERENSSIT).",
     }),
     defineField({
       name: "heroSubtitle",
       title: "Hero-alateksti",
       type: "string",
+      description: "Lyhyt teksti otsikon alla.",
     }),
     defineField({
       name: "heroImage",
       title: "Hero-taustakuva (fallback)",
       type: "image",
       options: { hotspot: true },
+      description: "Kuva, joka näytetään, jos videota ei ole asetettu.",
     }),
     defineField({
       name: "heroVideo",
@@ -29,7 +32,7 @@ export default defineType({
         accept: "video/mp4,video/webm",
       },
       description:
-        "Lataa suoraan MP4-video. Tätä käytetään taustalla, jos asetettu.",
+        "Video, joka pyörii taustalla. Suositeltu muoto MP4.",
     }),
   ],
 });

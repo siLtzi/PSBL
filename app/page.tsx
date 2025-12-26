@@ -10,7 +10,7 @@ import References, {
 import BottomCta from "@/components/BottomCta";
 import Footer from "@/components/Footer";
 
-import { sanityClient } from "@/sanity/config";
+import { sanityFetch } from "@/sanity/lib/live";
 import {
   homeSettingsQuery,
   aboutSettingsQuery,
@@ -55,15 +55,22 @@ type SanityReferencesSettings = {
 };
 
 export default async function HomePage() {
-  const [heroSettings, aboutSettings, servicesSettings, referencesSettings] =
-    await Promise.all([
-      sanityClient.fetch<Partial<HeroContent> | null>(homeSettingsQuery),
-      sanityClient.fetch<Partial<AboutContent> | null>(aboutSettingsQuery),
-      sanityClient.fetch<SanityServicesSettings | null>(servicesSettingsQuery),
-      sanityClient.fetch<SanityReferencesSettings | null>(
-        referencesSettingsQuery,
-      ),
-    ]);
+  const [
+    heroSettingsResult,
+    aboutSettingsResult,
+    servicesSettingsResult,
+    referencesSettingsResult,
+  ] = await Promise.all([
+    sanityFetch({ query: homeSettingsQuery }),
+    sanityFetch({ query: aboutSettingsQuery }),
+    sanityFetch({ query: servicesSettingsQuery }),
+    sanityFetch({ query: referencesSettingsQuery }),
+  ]);
+
+  const heroSettings = heroSettingsResult.data as Partial<HeroContent> | null;
+  const aboutSettings = aboutSettingsResult.data as Partial<AboutContent> | null;
+  const servicesSettings = servicesSettingsResult.data as SanityServicesSettings | null;
+  const referencesSettings = referencesSettingsResult.data as SanityReferencesSettings | null;
 
   const heroContent: HeroContent = {
     ...(heroFallback as HeroContent),

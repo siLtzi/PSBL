@@ -7,33 +7,39 @@ export default defineType({
   fields: [
     defineField({
       name: "headline",
-      title: "Headline",
-      type: "string"
+      title: "Otsikko",
+      type: "string",
+      description: "Pääotsikko 'Tietoa meistä' -osiolle.",
     }),
     defineField({
       name: "lead",
-      title: "Lead paragraph",
-      type: "text"
+      title: "Ingressi",
+      type: "text",
+      description: "Johdantoteksti otsikon alla.",
     }),
     defineField({
       name: "body",
-      title: "Body paragraph",
-      type: "text"
+      title: "Leipäteksti",
+      type: "text",
+      description: "Varsinainen sisältöteksti.",
     }),
     defineField({
       name: "ctaLabel",
-      title: "CTA label",
-      type: "string"
+      title: "Napin teksti",
+      type: "string",
+      description: "Teksti painikkeelle (esim. Lue lisää).",
     }),
     defineField({
       name: "ctaHref",
-      title: "CTA href",
-      type: "string"
+      title: "Napin linkki",
+      type: "string",
+      description: "Mihin painike vie.",
     }),
     defineField({
       name: "imageUrl",
-      title: "Image URL",
-      type: "string"
+      title: "Kuvan URL",
+      type: "string",
+      description: "Linkki kuvaan, joka näytetään tekstin vieressä.",
     })
   ]
 });

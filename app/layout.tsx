@@ -3,6 +3,9 @@ import "./globals.css";
 import { scienceGothic } from "./fonts";
 import Header from "@/components/Header";
 import Script from "next/script";
+import { SanityLive } from "@/sanity/lib/live";
+import { VisualEditing } from "next-sanity/visual-editing";
+import { draftMode } from "next/headers";
 
 export const metadata: Metadata = {
   title: "Pohjois-Suomen Betonilattiat",
@@ -15,7 +18,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -37,6 +40,8 @@ export default function RootLayout({
 
         {/* Sivukohtainen sisältö */}
         {children}
+        <SanityLive />
+        {(await draftMode()).isEnabled && <VisualEditing />}
       </body>
     </html>
   );

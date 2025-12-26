@@ -4,6 +4,7 @@ import { useState, FormEvent } from "react";
 import dynamic from "next/dynamic";
 import { exo2, scienceGothic } from "@/app/fonts";
 import { ArrowBigRightDash, MapPin, CheckCircle2 } from "lucide-react";
+import { trackEvent } from "@/lib/analytics"; // 👈 NEW
 
 type ContactFormProps = {
   heading: string;
@@ -42,7 +43,6 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
       phone: formData.get("phone") as string | null,
       company: formData.get("company") as string | null,
       siteLocationText: formData.get("siteLocationText") as string | null,
-      // 🔹 NEW: m² field from form
       squareMeters: formData.get("squareMeters") as string | null,
       message: formData.get("message") as string | null,
       coords,
@@ -78,16 +78,35 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
         setSubmitError(
           "Viestin lähetys epäonnistui. Yritä hetken päästä uudelleen."
         );
+
+        // 🔴 Track failed submit
+        trackEvent("contact_form_error", {
+          status: res.status,
+        });
+
         return;
       }
 
       setSubmitSuccess(true);
+
+      // 🟢 Track successful submit
+      trackEvent("contact_form_submitted", {
+        has_company: Boolean(payload.company),
+        has_coords: Boolean(coords),
+        has_square_meters: Boolean(payload.squareMeters),
+      });
+
       form.reset();
       setSiteLocation("");
       setCoords(null);
     } catch (err) {
       console.error("Contact submit error", err);
       setSubmitError("Viestin lähetys epäonnistui. Tarkista verkkoyhteys.");
+
+      // 🔴 Track network/error case
+      trackEvent("contact_form_error", {
+        type: "network_or_client_error",
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -313,7 +332,6 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
           initialCoords={coords}
           onCancel={() => setIsMapOpen(false)}
           onConfirm={(c) => {
-            // only store pure coords; don't overwrite address text
             setCoords(c);
             setIsMapOpen(false);
           }}

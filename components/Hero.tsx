@@ -11,6 +11,13 @@ import { scienceGothic, exo2 } from "@/app/fonts";
 import { useHeroAnimations } from "@/components/animations/HeroAnimations";
 // Our GSAP hook that animates title + subtitle when hero loads.
 
+// Helper to strip Sanity Stega characters (invisible JSON)
+// so they don't break GSAP SplitText or string splitting.
+function clean(text: string) {
+  if (!text) return text;
+  return text.replace(/[\u200b\u200c\u200d\u2060\ufeff]/g, "");
+}
+
 export type HeroContent = {
   // Structure of the data the Hero component expects.
   titleLine1: string;
@@ -21,6 +28,7 @@ export type HeroContent = {
   secondaryCtaLabel: string;
   secondaryCtaHref: string;
   videoUrl: string;
+  heroMessage?: string;
 };
 
 // ---------------------------------------------------------------------------
@@ -62,6 +70,7 @@ export default function Hero({ content }: { content: HeroContent }) {
     secondaryCtaLabel,
     secondaryCtaHref,
     videoUrl,
+    heroMessage,
   } = content;
 
   // Pull in animation refs (GSAP):
@@ -100,6 +109,21 @@ export default function Hero({ content }: { content: HeroContent }) {
             "
           >
             {/* --------------------------------------------- */}
+            {/* HERO MESSAGE (Optional) */}
+            {/* --------------------------------------------- */}
+            {heroMessage && (
+              <div className={`
+                ${exo2.className}
+                mb-6 inline-flex items-center rounded-full 
+                border border-zinc-50/30 bg-zinc-900/50 
+                px-4 py-1.5 text-sm text-zinc-200 
+                backdrop-blur-sm sm:text-base
+              `}>
+                {heroMessage}
+              </div>
+            )}
+
+            {/* --------------------------------------------- */}
             {/* TITLE (H1) */}
             {/* --------------------------------------------- */}
             <h1
@@ -123,7 +147,7 @@ export default function Hero({ content }: { content: HeroContent }) {
                   sm:leading-[1.1]
                 "
               >
-                <SplitTitle text={titleLine1} />
+                <SplitTitle text={clean(titleLine1)} />
               </div>
 
               {/* SECOND LINE (e.g., BETONILATTIAT) */}
@@ -136,7 +160,7 @@ export default function Hero({ content }: { content: HeroContent }) {
                   sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl
                 "
               >
-                {titleLine2}
+                {clean(titleLine2)}
               </div>
             </h1>
 

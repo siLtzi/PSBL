@@ -8,6 +8,7 @@ export const homeSettingsQuery = `*[_type == "homeSettings"][0]{
   primaryCtaHref,
   secondaryCtaLabel,
   secondaryCtaHref,
+  heroMessage,
   "videoUrl": heroVideo.asset->url
 }`;
 
