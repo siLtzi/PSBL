@@ -23,6 +23,8 @@ import aboutFallback from "@/content/aboutFallback.json";
 import servicesFallback from "@/content/servicesFallback.json";
 import referencesFallback from "@/content/referencesFallback.json";
 
+export const revalidate = 60; // Revalidate every 60 seconds
+
 export const metadata: Metadata = {
   title: "Pohjois-Suomen Betonilattiat – Lattiaurakat laatutakuulla",
   description: "Lattiaurakat laatutakuulla yrityksille ja yksityisille.",

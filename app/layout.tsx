@@ -26,6 +26,7 @@ export default async function RootLayout({
   return (
     <html lang="fi" className={scienceGothic.variable}>
       <head>
+        <link rel="preconnect" href="https://cdn.sanity.io" />
         {/* --- Plausible Analytics --- */}
         <Script
           defer

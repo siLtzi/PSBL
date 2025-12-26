@@ -6,6 +6,8 @@ import FinlandMap from "@/components/FinlandMap";
 import { sanityClient } from "@/sanity/config";
 import { contactSettingsQuery } from "@/sanity/queries";
 
+export const revalidate = 60;
+
 type ContactSettings = {
   heroMediaType?: "image" | "video";
   heroImageUrl?: string | null;

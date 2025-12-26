@@ -18,6 +18,8 @@ type ServicesSettings = {
   }[];
 };
 
+export const revalidate = 60;
+
 export default async function PalvelutPage() {
   const settings =
     (await sanityClient.fetch<ServicesSettings | null>(

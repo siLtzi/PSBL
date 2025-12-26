@@ -12,6 +12,8 @@ import { exo2, scienceGothic } from "@/app/fonts";
 import Footer from "@/components/Footer";
 import { urlFor } from "@/sanity/lib/image";
 
+export const revalidate = 60;
+
 type ReferenceItem = {
   _id: string;
   title: string;
