@@ -1,10 +1,12 @@
 import Image from "next/image";
-import Footer from "@/components/Footer";
+import dynamic from "next/dynamic";
 import { exo2, scienceGothic } from "@/app/fonts";
-import ContactForm from "@/components/ContactForm";
-import FinlandMap from "@/components/FinlandMap";
 import { sanityClient } from "@/sanity/config";
 import { contactSettingsQuery } from "@/sanity/queries";
+
+const Footer = dynamic(() => import("@/components/Footer"));
+const ContactForm = dynamic(() => import("@/components/ContactForm"));
+const FinlandMap = dynamic(() => import("@/components/FinlandMap"));
 
 export const revalidate = 60;
 

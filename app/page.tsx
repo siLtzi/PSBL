@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import Header from "@/components/Header";
 import Hero, { HeroContent } from "@/components/Hero";
-import About, { AboutContent } from "@/components/About";
-import Services, { ServicesContent } from "@/components/Services";
-import References, {
-  ReferencesContent,
-  ReferenceItem,
-} from "@/components/References";
-import BottomCta from "@/components/BottomCta";
-import Footer from "@/components/Footer";
+
+// Dynamic imports for below-the-fold components
+const About = dynamic(() => import("@/components/About"));
+const Services = dynamic(() => import("@/components/Services"));
+const References = dynamic(() => import("@/components/References"));
+const BottomCta = dynamic(() => import("@/components/BottomCta"));
+const Footer = dynamic(() => import("@/components/Footer"));
+
+import { AboutContent } from "@/components/About";
+import { ServicesContent } from "@/components/Services";
+import { ReferencesContent, ReferenceItem } from "@/components/References";
 
 import { sanityFetch } from "@/sanity/lib/live";
 import {

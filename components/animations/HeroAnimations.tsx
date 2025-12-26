@@ -14,67 +14,71 @@ export function useHeroAnimations() {
   useEffect(() => {
     if (!rootRef.current || !titleRef.current) return;
 
-    const ctx = gsap.context(() => {
-      const split = new SplitText(titleRef.current, {
-        type: "lines,chars",
-        linesClass: "hero-line",
-      });
+    let ctx: gsap.Context;
 
-      const chars = split.chars as HTMLElement[];
+    // Wait for fonts to be ready to prevent "wonky" split text
+    document.fonts.ready.then(() => {
+      ctx = gsap.context(() => {
+        const split = new SplitText(titleRef.current, {
+          type: "lines,chars",
+          linesClass: "hero-line",
+        });
 
-      gsap.set(chars, {
-        opacity: 0,
-        y: "1em",
-        willChange: "transform, opacity",
-      });
+        const chars = split.chars as HTMLElement[];
 
-      if (subtitleRef.current) {
-        gsap.set(subtitleRef.current, { opacity: 0, y: 16, willChange: "transform, opacity" });
-      }
+        // Remove "will-change" to prevent stutter/memory issues
+        gsap.set(chars, {
+          opacity: 0,
+          y: "1em",
+        });
 
-      gsap.set(".hero-cta", {
-        opacity: 0,
-        y: 16,
-        scale: 0.96,
-        willChange: "transform, opacity",
-      });
+        if (subtitleRef.current) {
+          gsap.set(subtitleRef.current, { opacity: 0, y: 16 });
+        }
 
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+        gsap.set(".hero-cta", {
+          opacity: 0,
+          y: 16,
+          scale: 0.96,
+        });
 
-      // Typewriter (still main animation)
-      tl.to(chars, {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-        stagger: 0.015,
-      });
+        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-      // SUBTITLE: Start sooner + animate faster
-      tl.to(
-        subtitleRef.current,
-        {
+        // Typewriter
+        tl.to(chars, {
           opacity: 1,
           y: 0,
-          duration: 0.4,      // faster
-        },
-        "-=0.4"               // start almost halfway through typewriter
-      );
+          duration: 0.8, // Slightly slower for smoother feel
+          stagger: 0.02,
+        });
 
-      // BUTTONS: Start earlier + animate faster
-      tl.to(
-        ".hero-cta",
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.1,      // faster
-          stagger: 0,
-        },
-        "-=0.3"               // overlap subtitle a bit
-      );
-    }, rootRef);
+        // SUBTITLE
+        tl.to(
+          subtitleRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+          },
+          "-=0.6"
+        );
 
-    return () => ctx.revert();
+        // BUTTONS
+        tl.to(
+          ".hero-cta",
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.3,
+            stagger: 0.1,
+          },
+          "-=0.4"
+        );
+      }, rootRef);
+    });
+
+    return () => ctx?.revert();
   }, []);
 
   return { rootRef, titleRef, subtitleRef };
