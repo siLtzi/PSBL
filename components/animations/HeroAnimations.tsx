@@ -19,9 +19,12 @@ export function useHeroAnimations() {
     // Wait for fonts to be ready to prevent "wonky" split text
     document.fonts.ready.then(() => {
       ctx = gsap.context(() => {
-        const split = new SplitText(titleRef.current, {
-          type: "lines,chars",
-          linesClass: "hero-line",
+        // Target the specific lines instead of the whole H1
+        // This prevents GSAP from messing up the flex layout or responsive font sizes
+        const targets = gsap.utils.toArray('[data-animate-target="hero-line"]');
+        
+        const split = new SplitText(targets, {
+          type: "chars", // Only split into chars, preserve existing line structure
         });
 
         const chars = split.chars as HTMLElement[];
