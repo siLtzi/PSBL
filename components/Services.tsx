@@ -2,7 +2,7 @@
 // We need this for things like 'useEffect' (animations) and 'useRef' (grabbing HTML elements).
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { scienceGothic } from "@/app/fonts";
@@ -51,7 +51,8 @@ export default function Services({
   // 3. Split Heading: We chop the heading string into a list of individual letters.
   // Example: "Services" -> ["S", "e", "r", "v", "i", "c", "e", "s"]
   // This allows us to animate each letter popping in one by one.
-  const headingChars = heading.split("");
+  // Memoized to avoid recalculating on every render.
+  const headingChars = useMemo(() => heading.split(""), [heading]);
 
   // --- ANIMATION LOGIC (useEffect) ---
   // useEffect runs code *after* the component renders (appears on screen).
@@ -118,7 +119,7 @@ export default function Services({
   return (
     <section
       ref={sectionRef} // We attach our 'hook' here so GSAP can control this section.
-      className="relative w-full bg-white text-zinc-900 py-16 md:py-24"
+      className="relative w-full bg-white text-zinc-900 py-16 md:py-24 contain-layout"
     >
       <div className="mx-auto max-w-[120rem] px-6 sm:px-10 lg:px-16">
 
@@ -143,7 +144,7 @@ export default function Services({
               {headingChars.map((char, i) => (
                 <span
                   key={i} // React needs a unique 'key' for every item in a list.
-                  className="service-char inline-block origin-bottom"
+                  className="service-char inline-block origin-bottom will-change-transform"
                 >
                   {/* If the character is a space, use a non-breaking space code (\u00A0) so it doesn't collapse */}
                   {char === " " ? "\u00A0" : char}
@@ -152,7 +153,7 @@ export default function Services({
             </h2>
 
             {/* The yellow decorative line */}
-            <div className="service-line mt-4 mx-auto h-1.5 w-20 rounded-full bg-yellow-400" />
+            <div className="service-line mt-4 mx-auto h-1.5 w-20 rounded-full bg-yellow-400 will-change-[width]" />
           </div>
         )}
 
@@ -162,12 +163,12 @@ export default function Services({
           className="grid gap-6 sm:gap-8 md:grid-cols-2 xl:grid-cols-3"
         >
           {/* Map (Loop): Go through the 'services' list and create a card for each one */}
-          {services.map((service) => {
+          {services.map((service, index) => {
             
             // We define the card's inner content here so we don't have to write it twice.
             const cardContent = (
               // 'group': This Tailwind class lets child elements react when the PARENT is hovered.
-              <article className="relative h-full overflow-hidden rounded-xl shadow-[0_14px_30px_rgba(0,0,0,0.12)] group">
+              <article className="relative h-full overflow-hidden rounded-xl shadow-[0_14px_30px_rgba(0,0,0,0.12)] group contain-content">
                 
                 {/* 1. Image Area */}
                 <div className="relative h-56 sm:h-64 md:h-60 lg:h-64">
@@ -176,44 +177,47 @@ export default function Services({
                     alt={service.title}
                     fill // In Next.js, this makes the image fill the container absolutely
                     sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw" // Tells browser which image size to download
-                    className="object-cover transition-transform duration-500 group-hover:scale-105" // Zoom effect on hover
+                    quality={75} // Optimize image quality for faster loading
+                    loading={index < 3 ? "eager" : "lazy"} // Eager load first 3 images, lazy load rest
+                    decoding="async" // Non-blocking image decode
+                    className="object-cover transition-transform duration-500 will-change-transform group-hover:scale-105" // Zoom effect on hover
                   />
                   {/* Dark gradient overlay for readability */}
                   <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
                   
                   {/* Hover gradient: Hidden (opacity-0) by default, appears on hover */}
-                  <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 transition-all duration-500 group-hover:h-[70%] group-hover:opacity-100" />
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 transition-all duration-500 will-change-[height,opacity] group-hover:h-[70%] group-hover:opacity-100" />
                 </div>
 
                 {/* 2. Text Area */}
                 <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 p-4 sm:p-5 flex flex-col items-center text-center">
-                  <h3 className={`${scienceGothic.className} relative inline-block text-lg sm:text-xl font-bold text-white`}>
+                  <h3 className={`${scienceGothic.className} relative inline-block text-lg sm:text-xl font-bold text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.85)]`}>
                     
                     {/* Hover Swap Effect: 
                         We have two versions of the title. One fades out, one fades in. 
                         This creates a smooth transition effect.
                     */}
-                    <span className="block transition-opacity duration-500 group-hover:opacity-0" style={{ textShadow: "0 2px 6px rgba(0,0,0,0.85)" }}>
+                    <span className="block transition-opacity duration-500 group-hover:opacity-0">
                       {service.title}
                     </span>
-                    <span className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                    <span className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-500 group-hover:opacity-100" aria-hidden="true">
                       {service.title}
                     </span>
                   </h3>
                 </div>
 
                 {/* 3. Yellow Bottom Bar (Grows width from 0 to 100% on hover) */}
-                <div className="absolute bottom-0 left-0 z-40 h-1 w-0 bg-yellow-400 transition-all duration-300 group-hover:w-full" />
+                <div className="absolute bottom-0 left-0 z-40 h-1 w-0 bg-yellow-400 transition-all duration-300 will-change-[width] group-hover:w-full" />
               </article>
             );
 
             // LOGIC: If the service has a link (ctaHref), wrap it in a <Link>. Otherwise, just use a <div>.
             return service.ctaHref ? (
-              <Link key={service.title} href={service.ctaHref} data-animate="card" className="block h-full">
+              <Link key={service.title} href={service.ctaHref} data-animate="card" className="block h-full will-change-transform">
                 {cardContent}
               </Link>
             ) : (
-              <div key={service.title} data-animate="card" className="block h-full cursor-default">
+              <div key={service.title} data-animate="card" className="block h-full cursor-default will-change-transform">
                 {cardContent}
               </div>
             );
