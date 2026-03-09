@@ -28,9 +28,6 @@ export const servicesSettingsQuery = `
     heading,
     heroTitle,
     heroSubtitle,
-    heroMediaType,
-    "heroImageUrl": heroImage.asset->url,
-    "heroVideoUrl": heroVideo.asset->url,
 
     services[] {
       title,
@@ -42,10 +39,6 @@ export const servicesSettingsQuery = `
 
 export const contactSettingsQuery = groq`
   *[_type == "contactSettings"][0]{
-    heroMediaType,
-    "heroImageUrl": heroImage.asset->url,
-    "heroVideoUrl": heroVideo.asset->url,
-
     heroTitle,
     heroSubtitle,
     introTitle,
@@ -82,7 +75,6 @@ export const servicePageBySlugQuery = groq`
   *[_type == "servicePage" && slug.current == $slug][0]{
     title,
     heroSubtitle,
-    heroImage,
     contentTitle,
     contentBody,
     sideImage,
@@ -113,6 +105,22 @@ export const referencesSettingsQuery = groq`
     }
   }
 `;
+export const featuredReferencesQuery = groq`
+  *[_type == "projectReference" && featured == true]
+  | order(year desc, _createdAt desc) {
+    _id,
+    title,
+    "slug": slug.current,
+    tag,
+    location,
+    year,
+    sizeM2,
+    client,
+    excerpt,
+    "imageUrl": mainImage.asset->url
+  }
+`;
+
 export const allReferencesQuery = groq`
   *[_type == "projectReference"]
   | order(featured desc, year desc, _createdAt desc) {
@@ -123,6 +131,7 @@ export const allReferencesQuery = groq`
     location,
     year,
     sizeM2,
+    client,
     excerpt,
     "imageUrl": mainImage.asset->url
   }
@@ -135,6 +144,7 @@ export const referenceBySlugQuery = groq`
     location,
     year,
     sizeM2,
+    client,
     excerpt,
     body,
     "mainImage": mainImage,
@@ -144,9 +154,7 @@ export const referenceBySlugQuery = groq`
 export const referencesPageSettingsQuery = groq`
   *[_type == "referencesPageSettings"][0]{
     heroTitle,
-    heroSubtitle,
-    heroImage,
-    "heroVideoUrl": heroVideo.asset->url
+    heroSubtitle
   }
 `;
 

@@ -25,40 +25,6 @@ export default defineType({
       description: "Lyhyt teksti hero-otsikon alla",
     }),
 
-    defineField({
-      name: "heroMediaType",
-      title: "Hero mediamuoto/tausta",
-      type: "string",
-      options: {
-        list: [
-          { title: "Kuva", value: "image" },
-          { title: "Video", value: "video" },
-        ],
-        layout: "radio",
-      },
-      description: "Valitse, käytetäänkö hero-osiossa kuvaa vai MP4-videota.",
-    }),
-
-    defineField({
-      name: "heroImage",
-      title: "Hero taustakuva",
-      type: "image",
-      options: { hotspot: true },
-      hidden: ({ parent }) => parent?.heroMediaType !== "image",
-      description: "Leveä kuva, joka näytetään /palvelut-sivun yläosassa",
-    }),
-
-    defineField({
-      name: "heroVideo",
-      title: "Hero video (MP4 lataus)",
-      type: "file",
-      options: {
-        accept: "video/mp4",
-      },
-      hidden: ({ parent }) => parent?.heroMediaType !== "video",
-      description: "Lataa MP4-video, joka näytetään /palvelut hero-osiossa.",
-    }),
-
     // The actual services grid items
     defineField({
       name: "services",

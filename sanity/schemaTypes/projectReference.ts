@@ -55,11 +55,18 @@ export default defineType({
     }),
 
     defineField({
+      name: "client",
+      title: "Tilaaja",
+      type: "string",
+      description: "Esim. 'Rakennus Miira'. Näytetään referenssikortissa.",
+    }),
+
+    defineField({
       name: "mainImage",
       title: "Pääkuva",
       type: "image",
       options: { hotspot: true },
-      validation: (Rule) => Rule.required(),
+      description: "Valinnainen – jos puuttuu, näytetään placeholder.",
     }),
 
     defineField({

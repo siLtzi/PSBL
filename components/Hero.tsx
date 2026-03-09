@@ -3,6 +3,8 @@
 // Needed because we use hooks, refs, and GSAP animations.
 
 import { ArrowBigRightDash } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 // Icon for the CTA buttons.
 
 import { scienceGothic, exo2 } from "@/app/fonts";
@@ -96,9 +98,11 @@ export default function Hero({ content }: { content: HeroContent }) {
       {/* Fade gradient overlay to improve readability on top of the video */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/80" />
 
+
+
       {/* CONTENT WRAPPER */}
       <div className="relative z-10 flex min-h-screen flex-col">
-        <div className="flex flex-1 items-center justify-center">
+        <div className="flex flex-1 items-center justify-center pt-20 md:pt-32 lg:pt-40">
           
           {/* MAIN CONTENT (center aligned) */}
           <div
@@ -108,6 +112,18 @@ export default function Hero({ content }: { content: HeroContent }) {
               px-2 sm:px-0 pb-20 md:pb-24
             "
           >
+            {/* --------------------------------------------- */}
+            {/* LOGO */}
+            {/* --------------------------------------------- */}
+            <Image
+              src="/PSBL Logo.png"
+              alt="PSBL"
+              width={280}
+              height={90}
+              className="mb-6 w-[180px] sm:w-[220px] md:w-[260px] h-auto"
+              priority
+            />
+
             {/* --------------------------------------------- */}
             {/* HERO MESSAGE (Optional) */}
             {/* --------------------------------------------- */}

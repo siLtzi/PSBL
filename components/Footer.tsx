@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { exo2 } from "@/app/fonts";
 import { ArrowBigRightDash, Mail, Phone } from "lucide-react";
+import CookieSettingsButton from "@/components/CookieSettingsButton";
 
 export default function Footer() {
   const serviceLinks = [
@@ -97,6 +98,7 @@ export default function Footer() {
                   <img
                     src="/ig.svg"
                     alt="Instagram"
+                    loading="lazy"
                     className="h-6 w-6"
                   />
                 </a>
@@ -104,19 +106,22 @@ export default function Footer() {
             </div>
 
             {/* Legal Links */}
-            <div className="flex gap-4 text-xs text-zinc-500">
+            <div className="flex flex-wrap gap-4 items-center text-xs text-zinc-500">
               <Link
                 href="/tietosuojaseloste"
+                prefetch={false}
                 className="hover:text-zinc-900 underline underline-offset-2"
               >
                 Tietosuojaseloste
               </Link>
               <Link
                 href="/evastekaytanto"
+                prefetch={false}
                 className="hover:text-zinc-900 underline underline-offset-2"
               >
                 Evästekäytäntö
               </Link>
+              <CookieSettingsButton />
             </div>
           </div>
 
@@ -131,6 +136,7 @@ export default function Footer() {
                 <Link
                   key={index}
                   href={service.href}
+                  prefetch={false}
                   className={`
                     relative flex items-center 
                     w-full px-5 py-2.5
@@ -138,11 +144,12 @@ export default function Footer() {
                     text-zinc-900 transition-all duration-300 ease-in-out
                     bg-yellow-400 rounded-lg group
                     shadow-[0_2px_8px_rgba(250,204,21,0.2)] hover:shadow-[0_6px_20px_rgba(250,204,21,0.3)]
-                    z-0
+                    transform-gpu will-change-transform
+                    isolate
                   `}
                 >
                   {/* Animation bg (Dark fill rising) */}
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 transition-all duration-300 bg-zinc-900 group-hover:h-full -z-10" />
+                  <span className="absolute bottom-0 left-0 w-full h-0 transition-all duration-300 bg-zinc-900 group-hover:h-full" />
 
                   {/* 1. Enter Arrow (Coming from LEFT) */}
                   <ArrowBigRightDash

@@ -41,7 +41,7 @@ export async function POST(req: Request) {
     const toEmail =
       process.env.CONTACT_RECIPIENT ??
       process.env.CONTACT_TO_EMAIL ??
-      "siltzuri@gmail.com";
+      "toimisto@psbl.fi";
 
     const subject = `Uusi yhteydenotto PSBL-sivustolta${
       name ? ` – ${name}` : ""
@@ -142,7 +142,7 @@ export async function POST(req: Request) {
     `;
 
     const result = await resend.emails.send({
-      from: "PSBL Yhteydenotto <onboarding@resend.dev>", // keep this while in Resend test mode
+      from: "PSBL Yhteydenotto <noreply@psbl.fi>",
       to: [toEmail],
       replyTo: email || undefined,
       subject,

@@ -1,15 +1,34 @@
-import Image from "next/image";
+import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import Footer from "@/components/Footer";
 import { exo2, scienceGothic } from "@/app/fonts";
 import ContactForm from "@/components/ContactForm";
-import FinlandMap from "@/components/FinlandMap";
 import { sanityClient } from "@/sanity/config";
 import { contactSettingsQuery } from "@/sanity/queries";
 
+const FinlandMap = dynamic(() => import("@/components/FinlandMap"), {
+  loading: () => <div className="w-24 sm:w-32 md:w-40 lg:w-52 xl:w-60 aspect-[3/5]" />,
+});
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://psbl.fi";
+
+export const metadata: Metadata = {
+  title: "Yhteystiedot – Ota yhteyttä ja pyydä tarjous",
+  description:
+    "Ota yhteyttä Pohjois-Suomen Betonilattioihin. Palvelemme koko Pohjois-Suomen ja Lapin alueella: Oulu, Rovaniemi, Saariselkä, Levi, Ivalo, Muonio, Kemijärvi, Tornio, Kemi. Pyydä tarjous betonilattiatöistä.",
+  alternates: {
+    canonical: `${SITE_URL}/yhteystiedot`,
+  },
+  openGraph: {
+    title: "Yhteystiedot – Ota yhteyttä | PSBL",
+    description:
+      "Ota yhteyttä Pohjois-Suomen Betonilattioihin. Palvelemme koko Pohjois-Suomen ja Lapin alueella.",
+    url: `${SITE_URL}/yhteystiedot`,
+    type: "website",
+  },
+};
+
 type ContactSettings = {
-  heroMediaType?: "image" | "video";
-  heroImageUrl?: string | null;
-  heroVideoUrl?: string | null;
   heroTitle?: string | null;
   heroSubtitle?: string | null;
   introTitle?: string | null;
@@ -40,10 +59,6 @@ export default async function ContactPage() {
     settings.heroSubtitle ??
     "Ota yhteyttä jo tänään – palaamme sinulle mahdollisimman pian.";
 
-  const heroMediaType = settings.heroMediaType ?? "image";
-  const heroImageUrl = settings.heroImageUrl ?? "/psbl-contact-hero.jpg";
-  const heroVideoUrl = settings.heroVideoUrl ?? "";
-
   const introTitle =
     settings.introTitle ?? "PALVELEMME KOKO POHJOIS-SUOMEN ALUEELLA";
   const introBody =
@@ -58,29 +73,63 @@ export default async function ContactPage() {
     settings.formIntro ??
     "Täytäthän kaikki kentät, niin osaamme vastata sinulle mahdollisimman hyvin.";
 
+  // JSON-LD for Contact Page
+  const contactPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "@id": `${SITE_URL}/yhteystiedot/#webpage`,
+    url: `${SITE_URL}/yhteystiedot`,
+    name: "Yhteystiedot – Ota yhteyttä ja pyydä tarjous",
+    description: heroSubtitle,
+    inLanguage: "fi",
+    mainEntity: {
+      "@type": "LocalBusiness",
+      name: company.name || "Pohjois-Suomen Betonilattiat Oy",
+      email: company.email || "toimisto@psbl.fi",
+      telephone: company.phone || "+358-44-248-0482",
+      url: SITE_URL,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: company.location || "Oulu",
+        addressRegion: "Pohjois-Pohjanmaa",
+        addressCountry: "FI",
+      },
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: 65.0121,
+        longitude: 25.4651,
+      },
+      areaServed: [
+        { "@type": "AdministrativeArea", name: "Pohjois-Suomi" },
+        { "@type": "AdministrativeArea", name: "Lappi" },
+        { "@type": "Place", name: "Oulu" },
+        { "@type": "Place", name: "Rovaniemi" },
+        { "@type": "Place", name: "Saariselkä" },
+        { "@type": "Place", name: "Levi" },
+        { "@type": "Place", name: "Ivalo" },
+        { "@type": "Place", name: "Muonio" },
+      ],
+      openingHoursSpecification: {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        opens: "07:00",
+        closes: "16:00",
+      },
+    },
+  };
+
   return (
     <main className="bg-white text-zinc-900">
-      {/* HERO */}
-      <section className="relative h-[320px] sm:h-[360px] md:h-[400px] lg:h-[500px] w-full overflow-hidden">
-        {heroMediaType === "video" && heroVideoUrl ? (
-          <video
-            src={heroVideoUrl}
-            className="h-full w-full object-cover"
-            autoPlay
-            muted
-            loop
-            playsInline
-          />
-        ) : (
-          <Image
-            src={heroImageUrl}
-            alt="PSBL yhteystiedot - taustakuva"
-            fill
-            priority
-            className="object-cover"
-          />
-        )}
+      {/* JSON-LD Structured Data for Contact Page */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(contactPageJsonLd),
+        }}
+      />
 
+      {/* HERO */}
+      <section className="relative h-[180px] sm:h-[220px] md:h-[260px] lg:h-[300px] w-full overflow-hidden bg-zinc-900">
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/80" />
 
         <div className="relative z-10 flex h-full items-center justify-center px-4 text-center">
@@ -97,7 +146,7 @@ export default async function ContactPage() {
               <p
                 className={`
                   ${exo2.className}
-                  mt-3 text-xl sm:text-2xl text-zinc-200
+                  mt-3 text-lg sm:text-xl text-zinc-200
                 `}
               >
                 {heroSubtitle}

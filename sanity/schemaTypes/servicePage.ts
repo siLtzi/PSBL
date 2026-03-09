@@ -32,13 +32,6 @@ export default defineType({
       type: "string",
       description: "Lyhyt kuvaus hero-kuvan alle.",
     }),
-    defineField({
-      name: "heroImage",
-      title: "Hero-taustakuva",
-      type: "image",
-      description: "Leveä kuva sivun yläosaan.",
-      options: { hotspot: true },
-    }),
 
     // PÄÄTEKSTI + KUVA
     defineField({

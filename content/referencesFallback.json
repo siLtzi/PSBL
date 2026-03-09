@@ -5,16 +5,16 @@
     {
       "_key": "ref1",
       "imageUrl": "/images/references/ref1.jpg",
-      "caption": "Teollisuushalli, Rovaniemi 2024",
-      "tag": "Teollisuuskohde",
-      "location": "Rovaniemi"
+      "caption": "Kauppakeskus Kuukkeli, Saariselkä 2024",
+      "tag": "Liiketila",
+      "location": "Saariselkä"
     },
     {
       "_key": "ref2",
       "imageUrl": "/images/references/ref2.jpg",
-      "caption": "Kerrostalon pihakansi, Oulu 2023",
-      "tag": "Asuinkohde",
-      "location": "Oulu"
+      "caption": "Tokmanni Ivalo 2025",
+      "tag": "Liiketila",
+      "location": "Ivalo"
     }
   ]
 }

@@ -17,22 +17,5 @@ export default defineType({
       type: "string",
       description: "Lyhyt teksti otsikon alla.",
     }),
-    defineField({
-      name: "heroImage",
-      title: "Hero-taustakuva (fallback)",
-      type: "image",
-      options: { hotspot: true },
-      description: "Kuva, joka näytetään, jos videota ei ole asetettu.",
-    }),
-    defineField({
-      name: "heroVideo",
-      title: "Hero-video (MP4)",
-      type: "file",
-      options: {
-        accept: "video/mp4,video/webm",
-      },
-      description:
-        "Video, joka pyörii taustalla. Suositeltu muoto MP4.",
-    }),
   ],
 });

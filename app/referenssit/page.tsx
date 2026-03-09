@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, MapPin, Calendar, Ruler } from "lucide-react";
+import { ArrowUpRight, MapPin, Calendar, Ruler, Building2, HardHat } from "lucide-react";
 
 import { sanityFetch } from "@/sanity/lib/live";
 import {
@@ -9,9 +9,9 @@ import {
   referencesPageSettingsQuery,
 } from "@/sanity/queries";
 import { exo2, scienceGothic } from "@/app/fonts";
-import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { urlFor } from "@/sanity/lib/image";
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://psbl.fi";
 
 type ReferenceItem = {
   _id: string;
@@ -21,21 +21,30 @@ type ReferenceItem = {
   location?: string | null;
   year?: number | null;
   sizeM2?: number | null;
+  client?: string | null;
   excerpt?: string | null;
-  imageUrl: string;
+  imageUrl?: string | null;
 };
 
 type ReferencesPageSettings = {
   heroTitle?: string | null;
   heroSubtitle?: string | null;
-  heroImage?: any;
-  heroVideoUrl?: string | null; // from heroVideo.asset->url
 };
 
 export const metadata: Metadata = {
-  title: "Referenssit – Pohjois-Suomen Betonilattiat",
+  title: "Referenssit – Toteutetut betonilattiaurakat Pohjois-Suomessa",
   description:
-    "Näytteitä toteuttamistamme betonilattiaurakoista eri puolilta Pohjois-Suomea.",
+    "Katso esimerkkejä toteuttamistamme betonilattiaurakoista: teollisuuslattiat, liiketilat, matkailukohteet ja asuinrakennukset eri puolilta Pohjois-Suomea ja Lappia. Mm. Kauppakeskus Kuukkeli, Tokmanni Ivalo, Lapin keskussairaala.",
+  alternates: {
+    canonical: `${SITE_URL}/referenssit`,
+  },
+  openGraph: {
+    title: "Referenssit – Toteutetut betonilattiaurakat | PSBL",
+    description:
+      "Näytteitä toteuttamistamme betonilattiaurakoista eri puolilta Pohjois-Suomea ja Lappia.",
+    url: `${SITE_URL}/referenssit`,
+    type: "website",
+  },
 };
 
 export default async function ReferencesPage() {
@@ -52,48 +61,49 @@ export default async function ReferencesPage() {
     settings?.heroSubtitle ??
     "Ote toteuttamistamme betonilattiaurakoista eri puolilta Pohjois-Suomea. Näistä näet käytännössä, millaisia kohteita PSBL on viime vuosina tehnyt.";
 
-  const heroImageUrl = settings?.heroImage
-    ? urlFor(settings.heroImage).width(1600).url()
-    : null;
-  const heroVideoUrl = settings?.heroVideoUrl ?? null;
+  // JSON-LD for References page with dynamic items
+  const referencesPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": `${SITE_URL}/referenssit/#webpage`,
+    url: `${SITE_URL}/referenssit`,
+    name: "Referenssit – Toteutetut betonilattiaurakat",
+    description: heroSubtitle,
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: references.slice(0, 10).map((ref, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        item: {
+          "@type": "CreativeWork",
+          name: ref.title,
+          url: `${SITE_URL}/referenssit/${ref.slug}`,
+          description: ref.excerpt || `Betonilattiaurakka: ${ref.location || ""} ${ref.year || ""}`.trim(),
+        },
+      })),
+    },
+  };
 
   return (
     <main className="bg-black text-zinc-50 min-h-screen">
-      <Header />
+      {/* JSON-LD Structured Data for References */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(referencesPageJsonLd),
+        }}
+      />
 
       {/* HERO / HEADER */}
-      <section className="relative w-full overflow-hidden bg-black">
-        {/* 1) Video, 2) Image, 3) Plain black */}
-        {heroVideoUrl ? (
-          <video
-            src={heroVideoUrl}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-        ) : heroImageUrl ? (
-          <Image
-            src={heroImageUrl}
-            alt=""
-            fill
-            priority
-            className="object-cover"
-          />
-        ) : null}
+      <section className="relative w-full overflow-hidden bg-zinc-900">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/90" />
 
-        {(heroVideoUrl || heroImageUrl) && (
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" />
-        )}
-
-        <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-24 sm:py-32 md:py-40">
+        <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24 pt-28 sm:pt-32 md:pt-36">
           <h1
             className={`
               ${scienceGothic.className}
-              text-4xl sm:text-5xl md:text-6xl lg:text-7xl
+              text-4xl sm:text-5xl md:text-6xl
               font-black tracking-tight text-center uppercase
-              drop-shadow-2xl
             `}
           >
             {heroTitle}
@@ -102,8 +112,8 @@ export default async function ReferencesPage() {
           <p
             className={`
               ${exo2.className}
-              mt-6 text-base sm:text-lg md:text-xl text-zinc-200 text-center max-w-3xl mx-auto
-              leading-relaxed drop-shadow-md
+              mt-4 text-base sm:text-lg md:text-xl text-zinc-200 text-center max-w-3xl mx-auto
+              leading-relaxed
             `}
           >
             {heroSubtitle}
@@ -129,19 +139,26 @@ export default async function ReferencesPage() {
                 <Link
                   key={ref._id}
                   href={`/referenssit/${ref.slug}`}
+                  prefetch={false}
                   className="group flex flex-col h-full"
                 >
                   <article className="relative flex flex-col h-full overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900/40 transition-all duration-300 hover:border-zinc-700 hover:bg-zinc-900/80 hover:shadow-2xl hover:shadow-yellow-500/5">
                     
                     {/* Image Container */}
                     <div className="relative aspect-[4/3] w-full overflow-hidden">
-                      <Image
-                        src={ref.imageUrl}
-                        alt={ref.title}
-                        fill
-                        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                        className="object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
+                      {ref.imageUrl ? (
+                        <Image
+                          src={ref.imageUrl}
+                          alt={ref.title}
+                          fill
+                          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                          className="object-cover transition-transform duration-700 group-hover:scale-110"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 bg-zinc-800 flex items-center justify-center">
+                          <Building2 className="h-16 w-16 text-zinc-600" />
+                        </div>
+                      )}
                       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 transition-opacity group-hover:opacity-40" />
                       
                       {/* Floating Tag */}
@@ -198,6 +215,12 @@ export default async function ReferencesPage() {
                           <div className="flex items-center gap-1.5">
                             <Ruler className="h-3.5 w-3.5 text-zinc-500" />
                             <span>{ref.sizeM2} m²</span>
+                          </div>
+                        )}
+                        {ref.client && (
+                          <div className="flex items-center gap-1.5">
+                            <HardHat className="h-3.5 w-3.5 text-zinc-500" />
+                            <span>{ref.client}</span>
                           </div>
                         )}
                       </div>

@@ -3,12 +3,13 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PortableText } from "next-sanity";
 import ServiceReferencesGallery from "@/components/ServiceReferencesGallery";
-import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { sanityClient } from "@/sanity/config";
 import { allReferencesQuery, referenceBySlugQuery } from "@/sanity/queries";
 import { urlFor } from "@/sanity/lib/image";
 import { exo2, scienceGothicCaps } from "@/app/fonts";
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://psbl.fi";
 
 type ReferenceDoc = {
   _id: string;
@@ -17,6 +18,7 @@ type ReferenceDoc = {
   location?: string | null;
   year?: number | null;
   sizeM2?: number | null;
+  client?: string | null;
   excerpt?: string | null;
   body?: any;
   mainImage?: any;
@@ -34,7 +36,7 @@ export async function generateStaticParams() {
   return refs.map((r) => ({ slug: r.slug }));
 }
 
-// ----- Metadata (SEO) -----
+// ----- Enhanced Metadata (SEO) -----
 export async function generateMetadata({
   params,
 }: {
@@ -49,11 +51,33 @@ export async function generateMetadata({
 
   if (!data) return {};
 
+  const title = `${data.title} – Referenssi`;
+  const description =
+    data.excerpt ??
+    `Betonilattiaurakka: ${data.title}${data.location ? `, ${data.location}` : ""}${data.year ? ` ${data.year}` : ""}${data.sizeM2 ? ` – ${data.sizeM2} m²` : ""}`.trim();
+
   return {
-    title: `${data.title} – Referenssi | Pohjois-Suomen Betonilattiat`,
-    description:
-      data.excerpt ??
-      `Betonilattiaurakka: ${data.location ?? ""} ${data.year ?? ""}`.trim(),
+    title,
+    description,
+    alternates: {
+      canonical: `${SITE_URL}/referenssit/${slug}`,
+    },
+    openGraph: {
+      title: `${title} | Pohjois-Suomen Betonilattiat`,
+      description,
+      url: `${SITE_URL}/referenssit/${slug}`,
+      type: "article",
+      images: data.mainImage
+        ? [
+            {
+              url: urlFor(data.mainImage).width(1200).height(630).url(),
+              width: 1200,
+              height: 630,
+              alt: data.title,
+            },
+          ]
+        : undefined,
+    },
   };
 }
 
@@ -78,17 +102,61 @@ export default async function ReferencePage({
     location,
     year,
     sizeM2,
+    client,
     excerpt,
     body,
     mainImage,
-    gallery = [],
+    gallery: rawGallery,
   } = data;
+
+  const gallery = rawGallery ?? [];
 
   const mainImageUrl = mainImage ? urlFor(mainImage).width(1600).url() : null;
 
+  // JSON-LD for Reference/Project Page
+  const referencePageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "@id": `${SITE_URL}/referenssit/${slug}/#article`,
+    headline: title,
+    description: excerpt || `Betonilattiaurakka: ${location ?? ""} ${year ?? ""}`.trim(),
+    url: `${SITE_URL}/referenssit/${slug}`,
+    image: mainImageUrl || undefined,
+    datePublished: year ? `${year}-01-01` : undefined,
+    author: {
+      "@type": "Organization",
+      name: "Pohjois-Suomen Betonilattiat Oy",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Pohjois-Suomen Betonilattiat Oy",
+      url: SITE_URL,
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${SITE_URL}/referenssit/${slug}`,
+    },
+    about: {
+      "@type": "Service",
+      name: tag || "Betonilattiatyöt",
+      areaServed: location
+        ? {
+            "@type": "Place",
+            name: location,
+          }
+        : undefined,
+    },
+  };
+
   return (
     <main className="bg-black text-zinc-50 min-h-screen">
-      <Header />
+      {/* JSON-LD Structured Data for Reference */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(referencePageJsonLd),
+        }}
+      />
 
       {/* HERO */}
       <section className="relative w-full overflow-hidden bg-black">
@@ -98,6 +166,8 @@ export default async function ReferencePage({
               src={mainImageUrl}
               alt={title}
               fill
+              priority
+              sizes="100vw"
               className="object-cover"
             />
           )}
@@ -128,7 +198,7 @@ export default async function ReferencePage({
                 {title}
               </h1>
 
-              {(location || year || sizeM2) && (
+              {(location || year || sizeM2 || client) && (
                 <p
                   className={`
                     ${exo2.className}
@@ -140,6 +210,7 @@ export default async function ReferencePage({
                   {typeof sizeM2 === "number" && sizeM2 > 0 && (
                     <span> • {sizeM2} m²</span>
                   )}
+                  {client && <span> • Tilaaja: {client}</span>}
                 </p>
               )}
             </div>

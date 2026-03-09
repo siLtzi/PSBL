@@ -4,6 +4,7 @@
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 // These detect the current URL route.
 
 import { ChevronDown, ArrowBigRightDash, Menu, X } from "lucide-react";
@@ -11,9 +12,6 @@ import { ChevronDown, ArrowBigRightDash, Menu, X } from "lucide-react";
 
 import { exo2, scienceGothic } from "@/app/fonts";
 // Project fonts.
-
-import PsblLogo from "@/components/PsblLogo";
-// Logo component.
 
 import { gsap } from "gsap";
 // GSAP for mobile menu animations.
@@ -32,6 +30,7 @@ const DropdownItem = ({
   return (
     <Link
       href={href}
+      prefetch={false}
       className="
         relative flex items-center w-full 
         py-3 pr-4 overflow-hidden 
@@ -163,22 +162,12 @@ export default function Header() {
           }
         `}
       >
-        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 md:px-10">
-          {/* LOGO */}
-          <Link
-            href="/"
-            aria-label="Etusivu"
-            className="z-50 relative"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            <PsblLogo />
-          </Link>
-
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-center px-4 md:px-10">
           {/* DESKTOP NAVIGATION */}
           <nav
             className={`
               hidden md:flex items-center gap-8
-              text-xs font-bold uppercase tracking-[0.15em]
+              text-sm font-bold uppercase tracking-[0.15em]
               ${exo2.className}
             `}
           >
@@ -197,15 +186,15 @@ export default function Header() {
 
             {/* Palvelut dropdown */}
             <div className="relative group">
-              <button
-                type="button"
-                className={`flex items-center gap-1 pb-1 transition-colors uppercase tracking-[0.15em] ${
+              <Link
+                href="/palvelut"
+                className={`flex items-center gap-1 pb-1 transition-colors uppercase tracking-[0.15em] cursor-pointer ${
                   isServices ? "text-white" : "text-zinc-300 hover:text-white"
                 }`}
               >
                 Palvelut
                 <ChevronDown className="h-3 w-3 transition-transform duration-300 group-hover:rotate-180" />
-              </button>
+              </Link>
 
               <span
                 className={`absolute inset-x-0 -bottom-0.5 h-[2px] bg-yellow-400 origin-left transition-transform duration-200 ${
@@ -215,7 +204,7 @@ export default function Header() {
                 }`}
               />
 
-              <div className="absolute right-0 top-full w-72 pt-4 opacity-0 translate-y-4 invisible transition-all duration-200 ease-out group-hover:opacity-100 group-hover:translate-y-0 group-hover:visible">
+              <div className="absolute right-0 top-full w-72 pt-4 opacity-0 translate-y-4 invisible transition-all duration-200 ease-out group-hover:opacity-100 group-hover:translate-y-0 group-hover:visible cursor-pointer">
                 <div className="rounded-lg overflow-hidden bg-zinc-950 border border-zinc-800 shadow-2xl">
                   {mobileServices.map((s, i) => (
                     <DropdownItem key={i} href={s.href}>
@@ -302,6 +291,7 @@ export default function Header() {
                     <Link
                       key={index}
                       href={service.href}
+                      prefetch={false}
                       onClick={() => setIsMenuOpen(false)}
                       className="text-base font-semibold text-zinc-300 hover:text-white hover:translate-x-1 transition-all duration-200 break-words"
                     >

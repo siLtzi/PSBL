@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Header from "@/components/Header";
 import Hero, { HeroContent } from "@/components/Hero";
 import About, { AboutContent } from "@/components/About";
 import Services, { ServicesContent } from "@/components/Services";
@@ -16,6 +15,7 @@ import {
   aboutSettingsQuery,
   servicesSettingsQuery,
   referencesSettingsQuery,
+  featuredReferencesQuery,
 } from "@/sanity/queries";
 
 import heroFallback from "@/content/heroFallback.json";
@@ -23,9 +23,179 @@ import aboutFallback from "@/content/aboutFallback.json";
 import servicesFallback from "@/content/servicesFallback.json";
 import referencesFallback from "@/content/referencesFallback.json";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://psbl.fi";
+
 export const metadata: Metadata = {
   title: "Pohjois-Suomen Betonilattiat – Lattiaurakat laatutakuulla",
-  description: "Lattiaurakat laatutakuulla yrityksille ja yksityisille.",
+  description:
+    "Ammattitaitoisia betonilattiaurakoita laatutakuulla yrityksille ja yksityisille koko Pohjois-Suomen alueella. Betonilattiatyöt, pinnoitukset, kovabetonointi ja kiillotetut lattiat.",
+  alternates: {
+    canonical: SITE_URL,
+  },
+  openGraph: {
+    title: "Pohjois-Suomen Betonilattiat – Lattiaurakat laatutakuulla",
+    description:
+      "Ammattitaitoisia betonilattiaurakoita laatutakuulla yrityksille ja yksityisille koko Pohjois-Suomen alueella.",
+    url: SITE_URL,
+    type: "website",
+  },
+};
+
+// JSON-LD for the homepage (WebPage + Service)
+const homePageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": `${SITE_URL}/#webpage`,
+  url: SITE_URL,
+  name: "Pohjois-Suomen Betonilattiat – Lattiaurakat laatutakuulla",
+  description:
+    "Ammattitaitoisia betonilattiaurakoita laatutakuulla yrityksille ja yksityisille koko Pohjois-Suomen alueella. Lattiavalut, kuivasirotelattiat, kovabetonointi ja lattiapinnoitukset.",
+  inLanguage: "fi",
+  isPartOf: {
+    "@type": "WebSite",
+    "@id": `${SITE_URL}/#website`,
+    url: SITE_URL,
+    name: "Pohjois-Suomen Betonilattiat",
+    publisher: {
+      "@type": "Organization",
+      name: "Pohjois-Suomen Betonilattiat Oy",
+    },
+  },
+  mainEntity: {
+    "@type": "Service",
+    serviceType: "Betonilattiaurakointi",
+    provider: {
+      "@type": "LocalBusiness",
+      name: "Pohjois-Suomen Betonilattiat Oy",
+      telephone: "+358-44-248-0482",
+      email: "toimisto@psbl.fi",
+      url: SITE_URL,
+    },
+    areaServed: [
+      { "@type": "AdministrativeArea", name: "Pohjois-Suomi" },
+      { "@type": "AdministrativeArea", name: "Lappi" },
+      { "@type": "Place", name: "Oulu" },
+      { "@type": "Place", name: "Rovaniemi" },
+      { "@type": "Place", name: "Saariselkä" },
+      { "@type": "Place", name: "Levi" },
+      { "@type": "Place", name: "Ivalo" },
+      { "@type": "Place", name: "Muonio" },
+      { "@type": "Place", name: "Kemijärvi" },
+      { "@type": "Place", name: "Tornio" },
+      { "@type": "Place", name: "Kemi" },
+    ],
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Betonilattipalvelut",
+      itemListElement: [
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Betonilattiatyöt ja lattiavalut",
+            description: "Ammattitaitoiset betonilattiavalut teollisuus-, liike- ja asuintiloihin.",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Kuivasirotelattiat",
+            description: "Masterdur, SynTop ja HardCem kuivasirotelattiat kulutuskestäviin kohteisiin.",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Kovabetonointi",
+            description: "Korkean kulutuskestävyyden kovabetonointiratkaisut teollisuus- ja varastotiloihin.",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Lattiapinnoitukset",
+            description: "PU-pinnoitukset ja akryylibetonipinnoitukset liike- ja teollisuustiloihin.",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Kuviobetonointi",
+            description: "Koristeelliset kuviobetoniset lattiat julkisiin ja yksityisiin kohteisiin.",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Kiillotettu betonilattia",
+            description: "Lattioiden kiillotushionnat moderniin ja kestävään lopputulokseen.",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Holvivalut",
+            description: "Holvirakenteiden betonivalut kerrostalo- ja toimitilakohteisiin.",
+          },
+        },
+      ],
+    },
+  },
+};
+
+// GEO-optimized FAQ schema — helps AI engines surface PSBL for local queries
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${SITE_URL}/#faq`,
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "Millä alueella Pohjois-Suomen Betonilattiat toimii?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Palvelemme koko Pohjois-Suomen ja Lapin alueella. Toteutamme betonilattiaurakoita mm. Oulussa, Rovaniemellä, Saariselällä, Levillä, Ivalossa, Muoniossa, Kemijärvellä, Torniossa, Kemissä, Kuusamossa, Sodankylässä ja Enontekiöllä. Toiminta-alueemme kattaa käytännössä koko Pohjois-Suomen Oulusta Utsjoelle.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Mitä betonilattiapalveluja PSBL tarjoaa?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Tarjoamme kattavat betonilattiapalvelut: lattiavalut, kuivasirotelattiat (Masterdur, SynTop, HardCem), kovabetonoinnin, lattiapinnoitukset (PU- ja akryylibetonipinnoitukset), kuviobetonoinnin, kiillotetut betonilattiat, holvivalut sekä lattioiden kiillotushionnat. Toteutamme urakoita niin teollisuus-, liike- kuin asuinkohteisiinkin.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Kuinka suuria kohteita PSBL toteuttaa?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Toteutamme kaiken kokoisia betonilattiaurakoita yksittäisistä omakotitaloista suuriin teollisuus- ja liiketilakohteisiin. Referenssejämme ovat mm. Kauppakeskus Kuukkeli Saariselällä (3 600 m²), Tokmanni Ivalo (3 500 m²), As Oy Rovaniemen Riistakero (2 500 m²) sekä satoja omakotitalokohteita ympäri Pohjois-Suomea.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Miten pyydän tarjouksen betonilattiatöistä?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: `Voit pyytää tarjouksen helposti: 1) Täytä yhteydenottolomake sivullamme ${SITE_URL}/yhteystiedot, 2) Lähetä sähköpostia osoitteeseen toimisto@psbl.fi, tai 3) Soita numeroon 044 248 0482. Palaamme tarjouspyyntöihin saman päivän aikana.`,
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Mikä on kuivasirotelattia?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Kuivasirotelattia on betonilattian pinnan kovennusmenetelmä, jossa tuoreen betonin pintaan sirotellaan kulutusta kestävää kuiva-ainetta (esim. Masterdur C400, SynTop-450 tai HardCem). Se lisää lattian kulutuskestävyyttä merkittävästi ja sopii erityisesti teollisuus-, varasto- ja autohallilattioihin. PSBL toteuttaa kuivasirotelattioita koko Pohjois-Suomen alueella.",
+      },
+    },
+  ],
 };
 
 type SanityServicesSettings = {
@@ -60,17 +230,31 @@ export default async function HomePage() {
     aboutSettingsResult,
     servicesSettingsResult,
     referencesSettingsResult,
+    featuredReferencesResult,
   ] = await Promise.all([
     sanityFetch({ query: homeSettingsQuery }),
     sanityFetch({ query: aboutSettingsQuery }),
     sanityFetch({ query: servicesSettingsQuery }),
     sanityFetch({ query: referencesSettingsQuery }),
+    sanityFetch({ query: featuredReferencesQuery }),
   ]);
 
   const heroSettings = heroSettingsResult.data as Partial<HeroContent> | null;
   const aboutSettings = aboutSettingsResult.data as Partial<AboutContent> | null;
   const servicesSettings = servicesSettingsResult.data as SanityServicesSettings | null;
   const referencesSettings = referencesSettingsResult.data as SanityReferencesSettings | null;
+  const featuredRefs = (featuredReferencesResult.data ?? []) as {
+    _id: string;
+    title: string;
+    slug: string;
+    tag?: string | null;
+    location?: string | null;
+    year?: number | null;
+    sizeM2?: number | null;
+    client?: string | null;
+    excerpt?: string | null;
+    imageUrl?: string | null;
+  }[];
 
   const heroContent: HeroContent = {
     ...(heroFallback as HeroContent),
@@ -111,6 +295,26 @@ export default async function HomePage() {
     const fb = referencesFallback as ReferencesContent;
     const s = referencesSettings;
 
+    // Use featured projectReference documents if any exist
+    if (featuredRefs.length > 0) {
+      const items: ReferenceItem[] = featuredRefs.map((ref) => ({
+        _key: ref._id,
+        caption: ref.title,
+        tag: ref.tag ?? undefined,
+        location: ref.location ?? undefined,
+        imageUrl: ref.imageUrl ?? undefined,
+        sizeM2: ref.sizeM2 ?? undefined,
+        excerpt: ref.excerpt ?? undefined,
+      }));
+
+      return {
+        heading: s?.heading ?? fb.heading,
+        subheading: s?.subheading ?? fb.subheading,
+        items,
+      };
+    }
+
+    // Fallback to referencesSettings items or static fallback
     if (!s) return fb;
 
     const safeItems: ReferenceItem[] =
@@ -139,7 +343,21 @@ export default async function HomePage() {
   return (
     // FIX: Added overflow-x-hidden here to prevent horizontal scrolling issues from GSAP animations or wide content
     <main className="relative flex-1 bg-black text-zinc-50 overflow-x-hidden w-full">
-      <Header />
+      {/* JSON-LD Structured Data for Homepage */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(homePageJsonLd),
+        }}
+      />
+      {/* FAQ Schema for GEO (Generative Engine Optimization) */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqJsonLd),
+        }}
+      />
+
       <Hero content={heroContent} />
       <About content={aboutContent} />
       <Services content={servicesContent} />

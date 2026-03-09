@@ -45,7 +45,7 @@ export function useHeroAnimations() {
         y: 0,
         duration: 0.65,
         stagger: 0.02,
-      });
+      }, "-=0.8");
 
       // SUBTITLE: Start sooner + animate faster
       tl.to(

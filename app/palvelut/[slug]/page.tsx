@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { PortableText, type PortableTextBlock } from "next-sanity";
+import type { Metadata } from "next";
 
 import { sanityClient } from "@/sanity/config";
 import {
@@ -9,8 +10,9 @@ import {
 } from "@/sanity/queries";
 import { urlFor } from "@/sanity/lib/image";
 import { exo2, scienceGothic, scienceGothicCaps } from "@/app/fonts";
-import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://psbl.fi";
 
 type ReferenceItem = {
   _key: string;
@@ -22,7 +24,6 @@ type ReferenceItem = {
 type ServicePageData = {
   title: string;
   heroSubtitle?: string | null;
-  heroImage?: any;
 
   contentTitle?: string | null;
   contentBody?: PortableTextBlock[]; // <--- Changed from string | null
@@ -52,13 +53,13 @@ export async function generateStaticParams() {
 }
 
 // ------------------------------------------------------
-// Optional: per-page metadata (SEO)
+// Enhanced per-page metadata (SEO)
 // ------------------------------------------------------
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>; // 1. Update Type to Promise
-}) {
+}): Promise<Metadata> {
   const { slug } = await params; // 2. Await the params
 
   const data = await sanityClient.fetch<ServicePageData | null>(
@@ -70,12 +71,34 @@ export async function generateMetadata({
     return {};
   }
 
+  const title = data.seoTitle ?? data.title;
+  const description =
+    data.seoDescription ??
+    data.heroSubtitle ??
+    `${data.title} – Ammattitaitoiset betonilattiatyöt Pohjois-Suomessa`;
+
   return {
-    title: data.seoTitle ?? data.title,
-    description:
-      data.seoDescription ??
-      data.heroSubtitle ??
-      "Pohjois-Suomen Betonilattiat",
+    title,
+    description,
+    alternates: {
+      canonical: `${SITE_URL}/palvelut/${slug}`,
+    },
+    openGraph: {
+      title: `${title} | Pohjois-Suomen Betonilattiat`,
+      description,
+      url: `${SITE_URL}/palvelut/${slug}`,
+      type: "website",
+      images: data.sideImage
+        ? [
+            {
+              url: urlFor(data.sideImage).width(1200).height(630).url(),
+              width: 1200,
+              height: 630,
+              alt: title,
+            },
+          ]
+        : undefined,
+    },
   };
 }
 
@@ -101,7 +124,6 @@ export default async function ServicePage({
   const {
     title,
     heroSubtitle,
-    heroImage,
     contentTitle,
     contentBody,
     sideImage,
@@ -112,7 +134,6 @@ export default async function ServicePage({
     references,
   } = data;
 
-  const heroImageUrl = heroImage ? urlFor(heroImage).width(1600).url() : "";
   const sideImageUrl = sideImage ? urlFor(sideImage).width(1200).url() : "";
 
   const hasSpecs = specsTitle || specsBody;
@@ -126,22 +147,44 @@ export default async function ServicePage({
         .map((item) => item.replace(/[.;:]+$/g, "")) // siivoa . ; : lopusta
     : [];
 
+  // JSON-LD for Service Page
+  const servicePageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${SITE_URL}/palvelut/${slug}/#service`,
+    name: title,
+    description: heroSubtitle || `${title} – Ammattitaitoiset betonilattiatyöt`,
+    url: `${SITE_URL}/palvelut/${slug}`,
+    provider: {
+      "@type": "LocalBusiness",
+      name: "Pohjois-Suomen Betonilattiat Oy",
+      url: SITE_URL,
+    },
+    areaServed: coveragePlaces.length
+      ? coveragePlaces.map((place) => ({
+          "@type": "Place",
+          name: place,
+        }))
+      : {
+          "@type": "Place",
+          name: "Pohjois-Suomi",
+        },
+    image: sideImageUrl || undefined,
+  };
+
   return (
     <main className="bg-white text-zinc-900">
-      <Header />
+      {/* JSON-LD Structured Data for Service */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(servicePageJsonLd),
+        }}
+      />
 
       {/* HERO */}
-      <section className="relative w-full overflow-hidden bg-black text-white">
-        <div className="relative h-[260px] sm:h-[320px] md:h-[380px] lg:h-[440px]">
-          {heroImageUrl && (
-            <Image
-              src={heroImageUrl}
-              alt={title}
-              fill
-              priority
-              className="object-cover"
-            />
-          )}
+      <section className="relative w-full overflow-hidden bg-zinc-900 text-white">
+        <div className="relative h-[180px] sm:h-[220px] md:h-[260px] lg:h-[300px]">
           <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/40 to-black/85" />
 
           <div className="relative z-10 flex h-full items-center justify-center px-4 text-center">
@@ -149,7 +192,7 @@ export default async function ServicePage({
               <h1
                 className={`
                   ${scienceGothicCaps}
-                  text-3xl sm:text-4xl md:text-5xl lg:text-6xl
+                  text-3xl sm:text-4xl md:text-5xl
                   font-black tracking-tight
                 `}
               >
@@ -200,6 +243,7 @@ export default async function ServicePage({
                   src={sideImageUrl}
                   alt={title}
                   fill
+                  sizes="(min-width: 1024px) 40vw, 100vw"
                   className="object-cover"
                 />
               </div>
@@ -288,6 +332,7 @@ export default async function ServicePage({
                           src={refUrl}
                           alt={ref.caption || title}
                           fill
+                          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                           className="object-cover transition-transform duration-500 group-hover:scale-105"
                         />
                       </div>
