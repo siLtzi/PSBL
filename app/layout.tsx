@@ -87,7 +87,7 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
     images: [
       {
-        url: `${SITE_URL}/og-image.jpg`,
+        url: `${SITE_URL}/og-image.png`,
         width: 1200,
         height: 630,
         alt: "Pohjois-Suomen Betonilattiat – Ammattitaitoisia betonilattiaurakoita",
@@ -100,7 +100,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: `${SITE_NAME} – Lattiaurakat laatutakuulla`,
     description: SITE_DESCRIPTION,
-    images: [`${SITE_URL}/og-image.jpg`],
+    images: [`${SITE_URL}/og-image.png`],
   },
 
   // Verification (add your actual verification codes)
@@ -183,7 +183,7 @@ const localBusinessJsonLd = {
   "@type": "LocalBusiness",
   "@id": `${SITE_URL}/#localbusiness`,
   name: "Pohjois-Suomen Betonilattiat Oy",
-  image: `${SITE_URL}/og-image.jpg`,
+  image: `${SITE_URL}/og-image.png`,
   url: SITE_URL,
   telephone: "+358-44-248-0482",
   email: "toimisto@psbl.fi",

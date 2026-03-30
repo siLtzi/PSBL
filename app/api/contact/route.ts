@@ -43,6 +43,8 @@ export async function POST(req: Request) {
       process.env.CONTACT_TO_EMAIL ??
       "toimisto@psbl.fi";
 
+    const toEmails = toEmail.split(",").map((e) => e.trim()).filter(Boolean);
+
     const subject = `Uusi yhteydenotto PSBL-sivustolta${
       name ? ` – ${name}` : ""
     }`;
@@ -143,7 +145,7 @@ export async function POST(req: Request) {
 
     const result = await resend.emails.send({
       from: "PSBL Yhteydenotto <noreply@psbl.fi>",
-      to: [toEmail],
+      to: toEmails,
       replyTo: email || undefined,
       subject,
       html,

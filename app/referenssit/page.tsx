@@ -85,7 +85,7 @@ export default async function ReferencesPage() {
   };
 
   return (
-    <main className="bg-black text-zinc-50 min-h-screen">
+    <main className="bg-black text-zinc-50 min-h-screen overflow-x-hidden">
       {/* JSON-LD Structured Data for References */}
       <script
         type="application/ld+json"
@@ -134,18 +134,18 @@ export default async function ReferencesPage() {
               Referenssejä ei ole vielä lisätty. Päivitämme sivua pian.
             </p>
           ) : (
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-5 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3 min-w-0">
               {references.map((ref) => (
                 <Link
                   key={ref._id}
                   href={`/referenssit/${ref.slug}`}
                   prefetch={false}
-                  className="group flex flex-col h-full"
+                  className="group flex flex-col h-full min-w-0"
                 >
-                  <article className="relative flex flex-col h-full overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900/40 transition-all duration-300 hover:border-zinc-700 hover:bg-zinc-900/80 hover:shadow-2xl hover:shadow-yellow-500/5">
+                  <article className="relative flex flex-col h-full overflow-hidden rounded-2xl sm:rounded-3xl border border-zinc-800 bg-zinc-900/40 transition-all duration-300 hover:border-zinc-700 hover:bg-zinc-900/80 hover:shadow-2xl hover:shadow-yellow-500/5">
                     
                     {/* Image Container */}
-                    <div className="relative aspect-[4/3] w-full overflow-hidden">
+                    <div className="relative aspect-[16/10] sm:aspect-[4/3] w-full overflow-hidden">
                       {ref.imageUrl ? (
                         <Image
                           src={ref.imageUrl}
@@ -156,7 +156,7 @@ export default async function ReferencesPage() {
                         />
                       ) : (
                         <div className="absolute inset-0 bg-zinc-800 flex items-center justify-center">
-                          <Building2 className="h-16 w-16 text-zinc-600" />
+                          <Building2 className="h-10 w-10 sm:h-16 sm:w-16 text-zinc-600" />
                         </div>
                       )}
                       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 transition-opacity group-hover:opacity-40" />
@@ -179,25 +179,27 @@ export default async function ReferencesPage() {
                     </div>
 
                     {/* Content Area */}
-                    <div className="flex flex-1 flex-col p-6">
+                    <div className="flex flex-1 flex-col p-4 sm:p-6">
                       {/* Title & Arrow */}
-                      <div className="flex items-start justify-between gap-4">
+                      <div className="flex items-start justify-between gap-2">
                         <h2
                           className={`
                             ${scienceGothic.className}
-                            text-xl sm:text-2xl font-bold text-zinc-100 leading-tight
+                            text-lg sm:text-xl md:text-2xl font-bold text-zinc-100 leading-tight
                             uppercase tracking-wide transition-colors group-hover:text-yellow-400
+                            break-words hyphens-auto min-w-0
                           `}
+                          lang="fi"
                         >
                           {ref.title}
                         </h2>
-                        <ArrowUpRight className="h-6 w-6 text-zinc-500 transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-yellow-400 flex-shrink-0" />
+                        <ArrowUpRight className="h-5 w-5 text-zinc-500 transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-yellow-400 flex-shrink-0 mt-1" />
                       </div>
 
                       {/* Metadata Row */}
                       <div className={`
                         ${exo2.className}
-                        mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-medium text-zinc-400
+                        mt-3 sm:mt-4 flex flex-wrap items-center gap-x-3 sm:gap-x-4 gap-y-1.5 sm:gap-y-2 text-[11px] sm:text-xs font-medium text-zinc-400
                       `}>
                         {ref.location && (
                           <div className="flex items-center gap-1.5">
@@ -230,7 +232,7 @@ export default async function ReferencesPage() {
                         <p
                           className={`
                             ${exo2.className}
-                            mt-4 text-sm text-zinc-400 leading-relaxed line-clamp-3 flex-1
+                            mt-3 sm:mt-4 text-xs sm:text-sm text-zinc-400 leading-relaxed line-clamp-2 sm:line-clamp-3 flex-1
                           `}
                         >
                           {ref.excerpt}

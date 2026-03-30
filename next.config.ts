@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
+  trailingSlash: true,
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
@@ -44,6 +45,16 @@ const nextConfig: NextConfig = {
             value: "public, max-age=31536000, immutable",
           },
         ],
+      },
+    ];  },
+
+  // Redirect old WordPress URLs to new paths
+  async redirects() {
+    return [
+      {
+        source: "/evastekaytanto-eu",
+        destination: "/evastekaytanto",
+        permanent: true,
       },
     ];
   },
