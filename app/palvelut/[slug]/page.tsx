@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import { PortableText, type PortableTextBlock } from "next-sanity";
 import type { Metadata } from "next";
+import { portableTextComponents } from "@/components/portableTextComponents";
 
 import { sanityClient } from "@/sanity/config";
 import {
@@ -11,6 +12,8 @@ import {
 import { urlFor } from "@/sanity/lib/image";
 import { exo2, scienceGothic, scienceGothicCaps } from "@/app/fonts";
 import Footer from "@/components/Footer";
+import ServiceReferencesGallery from "@/components/ServiceReferencesGallery";
+import BottomCta from "@/components/BottomCta";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://psbl.fi";
 
@@ -215,37 +218,37 @@ export default async function ServicePage({
 
       {/* MAIN CONTENT */}
       <section className="py-12 md:py-16 lg:py-20">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 sm:px-6 lg:px-8">
-          {/* Top: main text + optional side image */}
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] items-start">
-            <div>
-              {contentTitle && (
-                <h2
-                  className={`${scienceGothicCaps} text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-4`}
-                >
-                  {contentTitle}
-                </h2>
-              )}
+        <div className="mx-auto flex w-full max-w-4xl flex-col gap-16 px-4 sm:px-6 lg:px-8">
 
-              {/* FIX 1: contentBody */}
-              {contentBody && (
-                <div
-                  className={`${exo2.className} text-sm sm:text-base text-zinc-700 leading-relaxed portable-text`}
-                >
-                  <PortableText value={contentBody} />
-                </div>
-              )}
+          {/* Hero image + intro title */}
+          {sideImageUrl && (
+            <div className="relative h-72 sm:h-80 md:h-96 w-full overflow-hidden rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.12)]">
+              <Image
+                src={sideImageUrl}
+                alt={title}
+                fill
+                sizes="(min-width: 1024px) 56rem, 100vw"
+                className="object-cover"
+                priority
+              />
             </div>
+          )}
 
-            {sideImageUrl && (
-              <div className="relative h-64 sm:h-72 md:h-80 w-full overflow-hidden rounded-xl shadow-[0_14px_30px_rgba(0,0,0,0.15)]">
-                <Image
-                  src={sideImageUrl}
-                  alt={title}
-                  fill
-                  sizes="(min-width: 1024px) 40vw, 100vw"
-                  className="object-cover"
-                />
+          {/* Content body – full width for inline images */}
+          <div>
+            {contentTitle && (
+              <h2
+                className={`${scienceGothicCaps} text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-6`}
+              >
+                {contentTitle}
+              </h2>
+            )}
+
+            {contentBody && (
+              <div
+                className={`${exo2.className} text-base sm:text-lg text-zinc-700 leading-relaxed`}
+              >
+                <PortableText value={contentBody} components={portableTextComponents} />
               </div>
             )}
           </div>
@@ -255,7 +258,7 @@ export default async function ServicePage({
             <div className="bg-zinc-50 border border-zinc-200 rounded-2xl px-6 py-8 sm:px-8 sm:py-10">
               {specsTitle && (
                 <h3
-                  className={`${scienceGothicCaps} text-xl sm:text-2xl font-black mb-3`}
+                  className={`${scienceGothicCaps} text-xl sm:text-2xl font-black mb-4`}
                 >
                   {specsTitle}
                 </h3>
@@ -263,9 +266,9 @@ export default async function ServicePage({
 
               {specsBody && (
                 <div
-                  className={`${exo2.className} text-sm sm:text-base text-zinc-700 leading-relaxed`}
+                  className={`${exo2.className} text-base sm:text-lg text-zinc-700 leading-relaxed`}
                 >
-                  <PortableText value={specsBody} />
+                  <PortableText value={specsBody} components={portableTextComponents} />
                 </div>
               )}
             </div>
@@ -317,53 +320,16 @@ export default async function ServicePage({
                 REFERENSSIT
               </h3>
 
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {references!.map((ref) => {
-                  if (!ref.image) return null;
-                  const refUrl = urlFor(ref.image).width(900).url();
-
-                  return (
-                    <figure
-                      key={ref._key}
-                      className="group relative overflow-hidden rounded-xl border border-zinc-200 bg-zinc-50 shadow-sm"
-                    >
-                      <div className="relative h-52 w-full">
-                        <Image
-                          src={refUrl}
-                          alt={ref.caption || title}
-                          fill
-                          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                      </div>
-                      {(ref.caption || ref.tag) && (
-                        <figcaption className="px-4 py-3">
-                          {ref.tag && (
-                            <p className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-1">
-                              {ref.tag}
-                            </p>
-                          )}
-                          {ref.caption && (
-                            <p
-                              className={`
-                                ${exo2.className}
-                                text-sm text-zinc-800
-                              `}
-                            >
-                              {ref.caption}
-                            </p>
-                          )}
-                        </figcaption>
-                      )}
-                    </figure>
-                  );
-                })}
-              </div>
+              <ServiceReferencesGallery
+                references={references!}
+                serviceTitle={title}
+              />
             </section>
           )}
         </div>
       </section>
 
+      <BottomCta />
       <Footer />
     </main>
   );

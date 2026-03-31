@@ -45,9 +45,29 @@ export default defineType({
       name: "contentBody",
       title: "Pääteksti",
       type: "array",
-      of: [{ type: "block" }],
+      of: [
+        { type: "block" },
+        {
+          type: "image",
+          options: { hotspot: true },
+          fields: [
+            defineField({
+              name: "alt",
+              title: "Alt-teksti",
+              type: "string",
+              description: "Kuvan vaihtoehtoinen teksti (saavutettavuus & SEO).",
+            }),
+            defineField({
+              name: "caption",
+              title: "Kuvateksti",
+              type: "string",
+              description: "Valinnainen kuvateksti kuvan alle.",
+            }),
+          ],
+        },
+      ],
       description:
-        "Kuvaile palvelua yksityiskohtaisemmin. Näkyy vasemmalla tekstinä.",
+        "Kuvaile palvelua yksityiskohtaisemmin. Voit lisätä tekstin sekaan kuvia.",
     }),
     defineField({
       name: "sideImage",
@@ -69,7 +89,25 @@ export default defineType({
       name: "specsBody",
       title: "Suositusosio (tekstit)",
       type: "array",
-      of: [{ type: "block" }],
+      of: [
+        { type: "block" },
+        {
+          type: "image",
+          options: { hotspot: true },
+          fields: [
+            defineField({
+              name: "alt",
+              title: "Alt-teksti",
+              type: "string",
+            }),
+            defineField({
+              name: "caption",
+              title: "Kuvateksti",
+              type: "string",
+            }),
+          ],
+        },
+      ],
       description:
         "Esim. käytetyt betonilaadut, kuivumisajat jne. Näkyy erillisenä laatikkona.",
     }),

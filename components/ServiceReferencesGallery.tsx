@@ -39,7 +39,7 @@ export default function ServiceReferencesGallery({
               onClick={() => setActiveRef(ref)}
               className="
                 group relative overflow-hidden rounded-xl border border-zinc-200 
-                bg-zinc-50 shadow-sm text-left
+                bg-zinc-50 shadow-sm text-left cursor-pointer
                 focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400
               "
             >

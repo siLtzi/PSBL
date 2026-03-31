@@ -290,10 +290,6 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
 
         {/* FOOTER SECTION */}
         <div className="pt-2 flex flex-col gap-3 items-center lg:items-start">
-          <p className="text-[11px] leading-snug text-zinc-500 text-center lg:text-left">
-            Tämä lomake voidaan suojata esim. Google reCAPTCHA -palvelulla.
-          </p>
-
           <button
             type="submit"
             disabled={isSubmitting}

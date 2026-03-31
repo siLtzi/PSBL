@@ -76,10 +76,22 @@ export const servicePageBySlugQuery = groq`
     title,
     heroSubtitle,
     contentTitle,
-    contentBody,
+    contentBody[] {
+      ...,
+      _type == "image" => {
+        ...,
+        asset->
+      }
+    },
     sideImage,
     specsTitle,
-    specsBody,
+    specsBody[] {
+      ...,
+      _type == "image" => {
+        ...,
+        asset->
+      }
+    },
     coverageTitle,
     coverageBody,
     references[] {

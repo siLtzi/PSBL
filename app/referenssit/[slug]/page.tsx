@@ -2,6 +2,7 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PortableText } from "next-sanity";
+import { portableTextComponents } from "@/components/portableTextComponents";
 import ServiceReferencesGallery from "@/components/ServiceReferencesGallery";
 import Footer from "@/components/Footer";
 import { sanityClient } from "@/sanity/config";
@@ -241,7 +242,7 @@ export default async function ReferencePage({
                   text-sm sm:text-base text-zinc-200 leading-relaxed prose prose-invert max-w-none
                 `}
               >
-                <PortableText value={body} />
+                <PortableText value={body} components={portableTextComponents} />
               </div>
             )}
           </div>
