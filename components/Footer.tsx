@@ -6,6 +6,7 @@ import { ArrowBigRightDash, Mail, Phone } from "lucide-react";
 import CookieSettingsButton from "@/components/CookieSettingsButton";
 import {
   DIGIPAJA_LOGO_VIEWBOX,
+  D,
   DOT,
   DIGIPAJA_WORDMARK_LETTERS,
   DIGIPAJA_OULU_LETTERS,
@@ -224,8 +225,11 @@ export default function Footer() {
                 className="h-5 w-auto"
                 aria-hidden="true"
               >
+                {D.map((d, i) => (
+                  <path key={`d-${i}`} d={d} fill="#F7941D" />
+                ))}
                 {DOT.map((d, i) => (
-                  <path key={`dot-${i}`} d={d} fill="currentColor" />
+                  <path key={`dot-${i}`} d={d} fill="#F7941D" />
                 ))}
                 {DIGIPAJA_WORDMARK_LETTERS.map((letter) =>
                   letter.paths.map((d, i) => (
