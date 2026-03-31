@@ -60,11 +60,13 @@ export default function CookieConsent() {
     <>
       {/* Plausible is cookieless & GDPR-compliant — no consent needed */}
       <Script
-        defer
+        async
         strategy="afterInteractive"
-        data-domain="psbl.fi"
-        src="https://plausible.io/js/script.js"
+        src="https://plausible.io/js/pa-O7UsupDNIBjKPwgQmfm3t.js"
       />
+      <Script id="plausible-init" strategy="afterInteractive">
+        {`window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init();`}
+      </Script>
 
       {/* Cookie Banner */}
       {visible && (
