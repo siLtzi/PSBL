@@ -61,7 +61,7 @@ export default function CookieConsent() {
       {/* Plausible is cookieless & GDPR-compliant — no consent needed */}
       <Script
         defer
-        strategy="lazyOnload"
+        strategy="afterInteractive"
         data-domain="psbl.fi"
         src="https://plausible.io/js/script.js"
       />
