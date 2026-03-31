@@ -4,6 +4,12 @@ import Link from "next/link";
 import { exo2 } from "@/app/fonts";
 import { ArrowBigRightDash, Mail, Phone } from "lucide-react";
 import CookieSettingsButton from "@/components/CookieSettingsButton";
+import {
+  DIGIPAJA_LOGO_VIEWBOX,
+  DOT,
+  DIGIPAJA_WORDMARK_LETTERS,
+  DIGIPAJA_OULU_LETTERS,
+} from "@/components/dLogoPaths";
 
 export default function Footer() {
   const serviceLinks = [
@@ -205,11 +211,34 @@ export default function Footer() {
           </span>
           <span className="flex items-center gap-2 opacity-90">
             Toteutus:
-            <img
-              src="/digipaja.svg"
-              alt="Digipaja Oulu"
-              className="h-5 w-auto hover:opacity-100 transition cursor-pointer"
-            />
+            <a
+              href="https://digipajaoulu.fi"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Digipaja Oulu"
+              className="hover:opacity-80 transition"
+            >
+              <svg
+                viewBox={DIGIPAJA_LOGO_VIEWBOX}
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-auto"
+                aria-hidden="true"
+              >
+                {DOT.map((d, i) => (
+                  <path key={`dot-${i}`} d={d} fill="currentColor" />
+                ))}
+                {DIGIPAJA_WORDMARK_LETTERS.map((letter) =>
+                  letter.paths.map((d, i) => (
+                    <path key={`wm-${letter.id}-${i}`} d={d} fill="currentColor" />
+                  ))
+                )}
+                {DIGIPAJA_OULU_LETTERS.map((letter) =>
+                  letter.paths.map((d, i) => (
+                    <path key={`ol-${letter.id}-${i}`} d={d} fill="currentColor" />
+                  ))
+                )}
+              </svg>
+            </a>
           </span>
         </div>
       </div>
