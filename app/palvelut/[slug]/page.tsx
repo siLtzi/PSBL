@@ -190,13 +190,13 @@ export default async function ServicePage({
         <div className="relative h-[180px] sm:h-[220px] md:h-[260px] lg:h-[300px]">
           <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/40 to-black/85" />
 
-          <div className="relative z-10 flex h-full items-center justify-center px-4 text-center">
+          <div className="relative z-10 flex h-full items-center justify-center px-6 sm:px-8 text-center">
             <div>
               <h1
                 className={`
                   ${scienceGothicCaps}
-                  text-3xl sm:text-4xl md:text-5xl
-                  font-black tracking-tight
+                  text-2xl sm:text-4xl md:text-5xl
+                  font-black tracking-tight break-words
                 `}
               >
                 {title}

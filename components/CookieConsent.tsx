@@ -58,15 +58,13 @@ export default function CookieConsent() {
 
   return (
     <>
-      {/* Conditionally load Plausible only when user accepted analytics */}
-      {consent === "all" && (
-        <Script
-          defer
-          strategy="lazyOnload"
-          data-domain="psbl.fi"
-          src="https://plausible.io/js/script.js"
-        />
-      )}
+      {/* Plausible is cookieless & GDPR-compliant — no consent needed */}
+      <Script
+        defer
+        strategy="lazyOnload"
+        data-domain="psbl.fi"
+        src="https://plausible.io/js/script.js"
+      />
 
       {/* Cookie Banner */}
       {visible && (
