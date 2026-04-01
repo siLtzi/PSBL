@@ -56,6 +56,15 @@ export async function generateMetadata({
     data.excerpt ??
     `Betonilattiaurakka: ${data.title}${data.location ? `, ${data.location}` : ""}${data.year ? ` ${data.year}` : ""}${data.sizeM2 ? ` – ${data.sizeM2} m²` : ""}`.trim();
 
+  const ogImageUrl = data.mainImage
+    ? urlFor(data.mainImage)
+        .width(1200)
+        .height(630)
+        .fit("crop")
+        .auto("format")
+        .url()
+    : undefined;
+
   return {
     title,
     description,
@@ -67,16 +76,22 @@ export async function generateMetadata({
       description,
       url: `${SITE_URL}/referenssit/${slug}`,
       type: "article",
-      images: data.mainImage
+      images: ogImageUrl
         ? [
             {
-              url: urlFor(data.mainImage).width(1200).height(630).url(),
+              url: ogImageUrl,
               width: 1200,
               height: 630,
               alt: data.title,
             },
           ]
         : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} | Pohjois-Suomen Betonilattiat`,
+      description,
+      images: ogImageUrl ? [ogImageUrl] : undefined,
     },
   };
 }
