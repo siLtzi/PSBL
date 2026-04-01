@@ -60,28 +60,79 @@ export async function POST(req: Request) {
     const html = `
       <div style="
         font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        max-width: 540px;
-        color: #111827;
-        font-size: 14px;
-        line-height: 1.6;
+        background: #f4f4f5;
+        padding: 24px;
       ">
-        <p style="margin: 0 0 16px; font-size: 15px; font-weight: 600;">
-          Yhteydenotto – ${name || "Nimetön"}
-        </p>
+        <div style="
+          max-width: 640px;
+          margin: 0 auto;
+          background: #ffffff;
+          padding: 24px 28px;
+          border-radius: 14px;
+          border: 1px solid #e5e7eb;
+        ">
+          <h2 style="margin: 0 0 8px; font-size: 22px; color: #111827;">
+            Uusi yhteydenotto PSBL-sivustolta
+          </h2>
+          <p style="margin: 0 0 18px; font-size: 13px; color: #6b7280;">
+            Tämä viesti on lähetetty PSBL.fi yhteydenottolomakkeelta.
+          </p>
 
-        <table style="border-collapse: collapse; font-size: 14px;">
-          <tr><td style="padding: 2px 12px 2px 0; color: #6b7280;">Nimi</td><td>${name || "-"}</td></tr>
-          <tr><td style="padding: 2px 12px 2px 0; color: #6b7280;">Sähköposti</td><td>${email || "-"}</td></tr>
-          <tr><td style="padding: 2px 12px 2px 0; color: #6b7280;">Puhelin</td><td>${phone || "-"}</td></tr>
-          <tr><td style="padding: 2px 12px 2px 0; color: #6b7280;">Yritys</td><td>${company || "-"}</td></tr>
-          <tr><td style="padding: 2px 12px 2px 0; color: #6b7280;">Sijainti</td><td>${siteLocationText || "-"}${coordsText && googleMapsUrl ? ` (<a href="${googleMapsUrl}" style="color: #2563eb;">kartta</a>)` : ""}</td></tr>
-          <tr><td style="padding: 2px 12px 2px 0; color: #6b7280;">Neliöt</td><td>${squareMeters ? `${squareMeters} m²` : "-"}</td></tr>
-        </table>
+          <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 16px 0 20px;" />
 
-        <p style="margin: 16px 0 6px; font-weight: 600;">Viesti</p>
-        <div style="white-space: pre-wrap;">${message ? escapeHtml(message) : "-"}</div>
+          <h3 style="margin: 0 0 8px; font-size: 16px; color: #111827;">Asiakkaan tiedot</h3>
+          <p style="margin: 4px 0; font-size: 14px;"><strong>Nimi:</strong> ${name || "-"}</p>
+          <p style="margin: 4px 0; font-size: 14px;"><strong>Sähköposti:</strong> ${email || "-"}</p>
+          <p style="margin: 4px 0; font-size: 14px;"><strong>Puhelin:</strong> ${phone || "-"}</p>
+          <p style="margin: 4px 0 12px; font-size: 14px;"><strong>Yritys:</strong> ${company || "-"}</p>
+
+          <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 16px 0 20px;" />
+
+          <h3 style="margin: 0 0 8px; font-size: 16px; color: #111827;">Työmaan sijainti</h3>
+          <p style="margin: 4px 0; font-size: 14px;">
+            <strong>Osoite / kuvaus:</strong> ${siteLocationText || "-"}
+          </p>
+          ${coordsText && googleMapsUrl ? `
+          <p style="margin: 8px 0 12px; font-size: 13px;">
+            <a href="${googleMapsUrl}" style="color: #2563eb; text-decoration: none;">
+              Avaa sijainti Google Mapsissa →
+            </a>
+          </p>
+          ` : ""}
+          <p style="margin: 4px 0 12px; font-size: 14px;">
+            <strong>Neliömäärä (m²):</strong> ${squareMeters || "-"}
+          </p>
+
+          <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 16px 0 20px;" />
+
+          <h3 style="margin: 0 0 8px; font-size: 16px; color: #111827;">Viesti</h3>
+          <div style="
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            margin: 4px 0 0;
+            color: #111827;
+          ">
+            ${message ? escapeHtml(message) : "-"}
+          </div>
+        </div>
       </div>
     `;
+
+    // Clean plain-text version — used by email clients when quoting in replies
+    const text = [
+      `Yhteydenotto – ${name || "Nimetön"}`,
+      ``,
+      `Nimi: ${name || "-"}`,
+      `Sähköposti: ${email || "-"}`,
+      `Puhelin: ${phone || "-"}`,
+      `Yritys: ${company || "-"}`,
+      `Sijainti: ${siteLocationText || "-"}${googleMapsUrl ? ` (${googleMapsUrl})` : ""}`,
+      `Neliöt: ${squareMeters ? `${squareMeters} m²` : "-"}`,
+      ``,
+      `Viesti:`,
+      message || "-",
+    ].join("\n");
 
     const result = await resend.emails.send({
       from: "PSBL Yhteydenotto <noreply@psbl.fi>",
@@ -89,6 +140,7 @@ export async function POST(req: Request) {
       replyTo: email || undefined,
       subject,
       html,
+      text,
     });
 
     if (result.error) {
