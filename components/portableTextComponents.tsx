@@ -36,7 +36,7 @@ export const portableTextComponents: PortableTextComponents = {
       const caption = value.caption || "";
 
       return (
-        <figure className="my-8 sm:my-10">
+        <figure className="my-8 sm:my-10 mx-auto max-w-2xl">
           <div className="relative overflow-hidden rounded-2xl shadow-lg">
             <video
               src={fileUrl}
