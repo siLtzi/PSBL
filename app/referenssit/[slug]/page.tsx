@@ -1,4 +1,3 @@
-import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PortableText } from "next-sanity";
@@ -6,7 +5,7 @@ import { portableTextComponents } from "@/components/portableTextComponents";
 import ServiceReferencesGallery from "@/components/ServiceReferencesGallery";
 import Footer from "@/components/Footer";
 import { sanityClient } from "@/sanity/config";
-import { allReferencesQuery, referenceBySlugQuery } from "@/sanity/queries";
+import { referenceBySlugQuery } from "@/sanity/queries";
 import { urlFor } from "@/sanity/lib/image";
 import { exo2, scienceGothicCaps } from "@/app/fonts";
 
@@ -110,9 +109,13 @@ export default async function ReferencePage({
     gallery: rawGallery,
   } = data;
 
-  const gallery = rawGallery ?? [];
+  const rawGalleryArr = rawGallery ?? [];
 
-  const mainImageUrl = mainImage ? urlFor(mainImage).width(1600).url() : null;
+  // Merge mainImage + gallery into a single array for the unified gallery
+  const allImages = [
+    ...(mainImage ? [mainImage] : []),
+    ...rawGalleryArr,
+  ];
 
   // JSON-LD for Reference/Project Page
   const referencePageJsonLd = {
@@ -122,7 +125,7 @@ export default async function ReferencePage({
     headline: title,
     description: excerpt || `Betonilattiaurakka: ${location ?? ""} ${year ?? ""}`.trim(),
     url: `${SITE_URL}/referenssit/${slug}`,
-    image: mainImageUrl || undefined,
+    image: mainImage ? urlFor(mainImage).width(1200).url() : undefined,
     datePublished: year ? `${year}-01-01` : undefined,
     author: {
       "@type": "Organization",
@@ -160,62 +163,48 @@ export default async function ReferencePage({
       />
 
       {/* HERO */}
-      <section className="relative w-full overflow-hidden bg-black">
-        <div className="relative h-[260px] sm:h-[320px] md:h-[380px] lg:h-[440px]">
-          {mainImageUrl && (
-            <Image
-              src={mainImageUrl}
-              alt={title}
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover"
-            />
+      <section className="relative w-full bg-zinc-950 pt-28 pb-14 sm:pt-32 sm:pb-16 md:pt-36 md:pb-20">
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-zinc-950/90 to-zinc-950" />
+
+        <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+          {tag && (
+            <p
+              className={`
+                ${exo2.className}
+                inline-flex items-center rounded-full
+                bg-yellow-400 text-zinc-900
+                px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] mb-4
+              `}
+            >
+              {tag}
+            </p>
           )}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/30 to-black/90" />
 
-          <div className="relative z-10 flex h-full items-center justify-center px-4 text-center">
-            <div className="max-w-3xl">
-              {tag && (
-                <p
-                  className={`
-                    ${exo2.className}
-                    inline-flex items-center rounded-full
-                    bg-yellow-400 text-zinc-900
-                    px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] mb-3
-                  `}
-                >
-                  {tag}
-                </p>
+          <h1
+            className={`
+              ${scienceGothicCaps}
+              text-3xl sm:text-4xl md:text-5xl lg:text-6xl
+              font-black tracking-tight
+            `}
+          >
+            {title}
+          </h1>
+
+          {(location || year || sizeM2 || client) && (
+            <p
+              className={`
+                ${exo2.className}
+                mt-4 text-sm sm:text-base text-zinc-400
+              `}
+            >
+              {location && <span>{location}</span>}
+              {year && <span> • {year}</span>}
+              {typeof sizeM2 === "number" && sizeM2 > 0 && (
+                <span> • {sizeM2} m²</span>
               )}
-
-              <h1
-                className={`
-                  ${scienceGothicCaps}
-                  text-3xl sm:text-4xl md:text-5xl lg:text-6xl
-                  font-black tracking-tight
-                `}
-              >
-                {title}
-              </h1>
-
-              {(location || year || sizeM2 || client) && (
-                <p
-                  className={`
-                    ${exo2.className}
-                    mt-3 text-sm sm:text-base text-zinc-300
-                  `}
-                >
-                  {location && <span>{location}</span>}
-                  {year && <span> • {year}</span>}
-                  {typeof sizeM2 === "number" && sizeM2 > 0 && (
-                    <span> • {sizeM2} m²</span>
-                  )}
-                  {client && <span> • Tilaaja: {client}</span>}
-                </p>
-              )}
-            </div>
-          </div>
+              {client && <span> • Tilaaja: {client}</span>}
+            </p>
+          )}
         </div>
       </section>
 
@@ -247,21 +236,20 @@ export default async function ReferencePage({
             )}
           </div>
 
-          {/* Gallery */}
-          {gallery.length > 0 && (
+          {/* All images */}
+          {allImages.length > 0 && (
             <div>
               <h2
                 className={`
-        ${scienceGothicCaps}
-        text-xl sm:text-2xl font-black mb-4
-      `}
+                  ${scienceGothicCaps}
+                  text-xl sm:text-2xl font-black mb-4
+                `}
               >
-                LISÄKUVAT KOHTEESTA
+                KUVAT KOHTEESTA
               </h2>
 
               <ServiceReferencesGallery
-                // adapt simple image array → objects the gallery expects
-                references={gallery.map((img, i) => ({
+                references={allImages.map((img, i) => ({
                   _key: String(i),
                   image: img,
                 }))}
