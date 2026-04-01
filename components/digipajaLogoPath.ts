@@ -83,7 +83,7 @@ export const DIGIPAJA_WORDMARK_LETTERS: LetterPaths[] = [
 ];
 
 
-//  SUBTEXT: OULU
+//  SUBTEXT: OULU redeploy
 
 
 export const DIGIPAJA_OULU_LETTERS: LetterPaths[] = [
