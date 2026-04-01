@@ -206,6 +206,7 @@ type SanityServicesSettings = {
   services?: {
     title?: string | null;
     imageUrl?: string | null;
+    hotspot?: { x: number; y: number } | null;
     ctaHref?: string | null;
   }[];
 };
@@ -278,6 +279,7 @@ export default async function HomePage() {
             return {
               title: svc.title ?? "",
               imageUrl: svc.imageUrl ?? "/images/placeholder.jpg",
+              hotspot: svc.hotspot ?? null,
               ctaHref: svc.ctaHref ?? null,
             };
           }
@@ -285,6 +287,7 @@ export default async function HomePage() {
           return {
             title: svc.title ?? fb.title,
             imageUrl: svc.imageUrl ?? fb.imageUrl,
+            hotspot: svc.hotspot ?? null,
             ctaHref: svc.ctaHref ?? fb.ctaHref,
           };
         }) as ServicesContent["services"])

@@ -126,10 +126,15 @@ export default async function ReferencePage({
 
   const rawGalleryArr = rawGallery ?? [];
 
-  // Merge mainImage + gallery into a single array for the unified gallery
-  const allImages = [
-    ...(mainImage ? [mainImage] : []),
-    ...rawGalleryArr,
+  // Merge mainImage + gallery into a single media array (images + videos)
+  const allMedia = [
+    ...(mainImage ? [{ _type: "image" as const, image: mainImage }] : []),
+    ...rawGalleryArr.map((item: any) => {
+      if (item._type === "videoObject") {
+        return { _type: "video" as const, videoUrl: item.file?.asset?.url, caption: item.caption };
+      }
+      return { _type: "image" as const, image: item };
+    }),
   ];
 
   // JSON-LD for Reference/Project Page
@@ -251,8 +256,8 @@ export default async function ReferencePage({
             )}
           </div>
 
-          {/* All images */}
-          {allImages.length > 0 && (
+          {/* All media */}
+          {allMedia.length > 0 && (
             <div>
               <h2
                 className={`
@@ -264,9 +269,11 @@ export default async function ReferencePage({
               </h2>
 
               <ServiceReferencesGallery
-                references={allImages.map((img, i) => ({
+                references={allMedia.map((item, i) => ({
                   _key: String(i),
-                  image: img,
+                  image: item._type === "image" ? item.image : undefined,
+                  videoUrl: item._type === "video" ? item.videoUrl : undefined,
+                  caption: item._type === "video" ? item.caption : undefined,
                 }))}
                 serviceTitle={title}
               />

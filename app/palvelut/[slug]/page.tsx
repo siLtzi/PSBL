@@ -22,6 +22,7 @@ type ReferenceItem = {
   caption?: string | null;
   tag?: string | null;
   image?: any;
+  videoUrl?: string | null;
 };
 
 type ServicePageData = {

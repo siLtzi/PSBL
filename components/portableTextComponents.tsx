@@ -30,6 +30,30 @@ export const portableTextComponents: PortableTextComponents = {
         </figure>
       );
     },
+    videoObject: ({ value }) => {
+      const fileUrl = value?.file?.asset?.url;
+      if (!fileUrl) return null;
+      const caption = value.caption || "";
+
+      return (
+        <figure className="my-8 sm:my-10">
+          <div className="relative overflow-hidden rounded-2xl shadow-lg">
+            <video
+              src={fileUrl}
+              controls
+              playsInline
+              preload="metadata"
+              className="w-full h-auto rounded-2xl"
+            />
+          </div>
+          {caption && (
+            <figcaption className="mt-3 text-center text-sm text-zinc-500 italic">
+              {caption}
+            </figcaption>
+          )}
+        </figure>
+      );
+    },
   },
   block: {
     h1: ({ children }) => (

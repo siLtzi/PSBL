@@ -6,6 +6,7 @@ import servicePage from "./servicePage";
 import projectReference from "./projectReference";
 import referencesSettings from "./referencesSettings";
 import referencesPageSettings from "./referencesPageSettings";
+import videoObject from "./videoObject";
 
 
 export const schemaTypes = [
@@ -17,5 +18,6 @@ export const schemaTypes = [
   referencesSettings,
   projectReference,
   referencesPageSettings,
+  videoObject,
   // other schemas...
 ];

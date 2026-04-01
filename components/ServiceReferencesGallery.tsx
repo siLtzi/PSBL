@@ -11,6 +11,7 @@ type ReferenceItem = {
   caption?: string | null;
   tag?: string | null;
   image?: any;
+  videoUrl?: string | null;
 };
 
 type Props = {
@@ -29,8 +30,9 @@ export default function ServiceReferencesGallery({
       {/* GRID */}
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {references.map((ref) => {
-          if (!ref.image) return null;
-          const refUrl = urlFor(ref.image).width(900).url();
+          const hasVideo = !!ref.videoUrl;
+          const hasImage = !!ref.image;
+          if (!hasVideo && !hasImage) return null;
 
           return (
             <button
@@ -44,14 +46,33 @@ export default function ServiceReferencesGallery({
               "
             >
               <div className="relative h-52 w-full">
-                <Image
-                  src={refUrl}
-                  alt={ref.caption || serviceTitle}
-                  fill
-                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
+                {hasVideo ? (
+                  <video
+                    src={ref.videoUrl!}
+                    muted
+                    playsInline
+                    preload="metadata"
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                ) : (
+                  <Image
+                    src={urlFor(ref.image).width(900).url()}
+                    alt={ref.caption || serviceTitle}
+                    fill
+                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                )}
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+                {hasVideo && (
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="w-12 h-12 rounded-full bg-black/60 flex items-center justify-center">
+                      <svg className="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M6.3 2.841A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
               </div>
               {(ref.caption || ref.tag) && (
                 <div className="px-4 py-3">
@@ -78,7 +99,7 @@ export default function ServiceReferencesGallery({
       </div>
 
       {/* LIGHTBOX OVERLAY */}
-      {activeRef && activeRef.image && (
+      {activeRef && (activeRef.image || activeRef.videoUrl) && (
         <div
           className="
             fixed inset-0 z-[80] bg-black/80 
@@ -101,20 +122,30 @@ export default function ServiceReferencesGallery({
                 hover:bg-black hover:text-white
                 transition-colors
               "
-              aria-label="Sulje kuva"
+              aria-label="Sulje"
             >
               <X className="w-5 h-5" />
             </button>
 
-            {/* Large image */}
+            {/* Large media */}
             <div className="relative w-full h-[55vh] sm:h-[60vh] md:h-[70vh] overflow-hidden rounded-xl border border-zinc-700 bg-black">
-              <Image
-                src={urlFor(activeRef.image).width(2000).url()}
-                alt={activeRef.caption || serviceTitle}
-                fill
-                sizes="(min-width: 1280px) 1280px, 95vw"
-                className="object-contain"
-              />
+              {activeRef.videoUrl ? (
+                <video
+                  src={activeRef.videoUrl}
+                  controls
+                  autoPlay
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-contain"
+                />
+              ) : (
+                <Image
+                  src={urlFor(activeRef.image).width(2000).url()}
+                  alt={activeRef.caption || serviceTitle}
+                  fill
+                  sizes="(min-width: 1280px) 1280px, 95vw"
+                  className="object-contain"
+                />
+              )}
             </div>
 
             {/* Caption */}

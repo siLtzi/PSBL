@@ -23,6 +23,7 @@ export type ServiceItem = {
   title: string;
   imageUrl: string;
   ctaHref: string | null; // This can be a string (URL) OR null (no link).
+  hotspot?: { x: number; y: number } | null;
 };
 
 export type ServicesContent = {
@@ -175,12 +176,13 @@ export default function Services({
                   <Image
                     src={service.imageUrl}
                     alt={service.title}
-                    fill // In Next.js, this makes the image fill the container absolutely
-                    sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw" // Tells browser which image size to download
-                    quality={75} // Optimize image quality for faster loading
-                    loading={index < 3 ? "eager" : "lazy"} // Eager load first 3 images, lazy load rest
-                    decoding="async" // Non-blocking image decode
-                    className="object-cover transition-transform duration-500 will-change-transform group-hover:scale-105" // Zoom effect on hover
+                    fill
+                    sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw"
+                    quality={75}
+                    loading={index < 3 ? "eager" : "lazy"}
+                    decoding="async"
+                    className="object-cover transition-transform duration-500 will-change-transform group-hover:scale-105"
+                    style={service.hotspot ? { objectPosition: `${service.hotspot.x * 100}% ${service.hotspot.y * 100}%` } : undefined}
                   />
                   {/* Dark gradient overlay for readability */}
                   <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />

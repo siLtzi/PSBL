@@ -32,6 +32,7 @@ export const servicesSettingsQuery = `
     services[] {
       title,
       "imageUrl": image.asset->url,
+      "hotspot": image.hotspot,
       ctaHref
     }
   }
@@ -75,12 +76,15 @@ export const servicePageBySlugQuery = groq`
   *[_type == "servicePage" && slug.current == $slug][0]{
     title,
     heroSubtitle,
-    contentTitle,
     contentBody[] {
       ...,
       _type == "image" => {
         ...,
         asset->
+      },
+      _type == "videoObject" => {
+        ...,
+        "file": { "asset": { "url": file.asset->url } }
       }
     },
     sideImage,
@@ -90,6 +94,10 @@ export const servicePageBySlugQuery = groq`
       _type == "image" => {
         ...,
         asset->
+      },
+      _type == "videoObject" => {
+        ...,
+        "file": { "asset": { "url": file.asset->url } }
       }
     },
     coverageTitle,
@@ -98,7 +106,8 @@ export const servicePageBySlugQuery = groq`
       _key,
       caption,
       tag,
-      image
+      image,
+      "videoUrl": video.asset->url
     },
     seoTitle,
     seoDescription
@@ -158,9 +167,29 @@ export const referenceBySlugQuery = groq`
     sizeM2,
     client,
     excerpt,
-    body,
+    body[] {
+      ...,
+      _type == "image" => {
+        ...,
+        asset->
+      },
+      _type == "videoObject" => {
+        ...,
+        "file": { "asset": { "url": file.asset->url } }
+      }
+    },
     "mainImage": mainImage,
-    "gallery": gallery[]
+    "gallery": gallery[] {
+      ...,
+      _type == "image" => {
+        ...,
+        asset->
+      },
+      _type == "videoObject" => {
+        ...,
+        "file": { "asset": { "url": file.asset->url } }
+      }
+    }
   }
 `;
 export const referencesPageSettingsQuery = groq`

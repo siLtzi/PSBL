@@ -65,9 +65,10 @@ export default defineType({
             }),
           ],
         },
+        { type: "videoObject" },
       ],
       description:
-        "Kuvaile palvelua yksityiskohtaisemmin. Voit lisätä tekstin sekaan kuvia.",
+        "Kuvaile palvelua yksityiskohtaisemmin. Voit lisätä tekstin sekaan kuvia ja videoita.",
     }),
     defineField({
       name: "sideImage",
@@ -107,6 +108,7 @@ export default defineType({
             }),
           ],
         },
+        { type: "videoObject" },
       ],
       description:
         "Esim. käytetyt betonilaadut, kuivumisajat jne. Näkyy erillisenä laatikkona.",
@@ -131,10 +133,10 @@ export default defineType({
     // REFERENSSIT (VALINNAINEN)
     defineField({
       name: "references",
-      title: "Referenssikuvat (valinnainen)",
+      title: "Referenssikuvat ja -videot (valinnainen)",
       type: "array",
       description:
-        "Työkohteiden kuvia. Jos kuvia ei ole, koko osio piilotetaan automaattisesti.",
+        "Työkohteiden kuvia ja videoita. Jos mediaa ei ole, koko osio piilotetaan automaattisesti.",
       of: [
         defineField({
           name: "referenceItem",
@@ -146,7 +148,13 @@ export default defineType({
               title: "Kuva",
               type: "image",
               options: { hotspot: true },
-              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "video",
+              title: "Video",
+              type: "file",
+              description: "MP4 tai WebM. Jos molemmat (kuva + video), video näytetään.",
+              options: { accept: "video/mp4,video/webm" },
             }),
             defineField({
               name: "caption",

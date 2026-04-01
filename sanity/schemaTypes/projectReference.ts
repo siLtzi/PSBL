@@ -71,9 +71,12 @@ export default defineType({
 
     defineField({
       name: "gallery",
-      title: "Lisäkuvat (valinnainen)",
+      title: "Lisäkuvat ja -videot (valinnainen)",
       type: "array",
-      of: [{ type: "image", options: { hotspot: true } }],
+      of: [
+        { type: "image", options: { hotspot: true } },
+        { type: "videoObject" },
+      ],
     }),
 
     defineField({
@@ -88,9 +91,28 @@ export default defineType({
       name: "body",
       title: "Laajempi kuvaus (valinnainen)",
       type: "array",
-      of: [{ type: "block" }],
+      of: [
+        { type: "block" },
+        {
+          type: "image",
+          options: { hotspot: true },
+          fields: [
+            defineField({
+              name: "alt",
+              title: "Alt-teksti",
+              type: "string",
+            }),
+            defineField({
+              name: "caption",
+              title: "Kuvateksti",
+              type: "string",
+            }),
+          ],
+        },
+        { type: "videoObject" },
+      ],
       description:
-        "Käytetään jos joskus teet yksittäisiä casestudy-sivuja kohteille.",
+        "Käytetään jos joskus teet yksittäisiä casestudy-sivuja kohteille. Voit lisätä kuvia ja videoita.",
     }),
 
     defineField({

@@ -104,6 +104,7 @@ type ServicesSettings = {
   services?: {
     title: string;
     imageUrl: string;
+    hotspot?: { x: number; y: number } | null;
     ctaHref: string | null;
   }[];
 };
