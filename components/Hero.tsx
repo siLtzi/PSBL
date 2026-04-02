@@ -65,13 +65,13 @@ export default function Hero({ content }: { content: HeroContent }) {
           font-black uppercase tracking-[2px] text-[var(--off-white)]
           mb-8 animate-[slideIn_0.6s_0.4s_forwards] opacity-0
         `}>
-          <span className="relative z-[2] block text-[clamp(3.2rem,7vw,6.5rem)] leading-none mb-[-0.15em] ml-[0.05em]">
+          <span className="relative z-[2] block text-[clamp(3.2rem,7vw,6.5rem)] leading-none mb-[-0.15em] ml-[0.05em]" style={{ WebkitTextStroke: '2px var(--black)' }}>
             Valetaan
           </span>
           <span className="relative z-[1] inline-block text-[clamp(5.5rem,14vw,13rem)] leading-[0.85] text-[var(--black)] bg-[var(--yellow)] px-[0.2em] py-[0.02em] w-fit rotate-[-2deg] origin-left shadow-[6px_6px_0px_var(--steel),_inset_0_-4px_0_rgba(0,0,0,0.15)]">
             lattiat
           </span>
-          <span className="block text-[clamp(3.2rem,7vw,6.5rem)] leading-none mt-[-0.1em] ml-[0.05em]">
+          <span className="block text-[clamp(3.2rem,7vw,6.5rem)] leading-none mt-[-0.1em] ml-[0.05em]" style={{ WebkitTextStroke: '2px var(--black)' }}>
             kuntoon.
           </span>
         </h1>
