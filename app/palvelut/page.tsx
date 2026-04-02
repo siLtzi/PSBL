@@ -8,16 +8,16 @@ import { barlowCondensed, barlow } from "@/app/fonts";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://psbl.fi";
 
 export const metadata: Metadata = {
-  title: "Palvelut – Betonilattiatyöt ja pinnoitukset Pohjois-Suomessa",
+  title: "Palvelut | Betonilattiatyöt ja pinnoitukset Pohjois-Suomessa",
   description:
-    "Tutustu PSBL:n betonilattia- ja pinnoituspalveluihin: lattiavalut, kuivasirotelattiat, kovabetonointi, lattiapinnoitukset, kuviobetonointi ja kiillotetut betonilattiat. Palvelemme koko Pohjois-Suomen ja Lapin alueella.",
+    "Lattiavalut, kuivasirotelattiat, kovabetonointi, lattiapinnoitukset, kuviobetonointi ja kiillotetut betonilattiat. Palvelemme koko Pohjois-Suomen ja Lapin alueella.",
   alternates: {
     canonical: `${SITE_URL}/palvelut`,
   },
   openGraph: {
-    title: "Palvelut – Betonilattiatyöt ja pinnoitukset | PSBL",
+    title: "Palvelut | Betonilattiatyöt ja pinnoitukset | PSBL",
     description:
-      "Ammattitaitoisia betonilattiaurakoita koko Pohjois-Suomen ja Lapin alueella: lattiavalut, pinnoitukset, kovabetonointi, kiillotetut lattiat.",
+      "Betonilattiaurakoita koko Pohjois-Suomen ja Lapin alueella: lattiavalut, pinnoitukset, kovabetonointi ja kiillotetut lattiat.",
     url: `${SITE_URL}/palvelut`,
     type: "website",
   },
@@ -31,7 +31,7 @@ const servicesPageJsonLd = {
   url: `${SITE_URL}/palvelut`,
   name: "Palvelut – Betonilattiatyöt ja pinnoitukset",
   description:
-    "Tutustu PSBL:n betonilattia- ja pinnoituspalveluihin.",
+    "Betonilattia- ja pinnoituspalvelut Pohjois-Suomessa.",
   isPartOf: {
     "@type": "WebSite",
     "@id": `${SITE_URL}/#website`,
@@ -123,7 +123,7 @@ export default async function PalvelutPage() {
   const heroTitle = settings.heroTitle ?? "PALVELUT";
   const heroSubtitle =
     settings.heroSubtitle ??
-    "Tutustu PSBL:n betonilattia- ja pinnoituspalveluihin.";
+    "Lattiavalut, pinnoitukset ja kovabetonointi Pohjois-Suomessa.";
 
   return (
     <main className="relative flex-1 bg-[var(--dark)] text-[var(--off-white)] overflow-x-hidden w-full">

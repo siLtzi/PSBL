@@ -20,13 +20,13 @@ export default function BottomCta() {
             <h2
               className={`${barlowCondensed.className} font-black text-[clamp(2.5rem,5vw,4.5rem)] uppercase tracking-[2px] leading-[0.95]`}
             >
-              Tehdäänkö tarjous
+              Tarvitsetko
               <br />
-              urakallesi?
+              lattiaurakoitsijan?
             </h2>
             <p className={`${barlow.className} mt-4 text-sm text-[var(--black)]/70 max-w-md leading-relaxed`}>
-              Meidän kauttamme saat betonilattiatyön, kuljetuksen ja pumppauksen
-              helposti samassa paketissa kiinteällä hinnalla.
+              Saat meiltä betonilattiatyön, kuljetuksen ja pumppauksen samassa
+              paketissa kiinteällä hinnalla. Pyydä tarjous niin kerromme lisää.
             </p>
           </div>
 

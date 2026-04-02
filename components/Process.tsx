@@ -1,10 +1,10 @@
 import { barlowCondensed, barlow } from "@/app/fonts";
 
 const steps = [
-  { num: "01", name: "Yhteydenotto", desc: "Soita tai laita viestiä. Vastaamme 24 tunnin sisällä." },
-  { num: "02", name: "Tarjous", desc: "Kiinteähintainen tarjous kartoituksen perusteella." },
-  { num: "03", name: "Toteutus", desc: "Tiimimme hoitaa urakan sovitussa aikataulussa." },
-  { num: "04", name: "Luovutus", desc: "Lattia luovutetaan tarkastettuna — takuulla." },
+  { num: "01", name: "Yhteydenotto", desc: "Kerro meille urakastasi puhelimitse tai lomakkeella. Palaamme asiaan arkipäivän kuluessa." },
+  { num: "02", name: "Kartoitus ja tarjous", desc: "Käymme läpi kohteen tiedot ja toimitamme kiinteähintaisen tarjouksen." },
+  { num: "03", name: "Toteutus", desc: "Hoidamme lattiatyön sovitussa aikataulussa valmiiksi asti." },
+  { num: "04", name: "Luovutus", desc: "Tarkastamme työn laadun ja luovutamme lattian takuulla." },
 ];
 
 export default function Process() {
@@ -16,7 +16,7 @@ export default function Process() {
           Prosessi
         </div>
         <h2 className={`${barlowCondensed.className} font-black text-[clamp(2.5rem,5vw,4.5rem)] uppercase tracking-[2px] leading-[0.95] text-[var(--off-white)]`}>
-          Näin homma<br />etenee.
+          Näin urakka<br />etenee.
         </h2>
       </div>
 

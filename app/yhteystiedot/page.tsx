@@ -13,16 +13,16 @@ const FinlandMap = dynamic(() => import("@/components/FinlandMap"), {
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://psbl.fi";
 
 export const metadata: Metadata = {
-  title: "Yhteystiedot – Ota yhteyttä ja pyydä tarjous",
+  title: "Yhteystiedot | Pyydä tarjous betonilattiatöistä",
   description:
-    "Ota yhteyttä Pohjois-Suomen Betonilattioihin. Palvelemme koko Pohjois-Suomen ja Lapin alueella: Oulu, Rovaniemi, Saariselkä, Levi, Ivalo, Muonio, Kemijärvi, Tornio, Kemi. Pyydä tarjous betonilattiatöistä.",
+    "Ota yhteyttä ja pyydä tarjous betonilattiatöistä. Palvelemme Pohjois-Suomessa ja Lapissa: Oulu, Rovaniemi, Saariselkä, Levi, Ivalo, Muonio, Kemijärvi, Tornio ja Kemi.",
   alternates: {
     canonical: `${SITE_URL}/yhteystiedot`,
   },
   openGraph: {
-    title: "Yhteystiedot – Ota yhteyttä | PSBL",
+    title: "Yhteystiedot | Ota yhteyttä | PSBL",
     description:
-      "Ota yhteyttä Pohjois-Suomen Betonilattioihin. Palvelemme koko Pohjois-Suomen ja Lapin alueella.",
+      "Pyydä tarjous betonilattiatöistä. Palvelemme koko Pohjois-Suomen ja Lapin alueella.",
     url: `${SITE_URL}/yhteystiedot`,
     type: "website",
   },

@@ -16,10 +16,10 @@ export default function About({ content }: { content: AboutContent }) {
   const { headline, lead, body, imageUrl } = content;
 
   const listItems = [
-    "Kaikki valutyöt avaimet käteen",
-    "Kuljetus & pumppaus sisältyy hintaan",
-    "Kiinteä hinnoittelu — ei yllätyksiä",
-    "Koko Pohjois-Suomen alue",
+    "Lattiavalut, pinnoitukset ja kovabetonointi",
+    "Kuljetus ja pumppaus sisältyy hintaan",
+    "Kiinteähintaiset urakat ilman piilokustannuksia",
+    "Toimitamme koko Pohjois-Suomen alueella",
   ];
 
   return (

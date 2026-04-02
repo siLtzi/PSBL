@@ -29,16 +29,16 @@ import referencesFallback from "@/content/referencesFallback.json";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://psbl.fi";
 
 export const metadata: Metadata = {
-  title: "Pohjois-Suomen Betonilattiat – Lattiaurakat laatutakuulla",
+  title: "Pohjois-Suomen Betonilattiat | Lattiavalut ja pinnoitukset",
   description:
-    "Ammattitaitoisia betonilattiaurakoita laatutakuulla yrityksille ja yksityisille koko Pohjois-Suomen alueella. Betonilattiatyöt, pinnoitukset, kovabetonointi ja kiillotetut lattiat.",
+    "Betonilattiaurakoita yrityksille ja yksityisille koko Pohjois-Suomessa. Lattiavalut, pinnoitukset, kovabetonointi ja kiillotetut betonilattiat kiinteällä hinnalla.",
   alternates: {
     canonical: SITE_URL,
   },
   openGraph: {
-    title: "Pohjois-Suomen Betonilattiat – Lattiaurakat laatutakuulla",
+    title: "Pohjois-Suomen Betonilattiat | Lattiavalut ja pinnoitukset",
     description:
-      "Ammattitaitoisia betonilattiaurakoita laatutakuulla yrityksille ja yksityisille koko Pohjois-Suomen alueella.",
+      "Betonilattiaurakoita yrityksille ja yksityisille koko Pohjois-Suomessa. Lattiavalut, pinnoitukset ja kovabetonointi kiinteällä hinnalla.",
     url: SITE_URL,
     type: "website",
   },
@@ -50,9 +50,9 @@ const homePageJsonLd = {
   "@type": "WebPage",
   "@id": `${SITE_URL}/#webpage`,
   url: SITE_URL,
-  name: "Pohjois-Suomen Betonilattiat – Lattiaurakat laatutakuulla",
+  name: "Pohjois-Suomen Betonilattiat | Lattiavalut ja pinnoitukset",
   description:
-    "Ammattitaitoisia betonilattiaurakoita laatutakuulla yrityksille ja yksityisille koko Pohjois-Suomen alueella. Lattiavalut, kuivasirotelattiat, kovabetonointi ja lattiapinnoitukset.",
+    "Betonilattiaurakoita yrityksille ja yksityisille koko Pohjois-Suomessa. Lattiavalut, kuivasirotelattiat, kovabetonointi ja lattiapinnoitukset.",
   inLanguage: "fi",
   isPartOf: {
     "@type": "WebSite",

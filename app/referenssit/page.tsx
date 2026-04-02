@@ -32,16 +32,16 @@ type ReferencesPageSettings = {
 };
 
 export const metadata: Metadata = {
-  title: "Referenssit – Toteutetut betonilattiaurakat Pohjois-Suomessa",
+  title: "Referenssit | Toteutetut betonilattiaurakat Pohjois-Suomessa",
   description:
-    "Katso esimerkkejä toteuttamistamme betonilattiaurakoista: teollisuuslattiat, liiketilat, matkailukohteet ja asuinrakennukset eri puolilta Pohjois-Suomea ja Lappia. Mm. Kauppakeskus Kuukkeli, Tokmanni Ivalo, Lapin keskussairaala.",
+    "Esimerkkejä toteuttamistamme betonilattiaurakoista: teollisuuslattiat, liiketilat, matkailukohteet ja asuinrakennukset Pohjois-Suomessa ja Lapissa.",
   alternates: {
     canonical: `${SITE_URL}/referenssit`,
   },
   openGraph: {
-    title: "Referenssit – Toteutetut betonilattiaurakat | PSBL",
+    title: "Referenssit | Toteutetut betonilattiaurakat | PSBL",
     description:
-      "Näytteitä toteuttamistamme betonilattiaurakoista eri puolilta Pohjois-Suomea ja Lappia.",
+      "Esimerkkejä toteuttamistamme betonilattiaurakoista Pohjois-Suomessa ja Lapissa.",
     url: `${SITE_URL}/referenssit`,
     type: "website",
   },
@@ -59,7 +59,7 @@ export default async function ReferencesPage() {
   const heroTitle = settings?.heroTitle ?? "REFERENSSIT";
   const heroSubtitle =
     settings?.heroSubtitle ??
-    "Ote toteuttamistamme betonilattiaurakoista eri puolilta Pohjois-Suomea. Näistä näet käytännössä, millaisia kohteita PSBL on viime vuosina tehnyt.";
+    "Tässä muutamia esimerkkejä lattiaurakoista, joita olemme toteuttaneet Pohjois-Suomessa viime vuosina.";
 
   // JSON-LD for References page with dynamic items
   const referencesPageJsonLd = {

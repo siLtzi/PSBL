@@ -4,10 +4,10 @@ import { useEffect, useRef } from "react";
 import { barlowCondensed, barlow } from "@/app/fonts";
 
 const stats = [
-  { target: 500, suffix: "+", label: "Projektia" },
-  { target: 15, suffix: "+", label: "Vuotta" },
+  { target: 500, suffix: "+", label: "Toteutettua urakkaa" },
+  { target: 15, suffix: "+", label: "Vuotta kokemusta" },
   { target: 100, suffix: "%", label: "Kiinteä hinta" },
-  { target: 24, suffix: "H", label: "Tarjous" },
+  { target: 24, suffix: "H", label: "Tarjous arkipäivässä" },
 ];
 
 function animateCounter(el: HTMLElement, target: number, suffix: string) {
