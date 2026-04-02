@@ -1,5 +1,5 @@
 import localFont from "next/font/local";
-import { Barlow_Condensed, IBM_Plex_Mono, Barlow } from "next/font/google";
+import { Barlow_Condensed, Barlow } from "next/font/google";
 
 export const scienceGothic = localFont({
   src: [
@@ -30,13 +30,6 @@ export const barlowCondensed = Barlow_Condensed({
   subsets: ["latin"],
   weight: ["600", "700", "800", "900"],
   variable: "--font-barlow-condensed",
-  display: "swap",
-});
-
-export const ibmPlexMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-ibm-plex-mono",
   display: "swap",
 });
 

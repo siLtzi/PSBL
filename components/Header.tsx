@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
-import { barlowCondensed, ibmPlexMono } from "@/app/fonts";
+import { barlowCondensed, barlow } from "@/app/fonts";
 import { gsap } from "gsap";
 
 export default function Header() {
@@ -91,7 +91,7 @@ export default function Header() {
               <Link
                 href={link.href}
                 className={`
-                  ${ibmPlexMono.className}
+                  ${barlow.className}
                   flex items-center h-full px-6
                   text-[0.7rem] font-semibold tracking-[2px] uppercase
                   text-[var(--mid)] border-l border-[var(--steel)]
@@ -142,7 +142,7 @@ export default function Header() {
               </Link>
 
               <div className="mobile-link flex flex-col gap-3">
-                <span className={`${ibmPlexMono.className} text-xs font-bold text-[var(--mid)] uppercase tracking-[3px] border-b border-[var(--steel)] pb-2`}>
+                <span className={`${barlow.className} text-xs font-bold text-[var(--mid)] uppercase tracking-[3px] border-b border-[var(--steel)] pb-2`}>
                   Palvelut
                 </span>
                 <div className="flex flex-col gap-2 pl-1">
@@ -152,7 +152,7 @@ export default function Header() {
                       href={service.href}
                       prefetch={false}
                       onClick={() => setIsMenuOpen(false)}
-                      className={`${ibmPlexMono.className} text-sm font-medium text-[var(--light)] hover:text-[var(--yellow)] transition-all duration-200`}
+                      className={`${barlow.className} text-sm font-medium text-[var(--light)] hover:text-[var(--yellow)] transition-all duration-200`}
                     >
                       {service.label}
                     </Link>
@@ -169,7 +169,7 @@ export default function Header() {
               </Link>
             </nav>
 
-            <div className={`mt-10 mobile-link ${ibmPlexMono.className}`}>
+            <div className={`mt-10 mobile-link ${barlow.className}`}>
               <a href="tel:+358442480482" className="block text-xl font-bold text-[var(--yellow)] mb-1">
                 044 2480 482
               </a>

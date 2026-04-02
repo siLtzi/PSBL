@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { barlowCondensed, ibmPlexMono } from "@/app/fonts";
+import { barlowCondensed, barlow } from "@/app/fonts";
 
 const stats = [
   { target: 500, suffix: "+", label: "Projektia" },
@@ -78,7 +78,7 @@ export default function Stats() {
             {stat.target}{stat.suffix}
           </div>
           <div className={`
-            ${ibmPlexMono.className}
+            ${barlow.className}
             text-[0.6rem] tracking-[2px] uppercase
             text-[var(--mid)] mt-2
           `}>

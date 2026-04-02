@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 import Services, { ServicesContent } from "@/components/Services";
 import { sanityClient } from "@/sanity/config";
 import { servicesSettingsQuery } from "@/sanity/queries";
-import { exo2, scienceGothic } from "@/app/fonts";
+import { barlowCondensed, barlow } from "@/app/fonts";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://psbl.fi";
 
@@ -126,7 +126,7 @@ export default async function PalvelutPage() {
     "Tutustu PSBL:n betonilattia- ja pinnoituspalveluihin.";
 
   return (
-    <main className="relative flex-1 bg-black text-zinc-50 overflow-x-hidden w-full">
+    <main className="relative flex-1 bg-[var(--dark)] text-[var(--off-white)] overflow-x-hidden w-full">
       {/* JSON-LD Structured Data for Services */}
       <script
         type="application/ld+json"
@@ -136,32 +136,24 @@ export default async function PalvelutPage() {
       />
 
       {/* HERO SECTION */}
-      <section className="relative h-[180px] sm:h-[220px] md:h-[260px] lg:h-[300px] overflow-hidden bg-zinc-900">
-        {/* Dark overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/90" />
-
-        {/* Text content */}
-        <div
-          className={`
-            relative z-10 flex items-center justify-center text-center
-            px-4 h-full
-            pt-14 sm:pt-16 md:pt-20
-            ${scienceGothic.className}
-          `}
-        >
-          <div>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight">
+      <section className="relative pt-[60px] overflow-hidden bg-[var(--black)]">
+        <div className="py-16 sm:py-20 md:py-24 px-6 md:px-12">
+          <div className="max-w-7xl mx-auto">
+            <div className={`${barlow.className} text-[0.7rem] font-semibold tracking-[3px] uppercase text-[var(--yellow)] mb-4 flex items-center gap-3`}>
+              <span className="w-2 h-2 bg-[var(--yellow)]" />
+              Palvelut
+            </div>
+            <h1 className={`${barlowCondensed.className} text-4xl sm:text-5xl md:text-6xl font-black tracking-[2px] uppercase text-[var(--off-white)]`}>
               {heroTitle}
             </h1>
             {heroSubtitle && (
-              <p
-                className={`mt-3 text-lg sm:text-xl md:text-2xl text-zinc-200 ${exo2.className}`}
-              >
+              <p className={`${barlow.className} mt-4 text-base sm:text-lg text-[var(--light)] max-w-2xl`}>
                 {heroSubtitle}
               </p>
             )}
           </div>
         </div>
+        <div className="hazard-stripe" />
       </section>
 
       {/* SERVICES GRID */}

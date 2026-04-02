@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { barlowCondensed, ibmPlexMono } from "@/app/fonts";
+import { barlowCondensed, barlow } from "@/app/fonts";
 
 export type ServiceItem = {
   title: string;
@@ -35,7 +35,7 @@ export default function Services({
       {!hideHeading && (
         <div className="flex justify-between items-end mb-12">
           <div>
-            <div className={`${ibmPlexMono.className} text-[0.65rem] font-semibold tracking-[3px] uppercase text-[var(--yellow)] mb-4 flex items-center gap-3`}>
+            <div className={`${barlow.className} text-[0.65rem] font-semibold tracking-[3px] uppercase text-[var(--yellow)] mb-4 flex items-center gap-3`}>
               <span className="text-[var(--concrete-gray)]">{"//"}</span>
               Palvelut
             </div>
@@ -70,7 +70,7 @@ export default function Services({
                   {padded(index)}
                 </div>
                 <div>
-                  <div className={`${ibmPlexMono.className} text-[0.55rem] tracking-[2px] uppercase text-[var(--yellow)] mb-1.5`}>
+                  <div className={`${barlow.className} text-[0.55rem] tracking-[2px] uppercase text-[var(--yellow)] mb-1.5`}>
                     Palvelu
                   </div>
                   <div className={`${barlowCondensed.className} font-extrabold text-[1.5rem] uppercase tracking-[1.5px] text-[var(--off-white)] leading-[1.1]`}>

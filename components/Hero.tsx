@@ -1,6 +1,6 @@
 "use client";
 
-import { barlowCondensed, ibmPlexMono, barlow } from "@/app/fonts";
+import { barlowCondensed, barlow } from "@/app/fonts";
 
 function clean(text: string) {
   if (!text) return text;
@@ -50,7 +50,7 @@ export default function Hero({ content }: { content: HeroContent }) {
       <div className="relative z-[5] flex flex-col justify-end p-8 md:p-12 lg:p-16 w-full">
         {/* Label */}
         <div className={`
-          ${ibmPlexMono.className}
+          ${barlow.className}
           text-[0.7rem] font-semibold tracking-[3px] uppercase
           text-[var(--yellow)] mb-6 flex items-center gap-4
           animate-[slideIn_0.6s_0.2s_forwards] opacity-0
@@ -62,15 +62,19 @@ export default function Hero({ content }: { content: HeroContent }) {
         {/* H1 */}
         <h1 className={`
           ${barlowCondensed.className}
-          font-black text-[clamp(4rem,10vw,9rem)] leading-[0.88]
-          uppercase tracking-[2px] text-[var(--off-white)]
+          font-black uppercase tracking-[2px] text-[var(--off-white)]
           mb-8 animate-[slideIn_0.6s_0.4s_forwards] opacity-0
+          md:ml-[10%] lg:ml-[15%]
         `}>
-          Valetaan<br />
-          <span className="text-[var(--black)] bg-[var(--yellow)] px-[0.15em] inline shadow-[4px_0_0_var(--yellow),_-4px_0_0_var(--yellow)]">
+          <span className="block text-[clamp(2.2rem,5vw,4.5rem)] leading-none mb-[-0.12em] ml-[0.4em]">
+            Valetaan
+          </span>
+          <span className="block text-[clamp(4rem,10vw,9rem)] leading-[0.88] text-[var(--black)] bg-[var(--yellow)] px-[0.15em] shadow-[4px_0_0_var(--yellow),_-4px_0_0_var(--yellow)] w-fit">
             lattiat
-          </span><br />
-          kuntoon.
+          </span>
+          <span className="block text-[clamp(2.2rem,5vw,4.5rem)] leading-none mt-[-0.08em] ml-[0.4em]">
+            kuntoon.
+          </span>
         </h1>
 
         {/* Subtitle */}

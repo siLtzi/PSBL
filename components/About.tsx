@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { barlowCondensed, ibmPlexMono, barlow } from "@/app/fonts";
+import { barlowCondensed, barlow } from "@/app/fonts";
 
 export type AboutContent = {
   headline: string;
@@ -44,7 +44,7 @@ export default function About({ content }: { content: AboutContent }) {
 
       {/* Right: Content */}
       <div className="p-10 md:p-16 lg:p-20 flex flex-col justify-center bg-[var(--panel)] border-l-0 lg:border-l-[3px] border-t-[3px] lg:border-t-0 border-[var(--steel)]">
-        <div className={`${ibmPlexMono.className} text-[0.65rem] font-semibold tracking-[3px] uppercase text-[var(--yellow)] mb-4 flex items-center gap-3`}>
+        <div className={`${barlow.className} text-[0.65rem] font-semibold tracking-[3px] uppercase text-[var(--yellow)] mb-4 flex items-center gap-3`}>
           <span className="text-[var(--concrete-gray)]">{"//"}</span>
           Yritys
         </div>
@@ -64,7 +64,7 @@ export default function About({ content }: { content: AboutContent }) {
             <div
               key={i}
               className={`
-                ${ibmPlexMono.className}
+                ${barlow.className}
                 flex items-center gap-3
                 text-[0.8rem] font-medium text-[var(--light)]
                 transition-colors duration-200 hover:text-[var(--off-white)]

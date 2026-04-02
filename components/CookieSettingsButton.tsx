@@ -1,6 +1,6 @@
 "use client";
 
-import { exo2 } from "@/app/fonts";
+import { barlow } from "@/app/fonts";
 
 /**
  * Small button that dispatches `reset-cookie-consent` event.
@@ -11,7 +11,7 @@ export default function CookieSettingsButton() {
     <button
       onClick={() => window.dispatchEvent(new Event("reset-cookie-consent"))}
       className={`
-        ${exo2.className}
+        ${barlow.className}
         inline-flex items-center
         px-4 py-2 text-xs font-bold uppercase tracking-wider
         border border-zinc-600 text-zinc-300 rounded-lg

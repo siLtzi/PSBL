@@ -3,7 +3,7 @@
 import { useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { barlowCondensed, ibmPlexMono } from "@/app/fonts";
+import { barlowCondensed, barlow } from "@/app/fonts";
 
 export type ReferenceItem = {
   _key?: string;
@@ -56,7 +56,7 @@ export default function References({
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-12 gap-4 px-6 md:px-12">
         <div>
           <div
-            className={`${ibmPlexMono.className} text-[0.65rem] font-semibold tracking-[3px] uppercase text-[var(--yellow)] mb-4 flex items-center gap-3`}
+            className={`${barlow.className} text-[0.65rem] font-semibold tracking-[3px] uppercase text-[var(--yellow)] mb-4 flex items-center gap-3`}
           >
             <span className="text-[var(--concrete-gray)]">{"//"}</span>
             Referenssit
@@ -99,7 +99,7 @@ export default function References({
 
           <Link
             href="/referenssit"
-            className={`${ibmPlexMono.className} text-xs tracking-[2px] uppercase text-[var(--yellow)] border border-[var(--yellow)] px-5 py-2.5 hover:bg-[var(--yellow)] hover:text-[var(--black)] transition-all duration-300 shrink-0 hidden sm:block`}
+            className={`${barlow.className} text-xs tracking-[2px] uppercase text-[var(--yellow)] border border-[var(--yellow)] px-5 py-2.5 hover:bg-[var(--yellow)] hover:text-[var(--black)] transition-all duration-300 shrink-0 hidden sm:block`}
           >
             Kaikki kohteet →
           </Link>
@@ -138,7 +138,7 @@ export default function References({
               <div className="absolute inset-0 flex flex-col justify-end p-5 z-[2]">
                 {ref.tag && (
                   <span
-                    className={`${ibmPlexMono.className} inline-block text-[0.55rem] tracking-[2px] uppercase bg-[var(--yellow)] text-[var(--black)] px-2 py-0.5 mb-2 w-fit font-semibold`}
+                    className={`${barlow.className} inline-block text-[0.55rem] tracking-[2px] uppercase bg-[var(--yellow)] text-[var(--black)] px-2 py-0.5 mb-2 w-fit font-semibold`}
                   >
                     {ref.tag}
                   </span>
@@ -153,7 +153,7 @@ export default function References({
                 )}
 
                 <div
-                  className={`${ibmPlexMono.className} mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.6rem] tracking-[1px] text-[var(--light)]`}
+                  className={`${barlow.className} mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.6rem] tracking-[1px] text-[var(--light)]`}
                 >
                   {ref.location && <span>{ref.location}</span>}
                   {typeof ref.sizeM2 === "number" && ref.sizeM2 > 0 && (
@@ -177,7 +177,7 @@ export default function References({
       <div className="mt-8 px-6 md:px-12 sm:hidden">
         <Link
           href="/referenssit"
-          className={`${ibmPlexMono.className} text-xs tracking-[2px] uppercase text-[var(--yellow)] border border-[var(--yellow)] px-5 py-2.5 hover:bg-[var(--yellow)] hover:text-[var(--black)] transition-all duration-300 inline-block`}
+          className={`${barlow.className} text-xs tracking-[2px] uppercase text-[var(--yellow)] border border-[var(--yellow)] px-5 py-2.5 hover:bg-[var(--yellow)] hover:text-[var(--black)] transition-all duration-300 inline-block`}
         >
           Kaikki kohteet →
         </Link>

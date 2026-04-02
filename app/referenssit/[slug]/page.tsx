@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import { sanityClient } from "@/sanity/config";
 import { referenceBySlugQuery } from "@/sanity/queries";
 import { urlFor } from "@/sanity/lib/image";
-import { exo2, scienceGothicCaps } from "@/app/fonts";
+import { barlowCondensed, barlow } from "@/app/fonts";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://psbl.fi";
 
@@ -173,7 +173,7 @@ export default async function ReferencePage({
   };
 
   return (
-    <main className="bg-black text-zinc-50 min-h-screen">
+    <main className="bg-[var(--dark)] text-[var(--off-white)] min-h-screen">
       {/* JSON-LD Structured Data for Reference */}
       <script
         type="application/ld+json"
@@ -183,61 +183,55 @@ export default async function ReferencePage({
       />
 
       {/* HERO */}
-      <section className="relative w-full bg-zinc-950 pt-28 pb-14 sm:pt-32 sm:pb-16 md:pt-36 md:pb-20">
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-zinc-950/90 to-zinc-950" />
+      <section className="relative w-full bg-[var(--black)] pt-[60px]">
+        <div className="py-16 sm:py-20 md:py-24 px-6 md:px-12">
+          <div className="max-w-4xl mx-auto">
+            {tag && (
+              <div className={`${barlow.className} inline-flex items-center bg-[var(--yellow)] text-[var(--black)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] mb-4`}>
+                {tag}
+              </div>
+            )}
 
-        <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
-          {tag && (
-            <p
+            <h1
               className={`
-                ${exo2.className}
-                inline-flex items-center rounded-full
-                bg-yellow-400 text-zinc-900
-                px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] mb-4
+                ${barlowCondensed.className} uppercase
+                text-3xl sm:text-4xl md:text-5xl lg:text-6xl
+                font-black tracking-[2px]
               `}
             >
-              {tag}
-            </p>
-          )}
+              {title}
+            </h1>
 
-          <h1
-            className={`
-              ${scienceGothicCaps}
-              text-3xl sm:text-4xl md:text-5xl lg:text-6xl
-              font-black tracking-tight
-            `}
-          >
-            {title}
-          </h1>
-
-          {(location || year || sizeM2 || client) && (
-            <p
-              className={`
-                ${exo2.className}
-                mt-4 text-sm sm:text-base text-zinc-400
-              `}
-            >
-              {location && <span>{location}</span>}
-              {year && <span> • {year}</span>}
-              {typeof sizeM2 === "number" && sizeM2 > 0 && (
-                <span> • {sizeM2} m²</span>
-              )}
-              {client && <span> • Tilaaja: {client}</span>}
-            </p>
-          )}
+            {(location || year || sizeM2 || client) && (
+              <p
+                className={`
+                  ${barlow.className}
+                  mt-4 text-sm sm:text-base text-[var(--light)]
+                `}
+              >
+                {location && <span>{location}</span>}
+                {year && <span> • {year}</span>}
+                {typeof sizeM2 === "number" && sizeM2 > 0 && (
+                  <span> • {sizeM2} m²</span>
+                )}
+                {client && <span> • Tilaaja: {client}</span>}
+              </p>
+            )}
+          </div>
         </div>
+        <div className="hazard-stripe" />
       </section>
 
       {/* CONTENT */}
-      <section className="py-12 md:py-16 lg:py-20 bg-zinc-950">
+      <section className="py-12 md:py-16 lg:py-20">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 space-y-10">
           {/* Excerpt + long description */}
           <div>
             {excerpt && (
               <p
                 className={`
-                  ${exo2.className}
-                  text-sm sm:text-base text-zinc-200 mb-4
+                  ${barlow.className}
+                  text-sm sm:text-base text-[var(--off-white)] mb-4
                 `}
               >
                 {excerpt}
@@ -247,8 +241,8 @@ export default async function ReferencePage({
             {body && (
               <div
                 className={`
-                  ${exo2.className}
-                  text-sm sm:text-base text-zinc-200 leading-relaxed prose prose-invert max-w-none
+                  ${barlow.className}
+                  text-sm sm:text-base text-[var(--light)] leading-relaxed prose prose-invert max-w-none
                 `}
               >
                 <PortableText value={body} components={portableTextComponents} />
@@ -261,8 +255,8 @@ export default async function ReferencePage({
             <div>
               <h2
                 className={`
-                  ${scienceGothicCaps}
-                  text-xl sm:text-2xl font-black mb-4
+                  ${barlowCondensed.className} uppercase
+                  text-xl sm:text-2xl font-black tracking-[2px] mb-4
                 `}
               >
                 KUVAT KOHTEESTA

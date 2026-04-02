@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Footer from "@/components/Footer";
-import { exo2, scienceGothic } from "@/app/fonts";
+import { barlowCondensed, barlow } from "@/app/fonts";
 import ContactForm from "@/components/ContactForm";
 import { sanityClient } from "@/sanity/config";
 import { contactSettingsQuery } from "@/sanity/queries";
@@ -119,7 +119,7 @@ export default async function ContactPage() {
   };
 
   return (
-    <main className="bg-white text-zinc-900">
+    <main className="bg-[var(--dark)] text-[var(--off-white)]">
       {/* JSON-LD Structured Data for Contact Page */}
       <script
         type="application/ld+json"
@@ -129,31 +129,29 @@ export default async function ContactPage() {
       />
 
       {/* HERO */}
-      <section className="relative h-[180px] sm:h-[220px] md:h-[260px] lg:h-[300px] w-full overflow-hidden bg-zinc-900">
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/80" />
-
-        <div className="relative z-10 flex h-full items-center justify-center px-4 text-center">
-          <div>
+      <section className="relative w-full overflow-hidden bg-[var(--black)] pt-[60px]">
+        <div className="py-16 sm:py-20 md:py-24 px-6 md:px-12">
+          <div className="max-w-6xl mx-auto">
+            <div className={`${barlow.className} text-[0.7rem] font-semibold tracking-[3px] uppercase text-[var(--yellow)] mb-4 flex items-center gap-3`}>
+              <span className="w-2 h-2 bg-[var(--yellow)]" />
+              Yhteystiedot
+            </div>
             <h1
               className={`
-                ${scienceGothic.className}
-                text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight
+                ${barlowCondensed.className}
+                text-3xl sm:text-4xl md:text-5xl font-black tracking-[2px] uppercase
               `}
             >
               {heroTitle}
             </h1>
             {heroSubtitle && (
-              <p
-                className={`
-                  ${exo2.className}
-                  mt-3 text-lg sm:text-xl text-zinc-200
-                `}
-              >
+              <p className={`${barlow.className} mt-4 text-base sm:text-lg text-[var(--light)] max-w-2xl`}>
                 {heroSubtitle}
               </p>
             )}
           </div>
         </div>
+        <div className="hazard-stripe" />
       </section>
 
       {/* MAIN CONTENT */}
@@ -165,7 +163,7 @@ export default async function ContactPage() {
             <div className="max-w-xl mx-auto">
               <h2
                 className={`
-                  ${scienceGothic.className}
+                  ${barlowCondensed.className}
                   text-2xl sm:text-3xl md:text-4xl font-black tracking-tight
                 `}
               >
@@ -174,8 +172,8 @@ export default async function ContactPage() {
 
               <p
                 className={`
-                  ${exo2.className}
-                  mt-4 text-sm sm:text-base text-zinc-700 leading-relaxed
+                  ${barlow.className}
+                  mt-4 text-sm sm:text-base text-[var(--light)] leading-relaxed
                 `}
               >
                 {introBody}
@@ -185,12 +183,12 @@ export default async function ContactPage() {
               <div className="mt-8 flex flex-row gap-6 items-start">
                 {/* LEFT SIDE: company + billing */}
                 <div
-                  className={`${exo2.className} flex-1 space-y-6 text-sm sm:text-base`}
+                  className={`${barlow.className} flex-1 space-y-6 text-sm sm:text-base text-[var(--light)]`}
                 >
                   {/* Company info */}
                   <div>
                     {company.name && (
-                      <p className="font-semibold">{company.name}</p>
+                      <p className="font-semibold text-[var(--off-white)]">{company.name}</p>
                     )}
                     {company.businessId && (
                       <p>Y-tunnus: {company.businessId}</p>
@@ -198,13 +196,13 @@ export default async function ContactPage() {
                     {company.location && <p>{company.location}</p>}
 
                     <div className="mt-4 space-y-1">
-                      <p className="font-semibold">Roni Nyländen</p>
+                      <p className="font-semibold text-[var(--off-white)]">Roni Nyländen</p>
                       {company.email && (
                         <p>
-                          <span className="font-semibold">Sähköposti: </span>
+                          <span className="font-semibold text-[var(--off-white)]">Sähköposti: </span>
                           <a
                             href={`mailto:${company.email}`}
-                            className="underline underline-offset-2 hover:text-zinc-600"
+                            className="text-[var(--yellow)] underline underline-offset-2 hover:text-[var(--yellow-hot)]"
                           >
                             {company.email}
                           </a>
@@ -212,10 +210,10 @@ export default async function ContactPage() {
                       )}
                       {company.phone && (
                         <p>
-                          <span className="font-semibold">Puhelin: </span>
+                          <span className="font-semibold text-[var(--off-white)]">Puhelin: </span>
                           <a
                             href={`tel:${company.phone.replace(/\s/g, "")}`}
-                            className="underline underline-offset-2 hover:text-zinc-600"
+                            className="text-[var(--yellow)] underline underline-offset-2 hover:text-[var(--yellow-hot)]"
                           >
                             {company.phone}
                           </a>
@@ -225,11 +223,11 @@ export default async function ContactPage() {
                   </div>
 
                   {/* Billing info */}
-                  <div className="pt-2 border-t border-zinc-200">
+                  <div className="pt-2 border-t border-[var(--steel)]">
                     <h3
                       className={`
-                        ${scienceGothic.className}
-                        text-xl sm:text-2xl font-black tracking-tight mb-3
+                        ${barlowCondensed.className}
+                        text-xl sm:text-2xl font-black tracking-[2px] uppercase mb-3
                       `}
                     >
                       LASKUTUSTIEDOT
@@ -238,14 +236,14 @@ export default async function ContactPage() {
                     <div className="space-y-3">
                       {billing.eInvoiceAddress && (
                         <div>
-                          <p className="font-semibold">Verkkolaskuosoite:</p>
+                          <p className="font-semibold text-[var(--off-white)]">Verkkolaskuosoite:</p>
                           <p>{billing.eInvoiceAddress}</p>
                         </div>
                       )}
 
                       {(billing.operatorName || billing.operatorCode) && (
                         <div>
-                          <p className="font-semibold">Välittäjä:</p>
+                          <p className="font-semibold text-[var(--off-white)]">Välittäjä:</p>
                           {billing.operatorName && (
                             <p>{billing.operatorName}</p>
                           )}

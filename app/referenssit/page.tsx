@@ -8,7 +8,7 @@ import {
   allReferencesQuery,
   referencesPageSettingsQuery,
 } from "@/sanity/queries";
-import { exo2, scienceGothic } from "@/app/fonts";
+import { barlowCondensed, barlow } from "@/app/fonts";
 import Footer from "@/components/Footer";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://psbl.fi";
@@ -85,7 +85,7 @@ export default async function ReferencesPage() {
   };
 
   return (
-    <main className="bg-black text-zinc-50 min-h-screen overflow-x-hidden">
+    <main className="bg-[var(--dark)] text-[var(--off-white)] min-h-screen overflow-x-hidden">
       {/* JSON-LD Structured Data for References */}
       <script
         type="application/ld+json"
@@ -94,41 +94,46 @@ export default async function ReferencesPage() {
         }}
       />
 
-      {/* HERO / HEADER */}
-      <section className="relative w-full overflow-hidden bg-zinc-900">
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/90" />
+      {/* HERO */}
+      <section className="relative w-full overflow-hidden bg-[var(--black)] pt-[60px]">
+        <div className="py-16 sm:py-20 md:py-24 px-6 md:px-12">
+          <div className="max-w-7xl mx-auto">
+            <div className={`${barlow.className} text-[0.7rem] font-semibold tracking-[3px] uppercase text-[var(--yellow)] mb-4 flex items-center gap-3`}>
+              <span className="w-2 h-2 bg-[var(--yellow)]" />
+              Referenssit
+            </div>
+            <h1
+              className={`
+                ${barlowCondensed.className}
+                text-4xl sm:text-5xl md:text-6xl
+                font-black tracking-[2px] uppercase
+              `}
+            >
+              {heroTitle}
+            </h1>
 
-        <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24 pt-28 sm:pt-32 md:pt-36">
-          <h1
-            className={`
-              ${scienceGothic.className}
-              text-4xl sm:text-5xl md:text-6xl
-              font-black tracking-tight text-center uppercase
-            `}
-          >
-            {heroTitle}
-          </h1>
-
-          <p
-            className={`
-              ${exo2.className}
-              mt-4 text-base sm:text-lg md:text-xl text-zinc-200 text-center max-w-3xl mx-auto
-              leading-relaxed
-            `}
-          >
-            {heroSubtitle}
-          </p>
+            <p
+              className={`
+                ${barlow.className}
+                mt-4 text-base sm:text-lg text-[var(--light)] max-w-3xl
+                leading-relaxed
+              `}
+            >
+              {heroSubtitle}
+            </p>
+          </div>
         </div>
+        <div className="hazard-stripe" />
       </section>
 
       {/* CONTENT */}
-      <section className="py-16 sm:py-24 bg-zinc-950">
+      <section className="py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {references.length === 0 ? (
             <p
               className={`
-                ${exo2.className}
-                text-sm sm:text-base text-zinc-400 text-center
+                ${barlow.className}
+                text-sm sm:text-base text-[var(--mid)] text-center
               `}
             >
               Referenssejä ei ole vielä lisätty. Päivitämme sivua pian.
@@ -142,7 +147,7 @@ export default async function ReferencesPage() {
                   prefetch={false}
                   className="group flex flex-col h-full min-w-0"
                 >
-                  <article className="relative flex flex-col h-full overflow-hidden rounded-2xl sm:rounded-3xl border border-zinc-800 bg-zinc-900/40 transition-all duration-300 hover:border-zinc-700 hover:bg-zinc-900/80 hover:shadow-2xl hover:shadow-yellow-500/5">
+                  <article className="relative flex flex-col h-full overflow-hidden border border-[var(--steel)] bg-[var(--panel)] transition-all duration-300 hover:border-[var(--yellow)]/40 hover:bg-[var(--steel)] hover:shadow-2xl hover:shadow-[var(--yellow)]/5">
                     
                     {/* Image Container */}
                     <div className="relative aspect-[16/10] sm:aspect-[4/3] w-full overflow-hidden">
@@ -155,8 +160,8 @@ export default async function ReferencesPage() {
                           className="object-cover transition-transform duration-700 group-hover:scale-110"
                         />
                       ) : (
-                        <div className="absolute inset-0 bg-zinc-800 flex items-center justify-center">
-                          <Building2 className="h-10 w-10 sm:h-16 sm:w-16 text-zinc-600" />
+                        <div className="absolute inset-0 bg-[var(--steel)] flex items-center justify-center">
+                          <Building2 className="h-10 w-10 sm:h-16 sm:w-16 text-[var(--mid)]" />
                         </div>
                       )}
                       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 transition-opacity group-hover:opacity-40" />
@@ -166,9 +171,9 @@ export default async function ReferencesPage() {
                         <div className="absolute top-4 left-4 z-10">
                           <span
                             className={`
-                              ${exo2.className}
-                              inline-flex items-center rounded-full
-                              bg-yellow-500/90 text-zinc-950 backdrop-blur-sm
+                              ${barlow.className}
+                              inline-flex items-center
+                              bg-[var(--yellow)] text-[var(--black)]
                               px-3 py-1 text-[10px] font-bold uppercase tracking-widest shadow-lg
                             `}
                           >
@@ -184,44 +189,44 @@ export default async function ReferencesPage() {
                       <div className="flex items-start justify-between gap-2">
                         <h2
                           className={`
-                            ${scienceGothic.className}
-                            text-lg sm:text-xl md:text-2xl font-bold text-zinc-100 leading-tight
-                            uppercase tracking-wide transition-colors group-hover:text-yellow-400
+                            ${barlowCondensed.className}
+                            text-lg sm:text-xl md:text-2xl font-bold text-[var(--off-white)] leading-tight
+                            uppercase tracking-wide transition-colors group-hover:text-[var(--yellow)]
                             break-words hyphens-auto min-w-0
                           `}
                           lang="fi"
                         >
                           {ref.title}
                         </h2>
-                        <ArrowUpRight className="h-5 w-5 text-zinc-500 transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-yellow-400 flex-shrink-0 mt-1" />
+                        <ArrowUpRight className="h-5 w-5 text-[var(--mid)] transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-[var(--yellow)] flex-shrink-0 mt-1" />
                       </div>
 
                       {/* Metadata Row */}
                       <div className={`
-                        ${exo2.className}
-                        mt-3 sm:mt-4 flex flex-wrap items-center gap-x-3 sm:gap-x-4 gap-y-1.5 sm:gap-y-2 text-[11px] sm:text-xs font-medium text-zinc-400
+                        ${barlow.className}
+                        mt-3 sm:mt-4 flex flex-wrap items-center gap-x-3 sm:gap-x-4 gap-y-1.5 sm:gap-y-2 text-[11px] sm:text-xs font-medium text-[var(--mid)]
                       `}>
                         {ref.location && (
                           <div className="flex items-center gap-1.5">
-                            <MapPin className="h-3.5 w-3.5 text-zinc-500" />
+                            <MapPin className="h-3.5 w-3.5 text-[var(--concrete-gray)]" />
                             <span>{ref.location}</span>
                           </div>
                         )}
                         {ref.year && (
                           <div className="flex items-center gap-1.5">
-                            <Calendar className="h-3.5 w-3.5 text-zinc-500" />
+                            <Calendar className="h-3.5 w-3.5 text-[var(--concrete-gray)]" />
                             <span>{ref.year}</span>
                           </div>
                         )}
                         {typeof ref.sizeM2 === "number" && ref.sizeM2 > 0 && (
                           <div className="flex items-center gap-1.5">
-                            <Ruler className="h-3.5 w-3.5 text-zinc-500" />
+                            <Ruler className="h-3.5 w-3.5 text-[var(--concrete-gray)]" />
                             <span>{ref.sizeM2} m²</span>
                           </div>
                         )}
                         {ref.client && (
                           <div className="flex items-center gap-1.5">
-                            <HardHat className="h-3.5 w-3.5 text-zinc-500" />
+                            <HardHat className="h-3.5 w-3.5 text-[var(--concrete-gray)]" />
                             <span>{ref.client}</span>
                           </div>
                         )}
@@ -231,8 +236,8 @@ export default async function ReferencesPage() {
                       {ref.excerpt && (
                         <p
                           className={`
-                            ${exo2.className}
-                            mt-3 sm:mt-4 text-xs sm:text-sm text-zinc-400 leading-relaxed line-clamp-2 sm:line-clamp-3 flex-1
+                            ${barlow.className}
+                            mt-3 sm:mt-4 text-xs sm:text-sm text-[var(--light)] leading-relaxed line-clamp-2 sm:line-clamp-3 flex-1
                           `}
                         >
                           {ref.excerpt}

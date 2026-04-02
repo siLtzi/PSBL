@@ -10,7 +10,7 @@ import {
   servicePageBySlugQuery,
 } from "@/sanity/queries";
 import { urlFor } from "@/sanity/lib/image";
-import { exo2, scienceGothic, scienceGothicCaps } from "@/app/fonts";
+import { barlowCondensed, barlow } from "@/app/fonts";
 import Footer from "@/components/Footer";
 import ServiceReferencesGallery from "@/components/ServiceReferencesGallery";
 import BottomCta from "@/components/BottomCta";
@@ -177,7 +177,7 @@ export default async function ServicePage({
   };
 
   return (
-    <main className="bg-white text-zinc-900">
+    <main className="bg-[var(--dark)] text-[var(--off-white)]">
       {/* JSON-LD Structured Data for Service */}
       <script
         type="application/ld+json"
@@ -187,43 +187,39 @@ export default async function ServicePage({
       />
 
       {/* HERO */}
-      <section className="relative w-full overflow-hidden bg-zinc-900 text-white">
-        <div className="relative h-[180px] sm:h-[220px] md:h-[260px] lg:h-[300px]">
-          <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/40 to-black/85" />
-
-          <div className="relative z-10 flex h-full items-end sm:items-center justify-center px-6 sm:px-8 pb-6 sm:pb-0 pt-16 sm:pt-0 text-center">
-            <div>
-              <h1
-                className={`
-                  ${scienceGothicCaps}
-                  text-2xl sm:text-4xl md:text-5xl
-                  font-black tracking-tight break-words
-                `}
-              >
-                {title}
-              </h1>
-              {heroSubtitle && (
-                <p
-                  className={`
-                    ${exo2.className}
-                    mt-3 text-base sm:text-lg md:text-xl text-zinc-200
-                  `}
-                >
-                  {heroSubtitle}
-                </p>
-              )}
+      <section className="relative w-full overflow-hidden bg-[var(--black)] pt-[60px]">
+        <div className="py-16 sm:py-20 md:py-24 px-6 md:px-12">
+          <div className="max-w-4xl mx-auto">
+            <div className={`${barlow.className} text-[0.7rem] font-semibold tracking-[3px] uppercase text-[var(--yellow)] mb-4 flex items-center gap-3`}>
+              <span className="w-2 h-2 bg-[var(--yellow)]" />
+              Palvelu
             </div>
+            <h1
+              className={`
+                ${barlowCondensed.className} uppercase
+                text-3xl sm:text-4xl md:text-5xl lg:text-6xl
+                font-black tracking-[2px] break-words
+              `}
+            >
+              {title}
+            </h1>
+            {heroSubtitle && (
+              <p className={`${barlow.className} mt-4 text-base sm:text-lg text-[var(--light)] max-w-2xl`}>
+                {heroSubtitle}
+              </p>
+            )}
           </div>
         </div>
+        <div className="hazard-stripe" />
       </section>
 
       {/* MAIN CONTENT */}
       <section className="py-12 md:py-16 lg:py-20">
         <div className="mx-auto flex w-full max-w-4xl flex-col gap-16 px-4 sm:px-6 lg:px-8">
 
-          {/* Hero image + intro title */}
+          {/* Hero image */}
           {sideImageUrl && (
-            <div className="relative h-72 sm:h-80 md:h-96 w-full overflow-hidden rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.12)]">
+            <div className="relative h-72 sm:h-80 md:h-96 w-full overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
               <Image
                 src={sideImageUrl}
                 alt={title}
@@ -235,11 +231,11 @@ export default async function ServicePage({
             </div>
           )}
 
-          {/* Content body – full width for inline images */}
+          {/* Content body */}
           <div>
             {contentTitle && (
               <h2
-                className={`${scienceGothicCaps} text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-6`}
+                className={`${barlowCondensed.className} uppercase text-2xl sm:text-3xl md:text-4xl font-black tracking-[2px] mb-6`}
               >
                 {contentTitle}
               </h2>
@@ -247,19 +243,19 @@ export default async function ServicePage({
 
             {contentBody && (
               <div
-                className={`${exo2.className} text-base sm:text-lg text-zinc-700 leading-relaxed`}
+                className={`${barlow.className} text-base sm:text-lg text-[var(--light)] leading-relaxed`}
               >
                 <PortableText value={contentBody} components={portableTextComponents} />
               </div>
             )}
           </div>
 
-          {/* Suositukset (tekniset tiedot) */}
+          {/* Specs section */}
           {hasSpecs && (
-            <div className="bg-zinc-50 border border-zinc-200 rounded-2xl px-6 py-8 sm:px-8 sm:py-10">
+            <div className="bg-[var(--panel)] border border-[var(--steel)] px-6 py-8 sm:px-8 sm:py-10">
               {specsTitle && (
                 <h3
-                  className={`${scienceGothicCaps} text-xl sm:text-2xl font-black mb-4`}
+                  className={`${barlowCondensed.className} uppercase text-xl sm:text-2xl font-black tracking-[2px] mb-4`}
                 >
                   {specsTitle}
                 </h3>
@@ -267,7 +263,7 @@ export default async function ServicePage({
 
               {specsBody && (
                 <div
-                  className={`${exo2.className} text-base sm:text-lg text-zinc-700 leading-relaxed`}
+                  className={`${barlow.className} text-base sm:text-lg text-[var(--light)] leading-relaxed`}
                 >
                   <PortableText value={specsBody} components={portableTextComponents} />
                 </div>
@@ -275,15 +271,12 @@ export default async function ServicePage({
             </div>
           )}
 
-          {/* Toiminta-alue / paikkakunnat erillisenä keltaisena SEO-laattana */}
+          {/* Coverage area */}
           {hasCoverage && (
-            <div className="rounded-2xl border border-yellow-300 bg-yellow-50 px-6 py-8 sm:px-8 sm:py-10">
+            <div className="border border-[var(--yellow)] bg-[var(--yellow)]/10 px-6 py-8 sm:px-8 sm:py-10">
               {coverageTitle && (
                 <h3
-                  className={`
-          ${scienceGothicCaps}
-          text-xl sm:text-2xl font-black mb-3
-        `}
+                  className={`${barlowCondensed.className} uppercase text-xl sm:text-2xl font-black tracking-[2px] mb-3`}
                 >
                   {coverageTitle}
                 </h3>
@@ -295,11 +288,11 @@ export default async function ServicePage({
                     <span
                       key={`${place}-${i}`}
                       className={`
-              ${exo2.className}
-              inline-flex items-center rounded-full 
-              bg-yellow-400 text-zinc-900 
-              px-3 py-1 text-xs sm:text-sm font-semibold
-            `}
+                        ${barlow.className}
+                        inline-flex items-center
+                        bg-[var(--yellow)] text-[var(--black)]
+                        px-3 py-1 text-xs sm:text-sm font-semibold
+                      `}
                     >
                       {place}
                     </span>
@@ -309,13 +302,13 @@ export default async function ServicePage({
             </div>
           )}
 
-          {/* References gallery (optional) */}
+          {/* References gallery */}
           {hasReferences && (
             <section>
               <h3
                 className={`
-                  ${scienceGothicCaps}
-                  text-xl sm:text-2xl md:text-3xl font-black tracking-tight mb-6
+                  ${barlowCondensed.className} uppercase
+                  text-xl sm:text-2xl md:text-3xl font-black tracking-[2px] mb-6
                 `}
               >
                 REFERENSSIT

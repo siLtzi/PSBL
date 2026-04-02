@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Script from "next/script";
-import { exo2 } from "@/app/fonts";
+import { barlow } from "@/app/fonts";
 
 const CONSENT_KEY = "psbl-cookie-consent";
 type ConsentValue = "all" | "necessary" | null;
@@ -76,7 +76,7 @@ export default function CookieConsent() {
             border-t border-zinc-800 bg-zinc-950/95 backdrop-blur-md
             shadow-[0_-8px_30px_rgba(0,0,0,0.4)]
             animate-slide-up
-            ${exo2.className}
+            ${barlow.className}
           `}
         >
           <div className="mx-auto max-w-5xl px-4 py-4 sm:py-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">

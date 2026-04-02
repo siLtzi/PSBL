@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { X } from "lucide-react";
-import { exo2 } from "@/app/fonts";
+import { barlow } from "@/app/fonts";
 import { urlFor } from "@/sanity/lib/image";
 
 type ReferenceItem = {
@@ -40,9 +40,9 @@ export default function ServiceReferencesGallery({
               type="button"
               onClick={() => setActiveRef(ref)}
               className="
-                group relative overflow-hidden rounded-xl border border-zinc-200 
-                bg-zinc-50 shadow-sm text-left cursor-pointer
-                focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400
+                group relative overflow-hidden border border-[var(--steel)]
+                bg-[var(--panel)] text-left cursor-pointer
+                focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--yellow)]
               "
             >
               <div className="relative h-52 w-full">
@@ -77,15 +77,15 @@ export default function ServiceReferencesGallery({
               {(ref.caption || ref.tag) && (
                 <div className="px-4 py-3">
                   {ref.tag && (
-                    <p className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-1">
+                    <p className="text-[11px] uppercase tracking-[0.16em] text-[var(--mid)] mb-1">
                       {ref.tag}
                     </p>
                   )}
                   {ref.caption && (
                     <p
                       className={`
-                        ${exo2.className}
-                        text-sm text-zinc-800
+                        ${barlow.className}
+                        text-sm text-[var(--off-white)]
                       `}
                     >
                       {ref.caption}
@@ -128,7 +128,7 @@ export default function ServiceReferencesGallery({
             </button>
 
             {/* Large media */}
-            <div className="relative w-full h-[55vh] sm:h-[60vh] md:h-[70vh] overflow-hidden rounded-xl border border-zinc-700 bg-black">
+            <div className="relative w-full h-[55vh] sm:h-[60vh] md:h-[70vh] overflow-hidden border border-[var(--steel)] bg-black">
               {activeRef.videoUrl ? (
                 <video
                   src={activeRef.videoUrl}
@@ -159,7 +159,7 @@ export default function ServiceReferencesGallery({
                 {activeRef.caption && (
                   <p
                     className={`
-                      ${exo2.className}
+                      ${barlow.className}
                       text-sm text-zinc-100
                     `}
                   >

@@ -2,8 +2,8 @@
 
 import { useState, FormEvent } from "react";
 import dynamic from "next/dynamic";
-import { exo2, scienceGothic } from "@/app/fonts";
-import { ArrowBigRightDash, MapPin, CheckCircle2 } from "lucide-react";
+import { barlowCondensed, barlow } from "@/app/fonts";
+import { MapPin, CheckCircle2 } from "lucide-react";
 import { trackEvent } from "@/lib/analytics"; // 👈 NEW
 
 type ContactFormProps = {
@@ -116,8 +116,8 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
     <div className="lg:pl-6">
       <h2
         className={`
-          ${scienceGothic.className}
-          text-2xl sm:text-3xl font-black tracking-tight
+          ${barlowCondensed.className}
+          text-2xl sm:text-3xl font-black tracking-[2px] uppercase
         `}
       >
         {heading}
@@ -125,8 +125,8 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
 
       <p
         className={`
-          ${exo2.className}
-          mt-2 text-sm sm:text-base text-zinc-700
+          ${barlow.className}
+          mt-2 text-sm sm:text-base text-[var(--light)]
         `}
       >
         {intro}
@@ -134,7 +134,7 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
 
       <form
         className={`
-          ${exo2.className}
+          ${barlow.className}
           mt-6 space-y-4 text-left
         `}
         onSubmit={handleSubmit}
@@ -143,27 +143,27 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
         <div className="grid gap-4 sm:grid-cols-2">
           {/* NIMI */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-[0.15em] text-zinc-600 mb-1">
+            <label className="block text-xs font-semibold uppercase tracking-[0.15em] text-[var(--mid)] mb-1">
               Nimi*
             </label>
             <input
               type="text"
               name="name"
               required
-              className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+              className="w-full border border-[var(--steel)] bg-[var(--panel)] px-3 py-2 text-sm text-[var(--off-white)] focus:outline-none focus:ring-2 focus:ring-[var(--yellow)] focus:border-[var(--yellow)]"
             />
           </div>
 
           {/* SÄHKÖPOSTI */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-[0.15em] text-zinc-600 mb-1">
+            <label className="block text-xs font-semibold uppercase tracking-[0.15em] text-[var(--mid)] mb-1">
               Sähköpostiosoite*
             </label>
             <input
               type="email"
               name="email"
               required
-              className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+              className="w-full border border-[var(--steel)] bg-[var(--panel)] px-3 py-2 text-sm text-[var(--off-white)] focus:outline-none focus:ring-2 focus:ring-[var(--yellow)] focus:border-[var(--yellow)]"
             />
           </div>
         </div>
@@ -172,26 +172,26 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
         <div className="grid gap-4 sm:grid-cols-2">
           {/* YRITYS */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-[0.15em] text-zinc-600 mb-1">
+            <label className="block text-xs font-semibold uppercase tracking-[0.15em] text-[var(--mid)] mb-1">
               Yritys
             </label>
             <input
               type="text"
               name="company"
-              className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+              className="w-full border border-[var(--steel)] bg-[var(--panel)] px-3 py-2 text-sm text-[var(--off-white)] focus:outline-none focus:ring-2 focus:ring-[var(--yellow)] focus:border-[var(--yellow)]"
             />
           </div>
 
           {/* PUHELIN */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-[0.15em] text-zinc-600 mb-1">
+            <label className="block text-xs font-semibold uppercase tracking-[0.15em] text-[var(--mid)] mb-1">
               Puhelin*
             </label>
             <input
               type="tel"
               name="phone"
               required
-              className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+              className="w-full border border-[var(--steel)] bg-[var(--panel)] px-3 py-2 text-sm text-[var(--off-white)] focus:outline-none focus:ring-2 focus:ring-[var(--yellow)] focus:border-[var(--yellow)]"
             />
           </div>
         </div>
@@ -199,7 +199,7 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
         {/* THIRD ROW: Area (m²) */}
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-[0.15em] text-zinc-600 mb-1">
+            <label className="block text-xs font-semibold uppercase tracking-[0.15em] text-[var(--mid)] mb-1">
               Neliömäärä (m²)
             </label>
             <input
@@ -208,9 +208,9 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
               min={0}
               step="1"
               placeholder="Esim. 120"
-              className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+              className="w-full border border-[var(--steel)] bg-[var(--panel)] px-3 py-2 text-sm text-[var(--off-white)] placeholder:text-[var(--concrete-gray)] focus:outline-none focus:ring-2 focus:ring-[var(--yellow)] focus:border-[var(--yellow)]"
             />
-            <p className="mt-1 text-[11px] text-zinc-500">
+            <p className="mt-1 text-[11px] text-[var(--mid)]">
               Arvioitu pinta-ala.
             </p>
           </div>
@@ -218,7 +218,7 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
 
         {/* WORKSITE LOCATION + MAP PICKER */}
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-[0.15em] text-zinc-600 mb-1">
+          <label className="block text-xs font-semibold uppercase tracking-[0.15em] text-[var(--mid)] mb-1">
             Työmaan osoite tai sijainti*
           </label>
 
@@ -230,7 +230,7 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
               value={siteLocation}
               onChange={(e) => setSiteLocation(e.target.value)}
               placeholder="Esim. katuosoite ja paikkakunta"
-              className="w-full sm:flex-1 rounded-md border border-zinc-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+              className="w-full sm:flex-1 border border-[var(--steel)] bg-[var(--panel)] px-3 py-2 text-sm text-[var(--off-white)] placeholder:text-[var(--concrete-gray)] focus:outline-none focus:ring-2 focus:ring-[var(--yellow)] focus:border-[var(--yellow)]"
             />
 
             <button
@@ -239,9 +239,9 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
               className="
                 w-full sm:w-auto
                 inline-flex items-center justify-center sm:justify-start gap-1
-                rounded-md border border-zinc-300 px-3 py-2 text-[11px] sm:text-xs
+                border border-[var(--steel)] bg-[var(--panel)] px-3 py-2 text-[11px] sm:text-xs
                 font-semibold uppercase tracking-[0.12em]
-                text-zinc-700 hover:bg-zinc-100 transition
+                text-[var(--light)] hover:border-[var(--yellow)] hover:text-[var(--yellow)] transition
               "
             >
               <MapPin className="w-4 h-4" />
@@ -249,12 +249,12 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
             </button>
           </div>
 
-          <p className="mt-1 text-[11px] text-zinc-500">
+          <p className="mt-1 text-[11px] text-[var(--mid)]">
             Uusille työmaille voit valita sijainnin suoraan kartalta
           </p>
 
           {coords && (
-            <p className="mt-1 text-[11px] text-emerald-600 flex items-center gap-1">
+            <p className="mt-1 text-[11px] text-emerald-400 flex items-center gap-1">
               <CheckCircle2 className="w-3 h-3" />
               Sijainti tallennettu ({coords.lat.toFixed(5)},{" "}
               {coords.lng.toFixed(5)}).
@@ -264,7 +264,7 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
 
         {/* MESSAGE FIELD */}
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-[0.15em] text-zinc-600 mb-1">
+          <label className="block text-xs font-semibold uppercase tracking-[0.15em] text-[var(--mid)] mb-1">
             Viestisi*
           </label>
           <textarea
@@ -272,17 +272,17 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
             rows={6}
             required
             placeholder="Esim. betonimäärä, aikataulu, työmaan kuvaus…"
-            className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 resize-vertical"
+            className="w-full border border-[var(--steel)] bg-[var(--panel)] px-3 py-2 text-sm text-[var(--off-white)] placeholder:text-[var(--concrete-gray)] focus:outline-none focus:ring-2 focus:ring-[var(--yellow)] focus:border-[var(--yellow)] resize-vertical"
           />
         </div>
 
         {/* STATUS MESSAGES */}
         <div className="text-center lg:text-left min-h-[1.25rem]">
           {submitError && (
-            <p className="text-xs text-red-600">{submitError}</p>
+            <p className="text-xs text-red-400">{submitError}</p>
           )}
           {submitSuccess && !submitError && (
-            <p className="text-xs text-emerald-600">
+            <p className="text-xs text-emerald-400">
               Kiitos viestistä! Otamme sinuun yhteyttä mahdollisimman pian.
             </p>
           )}
@@ -294,30 +294,22 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
             type="submit"
             disabled={isSubmitting}
             className={`
-              hero-cta relative inline-flex items-center justify-start
-              py-4 pl-8 pr-16 overflow-hidden font-bold text-base
-              text-zinc-900 transition-all duration-150 ease-in-out
-              rounded-xl bg-yellow-400 group hover:pl-10 hover:pr-14
-              w-full sm:w-auto max-w-xs
-              uppercase tracking-wide cursor-pointer
+              ${barlowCondensed.className}
+              inline-flex items-center gap-2.5
+              px-8 py-4 font-extrabold text-[0.85rem]
+              tracking-[2.5px] uppercase cursor-pointer
+              bg-[var(--yellow)] text-[var(--black)]
+              transition-all duration-250
+              hover:bg-[var(--yellow-hot)] hover:-translate-y-0.5
+              hover:shadow-[0_6px_30px_rgba(240,192,0,0.4),_0_0_60px_rgba(240,192,0,0.1)]
+              w-full sm:w-auto
               ${isSubmitting ? "opacity-70 cursor-wait" : ""}
             `}
           >
-            <span className="absolute bottom-0 left-0 w-full h-1 bg-zinc-900 transition-all duration-150 ease-in-out group-hover:h-full" />
-
-            <span className="absolute right-0 pr-6 duration-200 ease-out group-hover:translate-x-12">
-              <ArrowBigRightDash className="w-6 h-6" />
-            </span>
-
-            <span className="absolute left-0 pl-4 -translate-x-12 duration-200 ease-out group-hover:translate-x-0">
-              <ArrowBigRightDash className="w-6 h-6 text-yellow-400" />
-            </span>
-
-            <span
-              className={`${scienceGothic.className} relative w-full text-left transition-colors duration-200 ease-in-out group-hover:text-white`}
-            >
-              {isSubmitting ? "Lähetetään…" : "Lähetä"}
-            </span>
+            {isSubmitting ? "Lähetetään…" : "Lähetä"}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-4 h-4">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
           </button>
         </div>
       </form>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
-import { exo2, scienceGothic } from "@/app/fonts";
+import { barlowCondensed, barlow } from "@/app/fonts";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://psbl.fi";
 
@@ -15,31 +15,33 @@ export const metadata: Metadata = {
 
 export default function TietosuojaselosteRage() {
   const h2 =
-    `${scienceGothic.className} text-xl sm:text-2xl font-black tracking-tight mt-10 mb-3`;
+    `${barlowCondensed.className} text-xl sm:text-2xl font-black tracking-[2px] uppercase mt-10 mb-3`;
   const h3 =
-    `${scienceGothic.className} text-lg sm:text-xl font-bold mt-6 mb-2`;
-  const p = `${exo2.className} text-sm sm:text-base text-zinc-300 leading-relaxed mb-3`;
-  const li = `${exo2.className} text-sm sm:text-base text-zinc-300 leading-relaxed`;
+    `${barlowCondensed.className} text-lg sm:text-xl font-bold uppercase mt-6 mb-2`;
+  const p = `${barlow.className} text-sm sm:text-base text-[var(--light)] leading-relaxed mb-3`;
+  const li = `${barlow.className} text-sm sm:text-base text-[var(--light)] leading-relaxed`;
 
   return (
-    <main className="bg-black text-zinc-50 min-h-screen">
+    <main className="bg-[var(--dark)] text-[var(--off-white)] min-h-screen">
       {/* HERO */}
-      <section className="relative w-full overflow-hidden bg-zinc-900">
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/90" />
-        <div className="relative z-10 mx-auto max-w-4xl px-4 py-16 pt-28 sm:pt-32 text-center">
-          <h1
-            className={`${scienceGothic.className} text-3xl sm:text-4xl md:text-5xl font-black tracking-tight uppercase`}
-          >
-            Tietosuojaseloste
-          </h1>
-          <p className={`${exo2.className} mt-3 text-sm text-zinc-400`}>
-            Päivitetty: 9.3.2026
-          </p>
+      <section className="relative w-full overflow-hidden bg-[var(--black)] pt-[60px]">
+        <div className="py-16 sm:py-20 md:py-24 px-6 md:px-12">
+          <div className="max-w-3xl mx-auto">
+            <h1
+              className={`${barlowCondensed.className} text-3xl sm:text-4xl md:text-5xl font-black tracking-[2px] uppercase`}
+            >
+              Tietosuojaseloste
+            </h1>
+            <p className={`${barlow.className} mt-3 text-sm text-[var(--mid)]`}>
+              Päivitetty: 9.3.2026
+            </p>
+          </div>
         </div>
+        <div className="hazard-stripe" />
       </section>
 
       {/* CONTENT */}
-      <section className="py-12 md:py-16 bg-zinc-950">
+      <section className="py-12 md:py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
           {/* 1. Rekisterinpitäjä */}
           <h2 className={h2}>1. Rekisterinpitäjä</h2>

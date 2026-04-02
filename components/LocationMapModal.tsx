@@ -4,7 +4,7 @@ import { useState } from "react";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import { X } from "lucide-react";
-import { scienceGothic } from "@/app/fonts";
+import { barlowCondensed } from "@/app/fonts";
 import type { LatLng } from "./ContactForm";
 import { psblPinSvg } from "./pin";
 
@@ -49,7 +49,7 @@ export default function LocationMapModal({
       <div className="w-full max-w-2xl rounded-2xl bg-white shadow-2xl overflow-hidden">
         <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-200">
           <h3
-            className={`${scienceGothic.className} text-lg font-black tracking-tight`}
+            className={`${barlowCondensed.className} text-lg font-black tracking-tight uppercase`}
           >
             Valitse työmaan sijainti kartalta
           </h3>

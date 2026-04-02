@@ -1,4 +1,4 @@
-import { barlowCondensed, ibmPlexMono } from "@/app/fonts";
+import { barlowCondensed, barlow } from "@/app/fonts";
 
 const steps = [
   { num: "01", name: "Yhteydenotto", desc: "Soita tai laita viestiä. Vastaamme 24 tunnin sisällä." },
@@ -11,7 +11,7 @@ export default function Process() {
   return (
     <section className="py-20 px-6 md:px-12 border-t-[3px] border-[var(--steel)]" id="prosessi">
       <div className="mb-16">
-        <div className={`${ibmPlexMono.className} text-[0.65rem] font-semibold tracking-[3px] uppercase text-[var(--yellow)] mb-4 flex items-center gap-3`}>
+        <div className={`${barlow.className} text-[0.65rem] font-semibold tracking-[3px] uppercase text-[var(--yellow)] mb-4 flex items-center gap-3`}>
           <span className="text-[var(--concrete-gray)]">{"//"}</span>
           Prosessi
         </div>

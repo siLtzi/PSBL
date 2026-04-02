@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { barlowCondensed, ibmPlexMono } from "@/app/fonts";
+import { barlowCondensed, barlow } from "@/app/fonts";
 import CookieSettingsButton from "@/components/CookieSettingsButton";
 import {
   DIGIPAJA_LOGO_VIEWBOX,
@@ -37,7 +37,7 @@ export default function Footer() {
                 PSBL
               </span>
             </div>
-            <p className={`${ibmPlexMono.className} text-xs text-[var(--mid)] leading-relaxed mb-4`}>
+            <p className={`${barlow.className} text-xs text-[var(--mid)] leading-relaxed mb-4`}>
               Pohjois-Suomen Betonilattiat Oy
               <br />
               Y-tunnus: 3423998-4
@@ -59,7 +59,7 @@ export default function Footer() {
 
           {/* Services col 1 */}
           <div>
-            <h4 className={`${ibmPlexMono.className} text-[0.6rem] font-semibold tracking-[3px] uppercase text-[var(--yellow)] mb-5`}>
+            <h4 className={`${barlow.className} text-[0.6rem] font-semibold tracking-[3px] uppercase text-[var(--yellow)] mb-5`}>
               Palvelut
             </h4>
             <ul className="space-y-2.5">
@@ -68,7 +68,7 @@ export default function Footer() {
                   <Link
                     href={link.href}
                     prefetch={false}
-                    className={`${ibmPlexMono.className} text-xs text-[var(--light)] hover:text-[var(--yellow)] transition-colors duration-200`}
+                    className={`${barlow.className} text-xs text-[var(--light)] hover:text-[var(--yellow)] transition-colors duration-200`}
                   >
                     {link.label}
                   </Link>
@@ -79,7 +79,7 @@ export default function Footer() {
 
           {/* Services col 2 */}
           <div>
-            <h4 className={`${ibmPlexMono.className} text-[0.6rem] font-semibold tracking-[3px] uppercase text-[var(--yellow)] mb-5`}>
+            <h4 className={`${barlow.className} text-[0.6rem] font-semibold tracking-[3px] uppercase text-[var(--yellow)] mb-5`}>
               Lisäpalvelut
             </h4>
             <ul className="space-y-2.5">
@@ -88,7 +88,7 @@ export default function Footer() {
                   <Link
                     href={link.href}
                     prefetch={false}
-                    className={`${ibmPlexMono.className} text-xs text-[var(--light)] hover:text-[var(--yellow)] transition-colors duration-200`}
+                    className={`${barlow.className} text-xs text-[var(--light)] hover:text-[var(--yellow)] transition-colors duration-200`}
                   >
                     {link.label}
                   </Link>
@@ -99,10 +99,10 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className={`${ibmPlexMono.className} text-[0.6rem] font-semibold tracking-[3px] uppercase text-[var(--yellow)] mb-5`}>
+            <h4 className={`${barlow.className} text-[0.6rem] font-semibold tracking-[3px] uppercase text-[var(--yellow)] mb-5`}>
               Yhteystiedot
             </h4>
-            <ul className={`${ibmPlexMono.className} text-xs text-[var(--light)] space-y-2.5`}>
+            <ul className={`${barlow.className} text-xs text-[var(--light)] space-y-2.5`}>
               <li>
                 <a href="mailto:toimisto@psbl.fi" className="hover:text-[var(--yellow)] transition-colors duration-200">
                   toimisto@psbl.fi
@@ -121,14 +121,14 @@ export default function Footer() {
               <Link
                 href="/tietosuojaseloste"
                 prefetch={false}
-                className={`${ibmPlexMono.className} text-[0.55rem] tracking-[1px] text-[var(--mid)] hover:text-[var(--yellow)] transition-colors duration-200`}
+                className={`${barlow.className} text-[0.55rem] tracking-[1px] text-[var(--mid)] hover:text-[var(--yellow)] transition-colors duration-200`}
               >
                 Tietosuojaseloste
               </Link>
               <Link
                 href="/evastekaytanto"
                 prefetch={false}
-                className={`${ibmPlexMono.className} text-[0.55rem] tracking-[1px] text-[var(--mid)] hover:text-[var(--yellow)] transition-colors duration-200`}
+                className={`${barlow.className} text-[0.55rem] tracking-[1px] text-[var(--mid)] hover:text-[var(--yellow)] transition-colors duration-200`}
               >
                 Evästekäytäntö
               </Link>
@@ -140,10 +140,10 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div className="border-t border-[var(--steel)] px-6 md:px-12 py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-        <span className={`${ibmPlexMono.className} text-[0.55rem] tracking-[1px] text-[var(--mid)]`}>
+        <span className={`${barlow.className} text-[0.55rem] tracking-[1px] text-[var(--mid)]`}>
           © 2025 Pohjois-Suomen Betonilattiat Oy
         </span>
-        <span className={`${ibmPlexMono.className} text-[0.55rem] tracking-[1px] text-[var(--mid)] flex items-center gap-2`}>
+        <span className={`${barlow.className} text-[0.55rem] tracking-[1px] text-[var(--mid)] flex items-center gap-2`}>
           Toteutus:
           <a
             href="https://digipajaoulu.fi"
