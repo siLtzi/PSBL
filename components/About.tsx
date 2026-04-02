@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { barlowCondensed, barlow } from "@/app/fonts";
+import FinlandMap from "./FinlandMap";
 
 export type AboutContent = {
   headline: string;
@@ -24,18 +24,9 @@ export default function About({ content }: { content: AboutContent }) {
 
   return (
     <section className="grid grid-cols-1 lg:grid-cols-2 min-h-[80vh]">
-      {/* Left: Image */}
-      <div className="relative overflow-hidden group">
-        {imageUrl ? (
-          <Image
-            src={imageUrl}
-            alt="Betonityö"
-            fill
-            className="object-cover saturate-[0.6] contrast-[1.1] transition-all duration-800 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.04] group-hover:saturate-[0.8]"
-          />
-        ) : (
-          <div className="w-full h-full min-h-[400px] bg-[var(--steel)]" />
-        )}
+      {/* Left: Finland Map */}
+      <div className="relative overflow-hidden group flex items-center justify-center bg-[var(--black)] min-h-[400px] p-10 md:p-16">
+        <FinlandMap className="w-full max-w-[360px] h-auto" />
 
         {/* Corner brackets */}
         <div className="absolute top-8 left-8 w-[50px] h-[50px] border-t-[3px] border-l-[3px] border-[var(--yellow)] z-[2] transition-all duration-400 group-hover:w-[65px] group-hover:h-[65px]" />
