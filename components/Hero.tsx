@@ -64,15 +64,14 @@ export default function Hero({ content }: { content: HeroContent }) {
           ${barlowCondensed.className}
           font-black uppercase tracking-[2px] text-[var(--off-white)]
           mb-8 animate-[slideIn_0.6s_0.4s_forwards] opacity-0
-          md:ml-[10%] lg:ml-[15%]
         `}>
-          <span className="block text-[clamp(2.2rem,5vw,4.5rem)] leading-none mb-[-0.12em] ml-[0.4em]">
+          <span className="block text-[clamp(2.8rem,6vw,5.5rem)] leading-none mb-[-0.15em] ml-[0.05em]">
             Valetaan
           </span>
-          <span className="block text-[clamp(4rem,10vw,9rem)] leading-[0.88] text-[var(--black)] bg-[var(--yellow)] px-[0.15em] shadow-[4px_0_0_var(--yellow),_-4px_0_0_var(--yellow)] w-fit">
+          <span className="inline-block text-[clamp(5rem,12vw,11rem)] leading-[0.85] text-[var(--black)] bg-[var(--yellow)] px-[0.15em] shadow-[4px_0_0_var(--yellow),_-4px_0_0_var(--yellow)] w-fit rotate-[-2deg] origin-left">
             lattiat
           </span>
-          <span className="block text-[clamp(2.2rem,5vw,4.5rem)] leading-none mt-[-0.08em] ml-[0.4em]">
+          <span className="block text-[clamp(2.8rem,6vw,5.5rem)] leading-none mt-[-0.1em] ml-[0.05em]">
             kuntoon.
           </span>
         </h1>

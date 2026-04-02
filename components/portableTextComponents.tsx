@@ -12,7 +12,7 @@ export const portableTextComponents: PortableTextComponents = {
 
       return (
         <figure className="my-8 sm:my-10">
-          <div className="relative overflow-hidden rounded-2xl shadow-lg">
+          <div className="relative overflow-hidden shadow-lg">
             <Image
               src={imageUrl}
               alt={alt}
@@ -23,7 +23,7 @@ export const portableTextComponents: PortableTextComponents = {
             />
           </div>
           {caption && (
-            <figcaption className="mt-3 text-center text-sm text-zinc-500 italic">
+            <figcaption className="mt-3 text-center text-sm text-[var(--mid)] italic">
               {caption}
             </figcaption>
           )}
@@ -37,17 +37,17 @@ export const portableTextComponents: PortableTextComponents = {
 
       return (
         <figure className="my-8 sm:my-10 mx-auto max-w-sm">
-          <div className="relative overflow-hidden rounded-2xl shadow-lg">
+          <div className="relative overflow-hidden shadow-lg">
             <video
               src={fileUrl}
               controls
               playsInline
               preload="metadata"
-              className="w-full h-auto rounded-2xl"
+              className="w-full h-auto"
             />
           </div>
           {caption && (
-            <figcaption className="mt-3 text-center text-sm text-zinc-500 italic">
+            <figcaption className="mt-3 text-center text-sm text-[var(--mid)] italic">
               {caption}
             </figcaption>
           )}
@@ -88,7 +88,7 @@ export const portableTextComponents: PortableTextComponents = {
     ),
     normal: ({ children }) => <p className="mb-4">{children}</p>,
     blockquote: ({ children }) => (
-      <blockquote className="border-l-4 border-yellow-400 pl-4 italic my-4">
+      <blockquote className="border-l-[3px] border-[var(--yellow)] pl-4 italic my-4 text-[var(--light)]">
         {children}
       </blockquote>
     ),
