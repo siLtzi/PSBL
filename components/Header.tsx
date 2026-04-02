@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { barlowCondensed, barlow } from "@/app/fonts";
 import { gsap } from "gsap";
 
@@ -29,6 +29,12 @@ export default function Header() {
     document.body.style.overflow = isMenuOpen ? "hidden" : "unset";
   }, [isMenuOpen]);
 
+  // Close dropdown on route change
+  useEffect(() => {
+    setDropdownOpen(false);
+    setIsMenuOpen(false);
+  }, [pathname]);
+
   useEffect(() => {
     if (!isMenuOpen || !menuRef.current) return;
     const ctx = gsap.context(() => {
@@ -39,12 +45,12 @@ export default function Header() {
   }, [isMenuOpen]);
 
   const navLinks = [
-    { label: "Palvelut", href: "/palvelut", id: "palvelut" },
+    { label: "Palvelut", href: "/palvelut", id: "palvelut", hasDropdown: true },
     { label: "Referenssit", href: "/referenssit", id: "referenssit" },
     { label: "Yhteystiedot", href: "/yhteystiedot", id: "yhteystiedot" },
   ];
 
-  const mobileServices = [
+  const services = [
     { label: "Betonilattiatyöt", href: "/palvelut/betonilattiatyot-lattiavalut" },
     { label: "Kuivasirotelattiat", href: "/palvelut/kuivasirotelattiat-mastertoplattiat" },
     { label: "Kuviobetonointi", href: "/palvelut/kuviobetonointi" },
@@ -52,6 +58,18 @@ export default function Header() {
     { label: "Kovabetonointi", href: "/palvelut/kovabetonointi" },
     { label: "Kiillotettu betonilattia", href: "/palvelut/kiillotettu-betonilattia" },
   ];
+
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const openDropdown = useCallback(() => {
+    if (dropdownTimeout.current) clearTimeout(dropdownTimeout.current);
+    setDropdownOpen(true);
+  }, []);
+
+  const closeDropdown = useCallback(() => {
+    dropdownTimeout.current = setTimeout(() => setDropdownOpen(false), 150);
+  }, []);
 
   return (
     <>
@@ -87,12 +105,17 @@ export default function Header() {
         {/* Desktop nav */}
         <ul className="hidden md:flex list-none h-full">
           {navLinks.map((link) => (
-            <li key={link.id} className="h-full">
+            <li
+              key={link.id}
+              className="relative h-full"
+              onMouseEnter={link.hasDropdown ? openDropdown : undefined}
+              onMouseLeave={link.hasDropdown ? closeDropdown : undefined}
+            >
               <Link
                 href={link.href}
                 className={`
                   ${barlow.className}
-                  flex items-center h-full px-6
+                  flex items-center h-full px-6 gap-1.5
                   text-[0.7rem] font-semibold tracking-[2px] uppercase
                   text-[var(--mid)] border-l border-[var(--steel)]
                   transition-all duration-200
@@ -100,7 +123,46 @@ export default function Header() {
                 `}
               >
                 {link.label}
+                {link.hasDropdown && (
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`} />
+                )}
               </Link>
+
+              {/* Palvelut dropdown */}
+              {link.hasDropdown && dropdownOpen && (
+                <div
+                  className="absolute top-full left-0 min-w-[260px] bg-[var(--black)] border border-[var(--steel)] border-t-[3px] border-t-[var(--yellow)] shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+                  onMouseEnter={openDropdown}
+                  onMouseLeave={closeDropdown}
+                >
+                  <Link
+                    href="/palvelut"
+                    className={`
+                      ${barlow.className}
+                      block px-5 py-3 text-[0.7rem] font-bold tracking-[2px] uppercase
+                      text-[var(--yellow)] border-b border-[var(--steel)]
+                      hover:bg-[rgba(240,192,0,0.05)] transition-colors
+                    `}
+                  >
+                    Kaikki palvelut →
+                  </Link>
+                  {services.map((service) => (
+                    <Link
+                      key={service.href}
+                      href={service.href}
+                      className={`
+                        ${barlow.className}
+                        block px-5 py-2.5 text-[0.75rem] font-medium
+                        text-[var(--light)]
+                        hover:text-[var(--yellow)] hover:bg-[rgba(240,192,0,0.05)]
+                        hover:pl-6 transition-all duration-200
+                      `}
+                    >
+                      {service.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
             </li>
           ))}
         </ul>
@@ -146,7 +208,7 @@ export default function Header() {
                   Palvelut
                 </span>
                 <div className="flex flex-col gap-2 pl-1">
-                  {mobileServices.map((service, index) => (
+                  {services.map((service, index) => (
                     <Link
                       key={index}
                       href={service.href}
