@@ -47,7 +47,7 @@ export default function Hero({ content }: { content: HeroContent }) {
       </div>
 
       {/* Hero content */}
-      <div className="relative z-[5] flex flex-col justify-end p-8 md:p-12 lg:p-16 w-full">
+      <div className="relative z-[5] flex flex-col justify-end items-start p-8 md:p-12 lg:p-16 w-full md:pl-[15%] lg:pl-[20%]">
         {/* Label */}
         <div className={`
           ${barlow.className}
