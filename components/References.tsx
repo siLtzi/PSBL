@@ -1,3 +1,6 @@
+"use client";
+
+import { useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { barlowCondensed, ibmPlexMono } from "@/app/fonts";
@@ -24,19 +27,33 @@ export default function References({
   content: ReferencesContent;
 }) {
   const { heading, items } = content;
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
 
   if (!items || items.length === 0) return null;
 
-  // Take up to 6 items for the grid
-  const gridItems = items.slice(0, 6);
+  const updateScrollState = useCallback(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 2);
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 2);
+  }, []);
+
+  const scroll = (dir: "left" | "right") => {
+    const el = trackRef.current;
+    if (!el) return;
+    const cardWidth = el.querySelector("article")?.offsetWidth ?? 400;
+    el.scrollBy({ left: dir === "left" ? -cardWidth - 3 : cardWidth + 3, behavior: "smooth" });
+  };
 
   return (
     <section
-      className="py-20 px-6 md:px-12 border-t-[3px] border-[var(--steel)]"
+      className="py-20 border-t-[3px] border-[var(--steel)]"
       id="referenssit"
     >
       {/* Section header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-12 gap-4">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-12 gap-4 px-6 md:px-12">
         <div>
           <div
             className={`${ibmPlexMono.className} text-[0.65rem] font-semibold tracking-[3px] uppercase text-[var(--yellow)] mb-4 flex items-center gap-3`}
@@ -50,36 +67,64 @@ export default function References({
             {heading || "Viimeaikaiset kohteet."}
           </h2>
         </div>
-        <Link
-          href="/referenssit"
-          className={`${ibmPlexMono.className} text-xs tracking-[2px] uppercase text-[var(--yellow)] border border-[var(--yellow)] px-5 py-2.5 hover:bg-[var(--yellow)] hover:text-[var(--black)] transition-all duration-300 shrink-0`}
-        >
-          Kaikki kohteet →
-        </Link>
+
+        <div className="flex items-center gap-3">
+          {/* Arrow buttons */}
+          <button
+            onClick={() => scroll("left")}
+            aria-label="Edellinen"
+            className={`w-11 h-11 flex items-center justify-center border border-[var(--steel)] text-[var(--light)] transition-all duration-300 ${
+              canScrollLeft
+                ? "hover:border-[var(--yellow)] hover:text-[var(--yellow)] cursor-pointer"
+                : "opacity-30 cursor-default"
+            }`}
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <button
+            onClick={() => scroll("right")}
+            aria-label="Seuraava"
+            className={`w-11 h-11 flex items-center justify-center border border-[var(--steel)] text-[var(--light)] transition-all duration-300 ${
+              canScrollRight
+                ? "hover:border-[var(--yellow)] hover:text-[var(--yellow)] cursor-pointer"
+                : "opacity-30 cursor-default"
+            }`}
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+
+          <Link
+            href="/referenssit"
+            className={`${ibmPlexMono.className} text-xs tracking-[2px] uppercase text-[var(--yellow)] border border-[var(--yellow)] px-5 py-2.5 hover:bg-[var(--yellow)] hover:text-[var(--black)] transition-all duration-300 shrink-0 hidden sm:block`}
+          >
+            Kaikki kohteet →
+          </Link>
+        </div>
       </div>
 
-      {/* Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-[3px] auto-rows-[280px] md:auto-rows-[300px]">
-        {gridItems.map((ref, index) => {
-          const isLarge = index === 0;
-
-          return (
+      {/* Carousel */}
+      <div className="relative">
+        <div
+          ref={trackRef}
+          onScroll={updateScrollState}
+          className="flex gap-[3px] overflow-x-auto scroll-smooth pl-6 md:pl-12 pr-6 md:pr-12 no-scrollbar"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
+          {items.map((ref, index) => (
             <article
               key={ref._key ?? `ref-${index}`}
-              className={`relative overflow-hidden bg-[var(--black)] group cursor-pointer ${
-                isLarge ? "md:row-span-2 md:col-span-1" : ""
-              }`}
+              className="relative overflow-hidden bg-[var(--black)] group cursor-pointer shrink-0 w-[85vw] sm:w-[45vw] lg:w-[30vw] xl:w-[22vw] aspect-[3/4]"
             >
               {ref.imageUrl ? (
                 <Image
                   src={ref.imageUrl}
                   alt={ref.caption || ref.tag || "Referenssikohde"}
                   fill
-                  sizes={
-                    isLarge
-                      ? "(min-width: 768px) 33vw, 100vw"
-                      : "(min-width: 768px) 33vw, 100vw"
-                  }
+                  sizes="(min-width: 1280px) 22vw, (min-width: 1024px) 30vw, (min-width: 640px) 45vw, 85vw"
                   className="object-cover grayscale-[40%] brightness-[0.5] transition-all duration-500 group-hover:grayscale-0 group-hover:brightness-[0.35] group-hover:scale-105"
                 />
               ) : (
@@ -120,8 +165,22 @@ export default function References({
               {/* Yellow bottom stripe */}
               <div className="absolute bottom-0 left-0 w-full h-[3px] bg-[var(--yellow)] z-[4] scale-x-0 origin-left transition-transform duration-400 group-hover:scale-x-100" />
             </article>
-          );
-        })}
+          ))}
+        </div>
+
+        {/* Edge fades */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-[var(--dark)] to-transparent z-[5]" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-[var(--dark)] to-transparent z-[5]" />
+      </div>
+
+      {/* Mobile "all references" link */}
+      <div className="mt-8 px-6 md:px-12 sm:hidden">
+        <Link
+          href="/referenssit"
+          className={`${ibmPlexMono.className} text-xs tracking-[2px] uppercase text-[var(--yellow)] border border-[var(--yellow)] px-5 py-2.5 hover:bg-[var(--yellow)] hover:text-[var(--black)] transition-all duration-300 inline-block`}
+        >
+          Kaikki kohteet →
+        </Link>
       </div>
     </section>
   );
