@@ -26,7 +26,7 @@ export default function About({ content }: { content: AboutContent }) {
     <section className="grid grid-cols-1 lg:grid-cols-2 min-h-[80vh]">
       {/* Left: Finland Map */}
       <div className="relative overflow-hidden group flex items-center justify-center bg-[var(--black)] min-h-[400px] p-10 md:p-16">
-        <FinlandMap className="w-full max-w-[360px] h-auto" />
+        <FinlandMap className="w-full max-w-[300px] lg:max-w-[500px] xl:max-w-[560px] h-auto" />
 
         {/* Corner brackets */}
         <div className="absolute top-8 left-8 w-[50px] h-[50px] border-t-[3px] border-l-[3px] border-[var(--yellow)] z-[2] transition-all duration-400 group-hover:w-[65px] group-hover:h-[65px]" />
