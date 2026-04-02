@@ -47,7 +47,7 @@ export default function Hero({ content }: { content: HeroContent }) {
       </div>
 
       {/* Hero content */}
-      <div className="relative z-[5] flex flex-col justify-end items-start p-8 md:p-12 lg:p-16 w-full md:pl-[10%] lg:pl-[14%]">
+      <div className="relative z-[5] flex flex-col justify-center items-start p-8 md:p-12 lg:p-16 w-full md:pl-[10%] lg:pl-[14%]">
         {/* Label */}
         <div className={`
           ${barlow.className}
@@ -68,7 +68,7 @@ export default function Hero({ content }: { content: HeroContent }) {
           <span className="block text-[clamp(3.2rem,7vw,6.5rem)] leading-none mb-[-0.15em] ml-[0.05em]">
             Valetaan
           </span>
-          <span className="inline-block text-[clamp(5.5rem,14vw,13rem)] leading-[0.85] text-[var(--black)] bg-[var(--yellow)] px-[0.15em] shadow-[4px_0_0_var(--yellow),_-4px_0_0_var(--yellow)] w-fit rotate-[-2deg] origin-left">
+          <span className="inline-block text-[clamp(5.5rem,14vw,13rem)] leading-[0.85] text-[var(--black)] bg-[var(--yellow)] px-[0.2em] py-[0.02em] w-fit rotate-[-2deg] origin-left shadow-[6px_6px_0px_var(--steel),_inset_0_-4px_0_rgba(0,0,0,0.15)]">
             lattiat
           </span>
           <span className="block text-[clamp(3.2rem,7vw,6.5rem)] leading-none mt-[-0.1em] ml-[0.05em]">
