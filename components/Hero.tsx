@@ -47,7 +47,7 @@ export default function Hero({ content }: { content: HeroContent }) {
       </div>
 
       {/* Hero content */}
-      <div className="relative z-[5] flex flex-col justify-end items-start p-8 md:p-12 lg:p-16 w-full md:pl-[15%] lg:pl-[20%]">
+      <div className="relative z-[5] flex flex-col justify-end items-start p-8 md:p-12 lg:p-16 w-full md:pl-[10%] lg:pl-[14%]">
         {/* Label */}
         <div className={`
           ${barlow.className}
@@ -65,13 +65,13 @@ export default function Hero({ content }: { content: HeroContent }) {
           font-black uppercase tracking-[2px] text-[var(--off-white)]
           mb-8 animate-[slideIn_0.6s_0.4s_forwards] opacity-0
         `}>
-          <span className="block text-[clamp(2.8rem,6vw,5.5rem)] leading-none mb-[-0.15em] ml-[0.05em]">
+          <span className="block text-[clamp(3.2rem,7vw,6.5rem)] leading-none mb-[-0.15em] ml-[0.05em]">
             Valetaan
           </span>
-          <span className="inline-block text-[clamp(5rem,12vw,11rem)] leading-[0.85] text-[var(--black)] bg-[var(--yellow)] px-[0.15em] shadow-[4px_0_0_var(--yellow),_-4px_0_0_var(--yellow)] w-fit rotate-[-2deg] origin-left">
+          <span className="inline-block text-[clamp(5.5rem,14vw,13rem)] leading-[0.85] text-[var(--black)] bg-[var(--yellow)] px-[0.15em] shadow-[4px_0_0_var(--yellow),_-4px_0_0_var(--yellow)] w-fit rotate-[-2deg] origin-left">
             lattiat
           </span>
-          <span className="block text-[clamp(2.8rem,6vw,5.5rem)] leading-none mt-[-0.1em] ml-[0.05em]">
+          <span className="block text-[clamp(3.2rem,7vw,6.5rem)] leading-none mt-[-0.1em] ml-[0.05em]">
             kuntoon.
           </span>
         </h1>
@@ -79,8 +79,8 @@ export default function Hero({ content }: { content: HeroContent }) {
         {/* Subtitle */}
         <p className={`
           ${barlow.className}
-          text-[1.1rem] font-normal text-[var(--light)]
-          max-w-[500px] leading-[1.7] mb-10
+          text-[1.25rem] font-normal text-[var(--light)]
+          max-w-[540px] leading-[1.7] mb-10
           animate-[slideIn_0.6s_0.6s_forwards] opacity-0
         `}>
           {subtitle}
