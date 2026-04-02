@@ -1,27 +1,13 @@
-"use client"; 
-// This marks the component as a CLIENT COMPONENT in Next.js.
-// Needed because we use hooks, refs, and GSAP animations.
+"use client";
 
-import { ArrowBigRightDash } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-// Icon for the CTA buttons.
+import { barlowCondensed, ibmPlexMono, barlow } from "@/app/fonts";
 
-import { scienceGothic, exo2 } from "@/app/fonts";
-// Custom fonts loaded via Next.js font system.
-
-import { useHeroAnimations } from "@/components/animations/HeroAnimations";
-// Our GSAP hook that animates title + subtitle when hero loads.
-
-// Helper to strip Sanity Stega characters (invisible JSON)
-// so they don't break GSAP SplitText or string splitting.
 function clean(text: string) {
   if (!text) return text;
   return text.replace(/[\u200b\u200c\u200d\u2060\ufeff]/g, "");
 }
 
 export type HeroContent = {
-  // Structure of the data the Hero component expects.
   titleLine1: string;
   titleLine2: string;
   subtitle: string;
@@ -33,36 +19,7 @@ export type HeroContent = {
   heroMessage?: string;
 };
 
-// ---------------------------------------------------------------------------
-// SPLIT LOGIC FOR "POHJOIS-" AND "SUOMEN"
-// ---------------------------------------------------------------------------
-// Many Finnish names have hyphens. We want:
-//
-// Desktop: "POHJOIS-SUOMEN" on ONE line
-// Mobile:  "POHJOIS-" (line break) "SUOMEN"
-//
-// This function checks for "-" and splits the string cleanly.
-function SplitTitle({ text }: { text: string }) {
-  if (!text.includes("-")) return <span>{text}</span>;
-
-  const [part1, part2] = text.split("-");
-
-  return (
-    <>
-      {/* First half, always kept together */}
-      <span className="inline-block whitespace-nowrap">{part1}-</span>
-
-      {/* Mobile forces a new line. Desktop hides it. */}
-      <br className="block sm:hidden" />
-
-      {/* Second half, also kept together */}
-      <span className="inline-block whitespace-nowrap">{part2}</span>
-    </>
-  );
-}
-
 export default function Hero({ content }: { content: HeroContent }) {
-  // Destructure content for cleaner usage.
   const {
     titleLine1,
     titleLine2,
@@ -72,206 +29,102 @@ export default function Hero({ content }: { content: HeroContent }) {
     secondaryCtaLabel,
     secondaryCtaHref,
     videoUrl,
-    heroMessage,
   } = content;
 
-  // Pull in animation refs (GSAP):
-  // - rootRef: main wrapper
-  // - titleRef: animates the logo/title
-  // - subtitleRef: animates the subtitle
-  const { rootRef, titleRef, subtitleRef } = useHeroAnimations();
-
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-black text-zinc-50">
-      {/* BACKGROUND VIDEO */}
-      {/* Covers entire hero section with autoplaying video. */}
-      <video
-        className="absolute inset-0 h-full w-full object-cover"
-        autoPlay
-        loop
-        muted
-        playsInline
-      >
-        <source src={videoUrl} type="video/mp4" />
-      </video>
+    <section className="relative mt-[60px] h-[calc(100vh-60px)] min-h-[600px] flex overflow-hidden">
+      {/* Background video */}
+      <div className="absolute inset-0 z-[1]">
+        <video
+          className="w-full h-full object-cover contrast-[1.15] saturate-[0.7] brightness-[0.4] animate-[heroKen_25s_ease-in-out_infinite_alternate] origin-[30%_60%]"
+          autoPlay
+          loop
+          muted
+          playsInline
+        >
+          <source src={videoUrl} type="video/mp4" />
+        </video>
+      </div>
 
-      {/* Fade gradient overlay to improve readability on top of the video */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/80" />
+      {/* Hero content */}
+      <div className="relative z-[5] flex flex-col justify-end p-8 md:p-12 lg:p-16 w-full">
+        {/* Label */}
+        <div className={`
+          ${ibmPlexMono.className}
+          text-[0.7rem] font-semibold tracking-[3px] uppercase
+          text-[var(--yellow)] mb-6 flex items-center gap-4
+          animate-[slideIn_0.6s_0.2s_forwards] opacity-0
+        `}>
+          <span className="w-2 h-2 bg-[var(--yellow)] animate-[labelPulse_2s_ease-in-out_infinite]" />
+          {clean(titleLine1)} {clean(titleLine2)}
+        </div>
 
+        {/* H1 */}
+        <h1 className={`
+          ${barlowCondensed.className}
+          font-black text-[clamp(4rem,10vw,9rem)] leading-[0.88]
+          uppercase tracking-[2px] text-[var(--off-white)]
+          mb-8 animate-[slideIn_0.6s_0.4s_forwards] opacity-0
+        `}>
+          Valetaan<br />
+          <span className="text-[var(--black)] bg-[var(--yellow)] px-[0.15em] inline shadow-[4px_0_0_var(--yellow),_-4px_0_0_var(--yellow)]">
+            lattiat
+          </span><br />
+          kuntoon.
+        </h1>
 
+        {/* Subtitle */}
+        <p className={`
+          ${barlow.className}
+          text-[1.1rem] font-normal text-[var(--light)]
+          max-w-[500px] leading-[1.7] mb-10
+          animate-[slideIn_0.6s_0.6s_forwards] opacity-0
+        `}>
+          {subtitle}
+        </p>
 
-      {/* CONTENT WRAPPER */}
-      <div className="relative z-10 flex min-h-screen flex-col">
-        <div className="flex flex-1 items-center justify-center pt-20 md:pt-32 lg:pt-40">
-          
-          {/* MAIN CONTENT (center aligned) */}
-          <div
-            ref={rootRef} // GSAP animates items inside this container
-            className="
-              flex w-full flex-col items-center text-center 
-              px-2 sm:px-0 pb-20 md:pb-24
-            "
+        {/* Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 animate-[slideIn_0.6s_0.8s_forwards] opacity-0">
+          <a
+            href={primaryCtaHref}
+            className={`
+              ${barlowCondensed.className}
+              inline-flex items-center gap-2.5
+              px-8 py-4 font-extrabold text-[0.85rem]
+              tracking-[2.5px] uppercase cursor-pointer
+              bg-[var(--yellow)] text-[var(--black)]
+              relative overflow-hidden
+              transition-all duration-250
+              hover:bg-[var(--yellow-hot)] hover:-translate-y-0.5
+              hover:shadow-[0_6px_30px_rgba(240,192,0,0.4),_0_0_60px_rgba(240,192,0,0.1)]
+            `}
           >
-            {/* --------------------------------------------- */}
-            {/* LOGO */}
-            {/* --------------------------------------------- */}
-            <Image
-              src="/PSBL Logo.png"
-              alt="PSBL"
-              width={280}
-              height={90}
-              className="mb-6 w-[180px] sm:w-[220px] md:w-[260px] h-auto"
-              priority
-            />
-
-            {/* --------------------------------------------- */}
-            {/* HERO MESSAGE (Optional) */}
-            {/* --------------------------------------------- */}
-            {heroMessage && (
-              <div className={`
-                ${exo2.className}
-                mb-6 inline-flex items-center rounded-full 
-                border border-zinc-50/30 bg-zinc-900/50 
-                px-4 py-1.5 text-sm text-zinc-200 
-                backdrop-blur-sm sm:text-base
-              `}>
-                {heroMessage}
-              </div>
-            )}
-
-            {/* --------------------------------------------- */}
-            {/* TITLE (H1) */}
-            {/* --------------------------------------------- */}
-            <h1
-              ref={titleRef} // GSAP target: title fades/slides in
-              className={`
-                ${scienceGothic.className}
-                font-bold sm:font-black
-                uppercase
-                text-balance
-                flex flex-col items-center
-                drop-shadow-2xl
-              `}
-            >
-              {/* FIRST LINE (e.g., POHJOIS-SUOMEN) */}
-              <div
-                className="
-                  leading-[0.9] tracking-tighter
-                  text-[13vw]              /* Very large on mobile */
-                  sm:text-5xl md:text-6xl  /* Standard on desktop */
-                  lg:text-7xl xl:text-8xl
-                  sm:leading-[1.1]
-                "
-              >
-                <SplitTitle text={clean(titleLine1)} />
-              </div>
-
-              {/* SECOND LINE (e.g., BETONILATTIAT) */}
-              <div
-                className="
-                  leading-[0.9] tracking-tighter
-                  whitespace-nowrap
-                  mt-1 sm:mt-0
-                  text-[8.5vw]            /* Slightly smaller on mobile */
-                  sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl
-                "
-              >
-                {clean(titleLine2)}
-              </div>
-            </h1>
-
-            {/* --------------------------------------------- */}
-            {/* SUBTITLE */}
-            {/* --------------------------------------------- */}
-            <p
-              ref={subtitleRef} // GSAP target: subtitle animates after title
-              className={`
-                ${exo2.className}
-                mt-6 text-base sm:text-lg md:text-xl lg:text-2xl
-                font-medium text-zinc-200
-                max-w-[90%] sm:max-w-2xl mx-auto
-                drop-shadow-lg leading-relaxed
-              `}
-            >
-              {subtitle}
-            </p>
-
-            {/* --------------------------------------------- */}
-            {/* CTA BUTTONS */}
-            {/* --------------------------------------------- */}
-            <div
-              className={`
-                ${scienceGothic.className}
-                mt-8 sm:mt-12
-                flex flex-col sm:flex-row items-center justify-center
-                gap-4 w-full px-4
-              `}
-            >
-              {/* PRIMARY CTA: yellow button */}
-              <a
-                href={primaryCtaHref}
-                className="
-                  hero-cta relative inline-flex items-center justify-start 
-                  py-4 pl-8 pr-16 overflow-hidden font-bold text-base 
-                  text-zinc-900 transition-all duration-150 ease-in-out 
-                  rounded-xl bg-yellow-400 group hover:pl-10 hover:pr-14 
-                  w-full sm:w-auto max-w-xs
-                "
-              >
-                {/* Hover background growth animation */}
-                <span className="absolute bottom-0 left-0 w-full h-1 transition-all duration-150 ease-in-out bg-zinc-900 group-hover:h-full" />
-
-                {/* Arrow sliding OUT on hover */}
-                <span className="absolute right-0 pr-6 duration-200 ease-out group-hover:translate-x-12">
-                  <ArrowBigRightDash className="w-6 h-6" />
-                </span>
-
-                {/* Arrow sliding IN on hover */}
-                <span className="absolute left-0 pl-4 -translate-x-12 group-hover:translate-x-0 ease-out duration-200">
-                  <ArrowBigRightDash className="w-6 h-6 text-yellow-400" />
-                </span>
-
-                {/* Button text */}
-                <span className="relative w-full text-left transition-colors duration-200 ease-in-out group-hover:text-white uppercase tracking-wide">
-                  {primaryCtaLabel}
-                </span>
-              </a>
-
-              {/* SECONDARY CTA: transparent button */}
-              <a
-                href={secondaryCtaHref}
-                className="
-                  hero-cta relative inline-flex items-center justify-start 
-                  py-4 pl-8 pr-16 overflow-hidden font-bold text-base 
-                  text-white transition-all duration-150 ease-in-out 
-                  rounded-xl border border-zinc-200/50 bg-black/40 
-                  backdrop-blur-sm group hover:pl-10 hover:pr-14 
-                  w-full sm:w-auto max-w-xs
-                "
-              >
-                {/* Animated hover background */}
-                <span className="absolute bottom-0 left-0 w-full h-1 transition-all duration-150 ease-in-out bg-zinc-100 group-hover:h-full" />
-
-                {/* Arrow sliding OUT */}
-                <span className="absolute right-0 pr-6 duration-200 ease-out group-hover:translate-x-12">
-                  <ArrowBigRightDash className="w-6 h-6" />
-                </span>
-
-                {/* Arrow sliding IN */}
-                <span className="absolute left-0 pl-4 -translate-x-12 group-hover:translate-x-0 ease-out duration-200">
-                  <ArrowBigRightDash className="w-6 h-6 text-black" />
-                </span>
-
-                {/* Text */}
-                <span className="relative w-full text-left transition-colors duration-200 ease-in-out group-hover:text-black uppercase tracking-wide">
-                  {secondaryCtaLabel}
-                </span>
-              </a>
-
-            </div>
-          </div>
+            {primaryCtaLabel}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-4 h-4">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+          <a
+            href={secondaryCtaHref}
+            className={`
+              ${barlowCondensed.className}
+              inline-flex items-center gap-2.5
+              px-8 py-4 font-extrabold text-[0.85rem]
+              tracking-[2.5px] uppercase cursor-pointer
+              bg-transparent text-[var(--off-white)]
+              border-2 border-[var(--concrete-gray)]
+              transition-all duration-250
+              hover:border-[var(--yellow)] hover:text-[var(--yellow)]
+              hover:-translate-y-0.5
+            `}
+          >
+            {secondaryCtaLabel}
+          </a>
         </div>
       </div>
+
+      {/* Hazard stripe at bottom */}
+      <div className="hazard-stripe absolute bottom-0 left-0 right-0 z-10" />
     </section>
   );
 }

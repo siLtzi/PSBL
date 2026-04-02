@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import Hero, { HeroContent } from "@/components/Hero";
+import Stats from "@/components/Stats";
+import Ticker from "@/components/Ticker";
 import About, { AboutContent } from "@/components/About";
 import Services, { ServicesContent } from "@/components/Services";
 import References, {
   ReferencesContent,
   ReferenceItem,
 } from "@/components/References";
+import Process from "@/components/Process";
 import BottomCta from "@/components/BottomCta";
 import Footer from "@/components/Footer";
 
@@ -344,8 +347,7 @@ export default async function HomePage() {
   })();
 
   return (
-    // FIX: Added overflow-x-hidden here to prevent horizontal scrolling issues from GSAP animations or wide content
-    <main className="relative flex-1 bg-black text-zinc-50 overflow-x-hidden w-full">
+    <main className="relative flex-1 bg-[var(--dark)] text-[var(--off-white)] overflow-x-hidden w-full">
       {/* JSON-LD Structured Data for Homepage */}
       <script
         type="application/ld+json"
@@ -362,12 +364,12 @@ export default async function HomePage() {
       />
 
       <Hero content={heroContent} />
+      <Stats />
+      <Ticker />
       <About content={aboutContent} />
       <Services content={servicesContent} />
-
-      {/* NEW: GSAP references strip between services and bottom CTA */}
       <References content={referencesContent} />
-
+      <Process />
       <BottomCta />
       <Footer />
     </main>

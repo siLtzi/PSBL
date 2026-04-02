@@ -1,10 +1,19 @@
 @import "tailwindcss";
 @import "leaflet/dist/leaflet.css";
 
-
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --black: #0d0d0d;
+  --dark: #161614;
+  --panel: #1c1c19;
+  --steel: #2a2a26;
+  --concrete-gray: #3d3d38;
+  --mid: #7a7a70;
+  --light: #b0afa5;
+  --off-white: #e8e6df;
+  --yellow: #f0c000;
+  --yellow-hot: #ffd500;
+  --background: #161614;
+  --foreground: #e8e6df;
 }
 
 @theme inline {
@@ -14,17 +23,83 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--dark);
+  color: var(--off-white);
+  font-family: var(--font-barlow), Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Grain overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 99999;
+  mix-blend-mode: overlay;
+  opacity: 0.12;
+  background: url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence baseFrequency='0.8' numOctaves='4' type='fractalNoise'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+::selection {
+  background: var(--yellow);
+  color: var(--black);
+}
+
+/* ── HAZARD STRIPE ── */
+.hazard-stripe {
+  height: 8px;
+  background: repeating-linear-gradient(-45deg, var(--yellow) 0px, var(--yellow) 12px, var(--black) 12px, var(--black) 24px);
+}
+
+.hazard-stripe-reverse {
+  height: 8px;
+  background: repeating-linear-gradient(-45deg, var(--black) 0px, var(--black) 12px, var(--yellow) 12px, var(--yellow) 24px);
+}
+
+/* ── TICKER ── */
+.ticker-track {
+  display: inline-flex;
+  animation: tickScroll 22s linear infinite;
+}
+
+@keyframes tickScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ── HERO KEN BURNS ── */
+@keyframes heroKen {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.12); }
+}
+
+/* ── LABEL PULSE ── */
+@keyframes labelPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ── SLIDE IN ── */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(25px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── REVEAL ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.vis {
+  opacity: 1;
+  transform: none;
 }
 
 /* Cookie consent banner slide-up animation */

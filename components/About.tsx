@@ -1,8 +1,7 @@
 "use client";
 
-import { scienceGothic, exo2 } from "@/app/fonts";
-import FinlandMap from "@/components/FinlandMap";
-import { ArrowBigRightDash } from "lucide-react";
+import Image from "next/image";
+import { barlowCondensed, ibmPlexMono, barlow } from "@/app/fonts";
 
 export type AboutContent = {
   headline: string;
@@ -14,107 +13,68 @@ export type AboutContent = {
 };
 
 export default function About({ content }: { content: AboutContent }) {
-  const { headline, lead, body, ctaLabel, ctaHref } = content;
+  const { headline, lead, body, imageUrl } = content;
+
+  const listItems = [
+    "Kaikki valutyöt avaimet käteen",
+    "Kuljetus & pumppaus sisältyy hintaan",
+    "Kiinteä hinnoittelu — ei yllätyksiä",
+    "Koko Pohjois-Suomen alue",
+  ];
 
   return (
-    <section className="relative w-full bg-zinc-100 text-zinc-900 py-16 md:py-28 overflow-hidden">
-      {/* ---------------------- */}
-      {/* TOP: CENTERED HEADLINE */}
-      {/* ---------------------- */}
-      <div className="mx-auto max-w-[90rem] px-4 sm:px-8 lg:px-16 text-center mb-12 md:mb-16">
-        <h2
-          className={`
-            ${scienceGothic.className}
-            /* FIX: Responsive font sizing for long Finnish headers */
-            text-2xl 
-            xs:text-3xl
-            sm:text-4xl 
-            md:text-5xl 
-            lg:text-5xl
-            font-black 
-            leading-tight 
-            tracking-tight
-            break-words
-            hyphens-auto
-            uppercase
-          `}
-        >
-          {headline}
-        </h2>
+    <section className="grid grid-cols-1 lg:grid-cols-2 min-h-[80vh]">
+      {/* Left: Image */}
+      <div className="relative overflow-hidden group">
+        {imageUrl ? (
+          <Image
+            src={imageUrl}
+            alt="Betonityö"
+            fill
+            className="object-cover saturate-[0.6] contrast-[1.1] transition-all duration-800 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.04] group-hover:saturate-[0.8]"
+          />
+        ) : (
+          <div className="w-full h-full min-h-[400px] bg-[var(--steel)]" />
+        )}
+
+        {/* Corner brackets */}
+        <div className="absolute top-8 left-8 w-[50px] h-[50px] border-t-[3px] border-l-[3px] border-[var(--yellow)] z-[2] transition-all duration-400 group-hover:w-[65px] group-hover:h-[65px]" />
+        <div className="absolute bottom-8 right-8 w-[50px] h-[50px] border-b-[3px] border-r-[3px] border-[var(--yellow)] z-[2] transition-all duration-400 group-hover:w-[65px] group-hover:h-[65px]" />
       </div>
 
-      {/* ----------------------------- */}
-      {/* MAIN GRID: LEFT TEXT + RIGHT MAP */}
-      {/* ----------------------------- */}
-      <div
-  className="
-    mx-auto max-w-7xl          /* narrower than 110rem → centers better */
-    px-4 sm:px-8 lg:px-12
-    grid gap-12 lg:gap-16
-    lg:grid-cols-[0.9fr_1.1fr]     /* pulls text toward map */
-    items-center
-  "
->
-        {/* LEFT SIDE — TEXT */}
-        <div className="min-w-0">
-          <div className="h-1 w-16 rounded-full bg-yellow-400 mb-6" />
-
-          <p
-            className={`
-              ${exo2.className}
-              text-lg sm:text-2xl md:text-3xl font-semibold text-zinc-800 mb-4
-              break-words
-            `}
-          >
-            {lead}
-          </p>
-
-          <p
-            className={`
-              ${exo2.className}
-              text-sm sm:text-lg text-zinc-600 leading-relaxed max-w-prose
-            `}
-          >
-            {body}
-          </p>
-
-          {/* CTA BUTTON */}
-          <a
-            href={ctaHref}
-            className={`
-              ${scienceGothic.className}
-              relative inline-flex items-center justify-start
-              w-full sm:w-auto max-w-xs
-              py-4 pl-8 pr-16
-              overflow-hidden font-bold
-              text-zinc-900 transition-all duration-150 ease-in-out
-              bg-yellow-400 rounded-xl group
-              hover:pl-12 hover:pr-12
-              mt-8 shadow-[0_12px_30px_rgba(250,204,21,0.35)]
-            `}
-          >
-            <span className="absolute bottom-0 left-0 w-full h-1 transition-all duration-150 bg-zinc-900 group-hover:h-full" />
-
-            <span className="absolute right-0 pr-6 duration-200 ease-out group-hover:translate-x-12">
-              <ArrowBigRightDash className="w-6 h-6" />
-            </span>
-
-            <span className="absolute left-0 pl-4 -translate-x-12 duration-200 ease-out group-hover:translate-x-0">
-              <ArrowBigRightDash className="w-6 h-6 text-yellow-400" />
-            </span>
-
-            <span className="relative w-full text-left transition-colors duration-200 group-hover:text-white uppercase">
-              {ctaLabel}
-            </span>
-          </a>
+      {/* Right: Content */}
+      <div className="p-10 md:p-16 lg:p-20 flex flex-col justify-center bg-[var(--panel)] border-l-0 lg:border-l-[3px] border-t-[3px] lg:border-t-0 border-[var(--steel)]">
+        <div className={`${ibmPlexMono.className} text-[0.65rem] font-semibold tracking-[3px] uppercase text-[var(--yellow)] mb-4 flex items-center gap-3`}>
+          <span className="text-[var(--concrete-gray)]">{"//"}</span>
+          Yritys
         </div>
 
-        {/* RIGHT SIDE — MAP */}
-        <div className="min-w-0 flex justify-center relative">
-          {/* Added max-width constraint specifically for mobile */}
-          <div className="w-full max-w-[80vw] sm:max-w-[500px]">
-             <FinlandMap className="w-full h-auto drop-shadow-2xl" />
-          </div>
+        <h2 className={`${barlowCondensed.className} font-black text-[clamp(2.5rem,5vw,4.5rem)] uppercase tracking-[2px] leading-[0.95] text-[var(--off-white)]`}>
+          {headline || "Ammattitaitoa joka kestää."}
+        </h2>
+
+        <div className={`${barlow.className} text-[1.05rem] leading-[1.8] text-[var(--light)] mt-8 max-w-[480px]`}>
+          <strong className="text-[var(--off-white)] font-semibold">{lead}</strong>
+          {" "}
+          {body}
+        </div>
+
+        <div className="mt-8 flex flex-col gap-2.5">
+          {listItems.map((item, i) => (
+            <div
+              key={i}
+              className={`
+                ${ibmPlexMono.className}
+                flex items-center gap-3
+                text-[0.8rem] font-medium text-[var(--light)]
+                transition-colors duration-200 hover:text-[var(--off-white)]
+                group/item
+              `}
+            >
+              <span className="w-[10px] h-[3px] bg-[var(--yellow)] shrink-0 transition-all duration-300 group-hover/item:w-[18px]" />
+              {item}
+            </div>
+          ))}
         </div>
       </div>
     </section>

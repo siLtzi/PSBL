@@ -1,4 +1,5 @@
 import localFont from "next/font/local";
+import { Barlow_Condensed, IBM_Plex_Mono, Barlow } from "next/font/google";
 
 export const scienceGothic = localFont({
   src: [
@@ -21,5 +22,27 @@ export const exo2 = localFont({
     { path: "./fonts/Exo2-Bold.woff2",    weight: "700", style: "normal" },
   ],
   variable: "--font-exo2",
+  display: "swap",
+});
+
+// Industrial theme fonts
+export const barlowCondensed = Barlow_Condensed({
+  subsets: ["latin"],
+  weight: ["600", "700", "800", "900"],
+  variable: "--font-barlow-condensed",
+  display: "swap",
+});
+
+export const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-ibm-plex-mono",
+  display: "swap",
+});
+
+export const barlow = Barlow({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-barlow",
   display: "swap",
 });

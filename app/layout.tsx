@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { scienceGothic } from "./fonts";
+import { scienceGothic, barlowCondensed, ibmPlexMono, barlow } from "./fonts";
 import Header from "@/components/Header";
 import CookieConsent from "@/components/CookieConsent";
 import { SanityLive } from "@/sanity/lib/live";
@@ -258,7 +258,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fi" className={scienceGothic.variable}>
+    <html lang="fi" className={`${scienceGothic.variable} ${barlowCondensed.variable} ${ibmPlexMono.variable} ${barlow.variable}`}>
       <head>
         {/* JSON-LD Structured Data */}
         <script
@@ -286,7 +286,7 @@ export default async function RootLayout({
 
       </head>
 
-      <body className="bg-black text-zinc-50">
+      <body className="bg-[var(--dark)] text-[var(--off-white)]">
         {/* HEADER näkyy kaikilla sivuilla */}
         <Header />
 
