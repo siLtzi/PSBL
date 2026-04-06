@@ -1,6 +1,6 @@
 "use client";
 
-import { barlow } from "@/app/fonts";
+import { barlowCondensed } from "@/app/fonts";
 
 /**
  * Small button that dispatches `reset-cookie-consent` event.
@@ -11,12 +11,13 @@ export default function CookieSettingsButton() {
     <button
       onClick={() => window.dispatchEvent(new Event("reset-cookie-consent"))}
       className={`
-        ${barlow.className}
+        ${barlowCondensed.className}
         button-snappy
-        inline-flex items-center
-        px-4 py-2 text-xs font-bold uppercase tracking-wider
-        border border-zinc-600 text-zinc-300 rounded-lg
-        hover:border-yellow-400 hover:text-yellow-400
+        inline-flex items-center px-5 py-3
+        text-[0.78rem] font-extrabold uppercase tracking-[2px]
+        border border-(--concrete-gray) bg-transparent text-(--off-white)
+        hover:border-(--yellow) hover:text-(--yellow)
+        hover:bg-[rgba(240,192,0,0.08)]
         cursor-pointer
       `}
     >

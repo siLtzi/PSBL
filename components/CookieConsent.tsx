@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Script from "next/script";
-import { barlow } from "@/app/fonts";
+import { barlow, barlowCondensed } from "@/app/fonts";
 
 const CONSENT_KEY = "psbl-cookie-consent";
 type ConsentValue = "all" | "necessary" | null;
@@ -72,55 +72,97 @@ export default function CookieConsent() {
       {visible && (
         <div
           className={`
-            fixed bottom-0 inset-x-0 z-[100]
-            border-t border-zinc-800 bg-zinc-950/95 backdrop-blur-md
-            shadow-[0_-8px_30px_rgba(0,0,0,0.4)]
+            fixed bottom-4 inset-x-4 z-50
             animate-slide-up
             ${barlow.className}
           `}
         >
-          <div className="mx-auto max-w-5xl px-4 py-4 sm:py-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            {/* Text */}
-            <div className="flex-1 text-sm text-zinc-300 leading-relaxed">
-              <p>
-                Käytämme evästeetöntä analytiikkaa (Plausible) parantaaksemme
-                sivustoamme. Emme kerää henkilötietoja.{" "}
-                <Link
-                  href="/evastekaytanto"
-                  prefetch={false}
-                  className="underline underline-offset-2 text-yellow-400 hover:text-yellow-300 transition-colors"
-                >
-                  Lue lisää
-                </Link>
-              </p>
-            </div>
+          <div className="mx-auto max-w-[980px]">
+            <div className="relative overflow-hidden border border-(--steel) bg-[rgba(13,13,13,0.94)] backdrop-blur-[14px] shadow-[0_18px_50px_rgba(0,0,0,0.45)]">
+              <div className="hazard-stripe" />
 
-            {/* Buttons */}
-            <div className="flex gap-3 shrink-0">
-              <button
-                onClick={reject}
-                className="
-                  button-snappy
-                  px-4 py-2 text-xs font-bold uppercase tracking-wider
-                  border border-zinc-600 text-zinc-300 rounded-lg
-                  hover:border-zinc-400 hover:text-white
-                  cursor-pointer
-                "
-              >
-                Vain välttämättömät
-              </button>
-              <button
-                onClick={accept}
-                className="
-                  button-snappy
-                  px-4 py-2 text-xs font-bold uppercase tracking-wider
-                  bg-yellow-400 text-zinc-900 rounded-lg
-                  hover:bg-yellow-300
-                  cursor-pointer
-                "
-              >
-                Hyväksy kaikki
-              </button>
+              <div className="absolute right-4 top-4 hidden sm:block">
+                <span
+                  className={`
+                    ${barlowCondensed.className}
+                    text-[3.8rem] leading-none tracking-[2px]
+                    text-[rgba(240,192,0,0.08)]
+                  `}
+                >
+                  01
+                </span>
+              </div>
+
+              <div className="grid gap-6 px-5 py-5 sm:px-7 sm:py-6 lg:grid-cols-[1fr_auto] lg:items-end lg:gap-8">
+                <div className="max-w-[680px]">
+                  <div
+                    className={`
+                      ${barlow.className}
+                      mb-3 flex items-center gap-3 text-[0.65rem]
+                      font-semibold uppercase tracking-[3px] text-(--yellow)
+                    `}
+                  >
+                    <span className="h-0.5 w-8 bg-(--yellow)" />
+                    Evästeasetukset
+                  </div>
+
+                  <h3
+                    className={`
+                      ${barlowCondensed.className}
+                      max-w-[14ch] text-[clamp(1.9rem,4vw,3rem)]
+                      font-black uppercase leading-[0.95]
+                      tracking-[1px] text-(--off-white)
+                    `}
+                  >
+                    Selkeästi mitattu. Ei turhaa seurantaa.
+                  </h3>
+
+                  <p className="mt-4 max-w-[60ch] text-sm leading-[1.8] text-(--light) sm:text-[0.95rem]">
+                    Käytämme evästeetöntä analytiikkaa parantaaksemme sivuston
+                    toimivuutta. Emme seuraa henkilötietoja, ja tallennamme
+                    selaimeesi vain tekemäsi valinnan. {" "}
+                    <Link
+                      href="/evastekaytanto"
+                      prefetch={false}
+                      className="font-semibold text-(--yellow) transition-colors hover:text-(--yellow-hot)"
+                    >
+                      Lue evästekäytäntö
+                    </Link>
+                    .
+                  </p>
+                </div>
+
+                <div className="flex w-full flex-col gap-3 sm:flex-row lg:w-auto lg:flex-col lg:items-stretch">
+                  <button
+                    onClick={accept}
+                    className={`
+                      ${barlowCondensed.className}
+                      button-snappy
+                      min-w-[220px] px-6 py-3 text-[0.82rem]
+                      font-extrabold uppercase tracking-[2px]
+                      bg-(--yellow) text-(--black)
+                      hover:bg-(--yellow-hot) cursor-pointer
+                    `}
+                  >
+                    Hyväksy kaikki
+                  </button>
+                  <button
+                    onClick={reject}
+                    className={`
+                      ${barlowCondensed.className}
+                      button-snappy
+                      min-w-[220px] px-6 py-3 text-[0.82rem]
+                      font-extrabold uppercase tracking-[2px]
+                      border border-(--concrete-gray)
+                      bg-transparent text-(--off-white)
+                      hover:border-(--yellow) hover:text-(--yellow)
+                      hover:bg-[rgba(240,192,0,0.08)] cursor-pointer
+                    `}
+                  >
+                    Vain välttämättömät
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
