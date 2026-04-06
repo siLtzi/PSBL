@@ -137,29 +137,29 @@ export default function CookieConsent() {
                     onClick={accept}
                     className={`
                       ${barlowCondensed.className}
-                      button-snappy
+                      button-cta button-cta-fill-yellow group
                       min-w-[220px] px-6 py-3 text-[0.82rem]
                       font-extrabold uppercase tracking-[2px]
                       bg-(--yellow) text-(--black)
-                      hover:bg-(--yellow-hot) cursor-pointer
+                      cursor-pointer
                     `}
                   >
-                    Hyväksy kaikki
+                    <span className="button-cta-label">Hyväksy kaikki</span>
                   </button>
                   <button
                     onClick={reject}
                     className={`
                       ${barlowCondensed.className}
-                      button-snappy
+                      button-cta button-cta-fill-soft-yellow group
                       min-w-[220px] px-6 py-3 text-[0.82rem]
                       font-extrabold uppercase tracking-[2px]
                       border border-(--concrete-gray)
                       bg-transparent text-(--off-white)
                       hover:border-(--yellow) hover:text-(--yellow)
-                      hover:bg-[rgba(240,192,0,0.08)] cursor-pointer
+                      cursor-pointer
                     `}
                   >
-                    Vain välttämättömät
+                    <span className="button-cta-label">Vain välttämättömät</span>
                   </button>
                 </div>
               </div>

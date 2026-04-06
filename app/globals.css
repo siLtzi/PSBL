@@ -85,6 +85,120 @@ body::after {
   transform: translateX(3px);
 }
 
+/* ── CTA BUTTON SYSTEM ──
+   Matches the GitHub Hero.tsx pattern:
+   - Visible 4px accent bar at bottom (h-1) that fills to 100% on hover
+   - Arrow swap (slides out right, new arrow slides in from left)
+   - Padding shift on arrow buttons (pl-8 → pl-10, pr-16 → pr-14)
+   - Text color changes for contrast against fill
+── */
+
+.button-cta {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    padding 0.15s ease-in-out,
+    background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out,
+    color 0.15s ease-in-out,
+    transform 0.15s ease-in-out;
+}
+
+/* Fill bar — visible 4px accent at bottom, grows to full on hover */
+.button-cta::before {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 4px;
+  background: var(--button-cta-fill, transparent);
+  transition: height 0.15s ease-in-out;
+  z-index: 0;
+}
+
+.button-cta:hover:not(:disabled)::before {
+  height: 100%;
+}
+
+.button-cta:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+.button-cta:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--yellow);
+}
+
+/* ── Fill color variants ── */
+/* Yellow bg → brighter hot-yellow fill (lifts from the base yellow) */
+.button-cta-fill-yellow  { --button-cta-fill: var(--yellow-hot); }
+/* Outline/transparent → warm yellow glow */
+.button-cta-fill-soft-yellow { --button-cta-fill: rgba(240, 192, 0, 0.15); }
+/* Dark bg on yellow section → warm charcoal (distinct from both black bg and yellow section) */
+.button-cta-fill-dark    { --button-cta-fill: var(--concrete-gray); }
+
+/* ── Hover text/icon colors per variant ── */
+/* Dark variant on yellow section: text goes yellow for contrast */
+.button-cta.button-cta-fill-dark:hover:not(:disabled) .button-cta-label {
+  color: var(--yellow);
+}
+
+/* Dark variant: incoming arrow is yellow */
+.button-cta.button-cta-fill-dark .button-cta-icon-in {
+  color: var(--yellow);
+}
+
+/* ── Label — stays above fill ── */
+.button-cta-label {
+  position: relative;
+  z-index: 1;
+  transition: color 0.2s ease-in-out;
+}
+
+/* ── Arrow button: padding shift + sliding arrows ── */
+.button-cta-arrow {
+  padding-right: 4rem;
+}
+
+.button-cta-arrow:hover:not(:disabled) {
+  padding-left: 2.5rem;
+  padding-right: 3.5rem;
+}
+
+/* ── Sliding icons ── */
+.button-cta-icon-out,
+.button-cta-icon-in {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  pointer-events: none;
+  transition: transform 0.2s ease-out, color 0.2s ease-in-out;
+}
+
+.button-cta-icon-out {
+  right: 0;
+  padding-right: 1.5rem;
+  transform: translateY(-50%) translateX(0);
+}
+
+.button-cta-icon-in {
+  left: 0;
+  padding-left: 1rem;
+  transform: translateY(-50%) translateX(-3rem);
+}
+
+.button-cta-arrow:hover:not(:disabled) .button-cta-icon-out {
+  transform: translateY(-50%) translateX(3rem);
+}
+
+.button-cta-arrow:hover:not(:disabled) .button-cta-icon-in {
+  transform: translateY(-50%) translateX(0);
+}
+
 /* ── HAZARD STRIPE ── */
 .hazard-stripe {
   height: 8px;

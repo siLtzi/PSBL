@@ -297,20 +297,25 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
             disabled={isSubmitting}
             className={`
               ${barlowCondensed.className}
-              button-snappy button-arrow
-              inline-flex items-center gap-2.5
-              px-8 py-4 font-extrabold text-[0.85rem]
+              button-cta button-cta-arrow button-cta-fill-yellow group
+              inline-flex items-center px-8 py-4 font-extrabold text-[0.85rem]
               tracking-[2.5px] uppercase cursor-pointer
               bg-[var(--yellow)] text-[var(--black)]
-              hover:bg-[var(--yellow-hot)]
               w-full sm:w-auto
               ${isSubmitting ? "opacity-70 cursor-wait" : ""}
             `}
           >
-            {isSubmitting ? "Lähetetään…" : "Lähetä"}
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-4 h-4">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
+            <span className="button-cta-label">{isSubmitting ? "Lähetetään…" : "Lähetä"}</span>
+            <span aria-hidden="true" className="button-cta-icon-out">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="h-4 w-4">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </span>
+            <span aria-hidden="true" className="button-cta-icon-in">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="h-4 w-4">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </span>
           </button>
         </div>
       </form>

@@ -90,34 +90,38 @@ export default function Hero({ content }: { content: HeroContent }) {
             href={primaryCtaHref}
             className={`
               ${barlowCondensed.className}
-              button-snappy button-arrow
-              inline-flex items-center gap-2.5
-              px-8 py-4 font-extrabold text-[0.85rem]
+              button-cta button-cta-arrow button-cta-fill-yellow group
+              inline-flex items-center px-8 py-4 font-extrabold text-[0.85rem]
               tracking-[2.5px] uppercase cursor-pointer
-              bg-[var(--yellow)] text-[var(--black)]
-              hover:bg-[var(--yellow-hot)]
+              bg-(--yellow) text-(--black)
             `}
           >
-            {primaryCtaLabel}
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-4 h-4">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
+            <span className="button-cta-label">{primaryCtaLabel}</span>
+            <span aria-hidden="true" className="button-cta-icon-out">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="h-4 w-4">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </span>
+            <span aria-hidden="true" className="button-cta-icon-in">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="h-4 w-4">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </span>
           </a>
           <a
             href={secondaryCtaHref}
             className={`
               ${barlowCondensed.className}
-              button-snappy
+              button-cta button-cta-fill-soft-yellow group
               inline-flex items-center gap-2.5
               px-8 py-4 font-extrabold text-[0.85rem]
               tracking-[2.5px] uppercase cursor-pointer
-              bg-transparent text-[var(--off-white)]
-              border-2 border-[var(--concrete-gray)]
-              hover:border-[var(--yellow)] hover:text-[var(--yellow)]
-              hover:bg-[rgba(240,192,0,0.08)]
+              bg-transparent text-(--off-white)
+              border-2 border-(--concrete-gray)
+              hover:border-(--yellow) hover:text-(--yellow)
             `}
           >
-            {secondaryCtaLabel}
+            <span className="button-cta-label">{secondaryCtaLabel}</span>
           </a>
         </div>
       </div>

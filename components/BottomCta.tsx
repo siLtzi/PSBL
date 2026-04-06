@@ -70,9 +70,11 @@ export default function BottomCta() {
 
             <Link
               href="/yhteystiedot"
-              className={`${barlowCondensed.className} button-snappy inline-flex items-center justify-center uppercase font-extrabold text-lg tracking-[2px] bg-[var(--black)] text-[var(--yellow)] px-10 py-4 hover:bg-[var(--dark)] w-fit`}
+              className={`${barlowCondensed.className} button-cta button-cta-arrow button-cta-fill-dark group inline-flex items-center justify-center uppercase font-extrabold text-lg tracking-[2px] bg-[var(--black)] text-[var(--yellow)] px-10 py-4 w-fit`}
             >
-              Pyydä tarjous →
+              <span className="button-cta-label">Pyydä tarjous</span>
+              <span aria-hidden="true" className="button-cta-icon-out">→</span>
+              <span aria-hidden="true" className="button-cta-icon-in">→</span>
             </Link>
           </div>
         </div>

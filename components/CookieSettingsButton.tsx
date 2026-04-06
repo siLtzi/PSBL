@@ -12,16 +12,15 @@ export default function CookieSettingsButton() {
       onClick={() => window.dispatchEvent(new Event("reset-cookie-consent"))}
       className={`
         ${barlowCondensed.className}
-        button-snappy
+        button-cta button-cta-fill-soft-yellow group
         inline-flex items-center px-5 py-3
         text-[0.78rem] font-extrabold uppercase tracking-[2px]
         border border-(--concrete-gray) bg-transparent text-(--off-white)
         hover:border-(--yellow) hover:text-(--yellow)
-        hover:bg-[rgba(240,192,0,0.08)]
         cursor-pointer
       `}
     >
-      Muuta evästeasetuksia
+      <span className="button-cta-label">Muuta evästeasetuksia</span>
     </button>
   );
 }

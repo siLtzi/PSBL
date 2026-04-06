@@ -169,15 +169,14 @@ export default function Header() {
           href="/yhteystiedot"
           className={`
             ${barlowCondensed.className}
-            button-snappy
+            button-cta button-cta-fill-yellow group
             hidden md:block
             font-extrabold text-[0.8rem] tracking-[2px] uppercase
             px-6 py-2.5
-            bg-[var(--yellow)] text-[var(--black)]
-            hover:bg-[var(--yellow-hot)]
+            bg-(--yellow) text-(--black)
           `}
         >
-          Pyydä tarjous
+          <span className="button-cta-label">Pyydä tarjous</span>
         </Link>
 
         {/* Mobile hamburger */}
