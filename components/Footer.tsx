@@ -30,12 +30,11 @@ export default function Footer() {
           {/* Brand column */}
           <div>
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-8 h-8 bg-[var(--yellow)] flex items-center justify-center">
-                <span className={`${barlowCondensed.className} text-[var(--black)] font-black text-sm leading-none`}>P</span>
-              </div>
-              <span className={`${barlowCondensed.className} font-extrabold text-lg uppercase tracking-[2px] text-[var(--off-white)]`}>
-                PSBL
-              </span>
+              <img
+                src="/logo_psbl123.svg"
+                alt="PSBL – Pohjois-Suomen Betonilattiat"
+                className="h-8 w-auto brightness-0 invert"
+              />
             </div>
             <p className={`${barlow.className} text-xs text-[var(--mid)] leading-relaxed mb-4`}>
               Pohjois-Suomen Betonilattiat Oy

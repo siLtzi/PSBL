@@ -57,9 +57,11 @@ export default function Services({
                 sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw"
                 quality={75}
                 loading={index < 3 ? "eager" : "lazy"}
-                className="object-cover grayscale-[50%] brightness-[0.45] contrast-[1.1] transition-all duration-500 group-hover:grayscale-0 group-hover:brightness-[0.25] group-hover:scale-110"
+                className="object-cover grayscale-30 brightness-[0.68] contrast-[1.05] transition-all duration-500 group-hover:grayscale-0 group-hover:brightness-[0.78] group-hover:scale-106"
                 style={service.hotspot ? { objectPosition: `${service.hotspot.x * 100}% ${service.hotspot.y * 100}%` } : undefined}
               />
+
+              <div className="absolute inset-0 bg-linear-to-t from-black/72 via-black/26 to-black/8 transition-colors duration-300 group-hover:from-black/58 group-hover:via-black/18 group-hover:to-black/0" />
 
               {/* Hover border */}
               <div className="absolute inset-0 border-0 border-[var(--yellow)] transition-all duration-300 pointer-events-none z-[3] group-hover:border-2" />

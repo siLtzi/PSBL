@@ -90,16 +90,13 @@ export default function Header() {
         {/* Logo */}
         <Link
           href="/"
-          className={`
-            ${barlowCondensed.className}
-            font-black text-[1.4rem] tracking-[4px] uppercase
-            text-[var(--yellow)] flex items-center gap-3
-          `}
+          className="flex items-center gap-3"
         >
-          <div className="w-8 h-8 bg-[var(--yellow)] text-[var(--black)] flex items-center justify-center text-[0.75rem] font-black tracking-[1px]">
-            PSBL
-          </div>
-          <span className="hidden sm:inline">Betonilattiat</span>
+          <img
+            src="/logo_psbl123.svg"
+            alt="PSBL – Pohjois-Suomen Betonilattiat"
+            className="h-8 w-auto brightness-0 invert"
+          />
         </Link>
 
         {/* Desktop nav */}
@@ -172,12 +169,12 @@ export default function Header() {
           href="/yhteystiedot"
           className={`
             ${barlowCondensed.className}
+            button-snappy
             hidden md:block
             font-extrabold text-[0.8rem] tracking-[2px] uppercase
             px-6 py-2.5
             bg-[var(--yellow)] text-[var(--black)]
-            transition-all duration-200
-            hover:bg-[var(--yellow-hot)] hover:shadow-[0_0_25px_rgba(240,192,0,0.3)]
+            hover:bg-[var(--yellow-hot)]
           `}
         >
           Pyydä tarjous

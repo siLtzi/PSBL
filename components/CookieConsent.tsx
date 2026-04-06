@@ -100,10 +100,11 @@ export default function CookieConsent() {
               <button
                 onClick={reject}
                 className="
+                  button-snappy
                   px-4 py-2 text-xs font-bold uppercase tracking-wider
                   border border-zinc-600 text-zinc-300 rounded-lg
                   hover:border-zinc-400 hover:text-white
-                  transition-colors cursor-pointer
+                  cursor-pointer
                 "
               >
                 Vain välttämättömät
@@ -111,10 +112,11 @@ export default function CookieConsent() {
               <button
                 onClick={accept}
                 className="
+                  button-snappy
                   px-4 py-2 text-xs font-bold uppercase tracking-wider
                   bg-yellow-400 text-zinc-900 rounded-lg
                   hover:bg-yellow-300
-                  transition-colors cursor-pointer
+                  cursor-pointer
                 "
               >
                 Hyväksy kaikki

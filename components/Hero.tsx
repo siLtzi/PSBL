@@ -32,11 +32,100 @@ export default function Hero({ content }: { content: HeroContent }) {
   } = content;
 
   return (
-    <section className="relative mt-[60px] h-[calc(100vh-60px)] min-h-[600px] flex overflow-hidden">
-      {/* Background video */}
-      <div className="absolute inset-0 z-[1]">
+    <section className="relative mt-[60px] h-[calc(100vh-60px)] min-h-[650px] grid grid-cols-1 md:grid-cols-[auto_1fr] overflow-hidden bg-[var(--black)]">
+      {/* ── Left content panel ── */}
+      <div className="relative z-[5] flex flex-col justify-end md:justify-center p-6 md:py-16 md:pl-12 md:pr-8 bg-transparent md:bg-[var(--black)]">
+        {/* Label */}
+        <div
+          className={`
+            ${barlow.className}
+            text-[0.7rem] font-semibold tracking-[3px] uppercase
+            text-[var(--yellow)] mb-8 flex items-center gap-4
+            opacity-0 animate-[heroFadeIn_0.5s_0.2s_forwards]
+          `}
+        >
+          <span className="hero-label-line" />
+          {clean(titleLine1)} {clean(titleLine2)}
+        </div>
+
+        {/* H1 — per-line reveal */}
+        <h1 className={`${barlowCondensed.className} mb-10`}>
+          {/* Line 1: Valetaan */}
+          <span className="hero-line-clip block font-black text-[clamp(4rem,9vw,8.5rem)] leading-[0.92] uppercase tracking-[2px] text-[var(--off-white)]">
+            <span className="hero-line-inner">Valetaan</span>
+          </span>
+          {/* Line 2: lattiat (highlighted) */}
+          <span className="hero-line-clip block font-black text-[clamp(4rem,9vw,8.5rem)] leading-[0.92] uppercase tracking-[2px] text-[var(--off-white)]">
+            <span className="hero-line-inner">
+              <span className="hero-highlight inline-block relative">
+                <span className="hero-highlight-bg" />
+                <span className="hero-highlight-text-base">lattiat</span>
+                <span aria-hidden="true" className="hero-highlight-text-overlay">
+                  lattiat
+                </span>
+              </span>
+            </span>
+          </span>
+          {/* Line 3: kuntoon. */}
+          <span className="hero-line-clip block font-black text-[clamp(4rem,9vw,8.5rem)] leading-[0.92] uppercase tracking-[2px] text-[var(--off-white)]">
+            <span className="hero-line-inner">kuntoon.</span>
+          </span>
+        </h1>
+
+        {/* Subtitle */}
+        <p
+          className={`
+            ${barlow.className}
+            text-[1.1rem] font-normal text-[var(--light)]
+            max-w-[460px] leading-[1.8] mb-10
+            opacity-0 animate-[slideIn_0.6s_0.85s_forwards]
+          `}
+        >
+          {subtitle}
+        </p>
+
+        {/* Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 opacity-0 animate-[slideIn_0.6s_1s_forwards]">
+          <a
+            href={primaryCtaHref}
+            className={`
+              ${barlowCondensed.className}
+              button-snappy button-arrow
+              inline-flex items-center gap-2.5
+              px-8 py-4 font-extrabold text-[0.85rem]
+              tracking-[2.5px] uppercase cursor-pointer
+              bg-[var(--yellow)] text-[var(--black)]
+              hover:bg-[var(--yellow-hot)]
+            `}
+          >
+            {primaryCtaLabel}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-4 h-4">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </a>
+          <a
+            href={secondaryCtaHref}
+            className={`
+              ${barlowCondensed.className}
+              button-snappy
+              inline-flex items-center gap-2.5
+              px-8 py-4 font-extrabold text-[0.85rem]
+              tracking-[2.5px] uppercase cursor-pointer
+              bg-transparent text-[var(--off-white)]
+              border-2 border-[var(--concrete-gray)]
+              hover:border-[var(--yellow)] hover:text-[var(--yellow)]
+              hover:bg-[rgba(240,192,0,0.08)]
+            `}
+          >
+            {secondaryCtaLabel}
+          </a>
+        </div>
+      </div>
+
+      {/* ── Right image / video panel with diagonal clip ── */}
+      <div className="hero-right-clip absolute inset-0 md:relative md:inset-auto overflow-hidden">
         <video
-          className="w-full h-full object-cover contrast-[1.15] saturate-[0.7] brightness-[0.4] animate-[heroKen_25s_ease-in-out_infinite_alternate] origin-[30%_60%]"
+          className="w-full h-full object-cover contrast-[1.15] saturate-[0.75] brightness-[0.55] scale-105"
           autoPlay
           loop
           muted
@@ -46,88 +135,22 @@ export default function Hero({ content }: { content: HeroContent }) {
         </video>
       </div>
 
-      {/* Hero content */}
-      <div className="relative z-[5] flex flex-col justify-center items-start p-8 md:p-12 lg:p-16 w-full md:pl-[10%] lg:pl-[14%]">
-        {/* Label */}
-        <div className={`
-          ${barlow.className}
-          text-[0.7rem] font-semibold tracking-[3px] uppercase
-          text-[var(--yellow)] mb-6 flex items-center gap-4
-          animate-[slideIn_0.6s_0.2s_forwards] opacity-0
-        `}>
-          <span className="w-2 h-2 bg-[var(--yellow)] animate-[labelPulse_2s_ease-in-out_infinite]" />
-          {clean(titleLine1)} {clean(titleLine2)}
-        </div>
-
-        {/* H1 */}
-        <h1 className={`
-          ${barlowCondensed.className}
-          font-black uppercase tracking-[2px] text-[var(--off-white)]
-          mb-8 animate-[slideIn_0.6s_0.4s_forwards] opacity-0
-        `}>
-          <span className="relative z-[2] block text-[clamp(3.2rem,7vw,6.5rem)] leading-none mb-[-0.15em] ml-[0.05em]" style={{ WebkitTextStroke: '2px var(--black)' }}>
-            Valetaan
-          </span>
-          <span className="relative z-[1] inline-block text-[clamp(5.5rem,14vw,13rem)] leading-[0.85] text-[var(--black)] bg-[var(--yellow)] px-[0.2em] py-[0.02em] w-fit rotate-[-2deg] origin-left shadow-[6px_6px_0px_var(--steel),_inset_0_-4px_0_rgba(0,0,0,0.15)]">
-            lattiat
-          </span>
-          <span className="block text-[clamp(3.2rem,7vw,6.5rem)] leading-none mt-[-0.1em] ml-[0.05em]" style={{ WebkitTextStroke: '2px var(--black)' }}>
-            kuntoon.
-          </span>
-        </h1>
-
-        {/* Subtitle */}
-        <p className={`
-          ${barlow.className}
-          text-[1.25rem] font-normal text-[var(--light)]
-          max-w-[540px] leading-[1.7] mb-10
-          animate-[slideIn_0.6s_0.6s_forwards] opacity-0
-        `}>
-          {subtitle}
-        </p>
-
-        {/* Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 animate-[slideIn_0.6s_0.8s_forwards] opacity-0">
-          <a
-            href={primaryCtaHref}
-            className={`
-              ${barlowCondensed.className}
-              inline-flex items-center gap-2.5
-              px-8 py-4 font-extrabold text-[0.85rem]
-              tracking-[2.5px] uppercase cursor-pointer
-              bg-[var(--yellow)] text-[var(--black)]
-              relative overflow-hidden
-              transition-all duration-250
-              hover:bg-[var(--yellow-hot)] hover:-translate-y-0.5
-              hover:shadow-[0_6px_30px_rgba(240,192,0,0.4),_0_0_60px_rgba(240,192,0,0.1)]
-            `}
-          >
-            {primaryCtaLabel}
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-4 h-4">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </a>
-          <a
-            href={secondaryCtaHref}
-            className={`
-              ${barlowCondensed.className}
-              inline-flex items-center gap-2.5
-              px-8 py-4 font-extrabold text-[0.85rem]
-              tracking-[2.5px] uppercase cursor-pointer
-              bg-transparent text-[var(--off-white)]
-              border-2 border-[var(--concrete-gray)]
-              transition-all duration-250
-              hover:border-[var(--yellow)] hover:text-[var(--yellow)]
-              hover:-translate-y-0.5
-            `}
-          >
-            {secondaryCtaLabel}
-          </a>
-        </div>
-      </div>
-
       {/* Hazard stripe at bottom */}
       <div className="hazard-stripe absolute bottom-0 left-0 right-0 z-10" />
+
+      {/* Scroll indicator */}
+      <div
+        className="absolute bottom-10 right-12 z-10 hidden md:flex flex-col items-center gap-2 opacity-0"
+        style={{ animation: "heroFadeIn 0.5s 1.5s forwards" }}
+      >
+        <span
+          className="w-px h-10 bg-[var(--yellow)]"
+          style={{ animation: "heroScrollPulse 2s ease-in-out infinite" }}
+        />
+        <span className={`${barlow.className} text-[0.55rem] font-semibold tracking-[2px] uppercase text-[var(--mid)] [writing-mode:vertical-rl]`}>
+          Vieritä
+        </span>
+      </div>
     </section>
   );
 }

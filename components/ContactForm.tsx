@@ -237,11 +237,13 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
               type="button"
               onClick={handleOpenMap}
               className="
+                button-snappy
                 w-full sm:w-auto
                 inline-flex items-center justify-center sm:justify-start gap-1
                 border border-[var(--steel)] bg-[var(--panel)] px-3 py-2 text-[11px] sm:text-xs
                 font-semibold uppercase tracking-[0.12em]
-                text-[var(--light)] hover:border-[var(--yellow)] hover:text-[var(--yellow)] transition
+                text-[var(--light)] hover:border-[var(--yellow)] hover:text-[var(--yellow)]
+                hover:bg-[rgba(240,192,0,0.06)]
               "
             >
               <MapPin className="w-4 h-4" />
@@ -295,13 +297,12 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
             disabled={isSubmitting}
             className={`
               ${barlowCondensed.className}
+              button-snappy button-arrow
               inline-flex items-center gap-2.5
               px-8 py-4 font-extrabold text-[0.85rem]
               tracking-[2.5px] uppercase cursor-pointer
               bg-[var(--yellow)] text-[var(--black)]
-              transition-all duration-250
-              hover:bg-[var(--yellow-hot)] hover:-translate-y-0.5
-              hover:shadow-[0_6px_30px_rgba(240,192,0,0.4),_0_0_60px_rgba(240,192,0,0.1)]
+              hover:bg-[var(--yellow-hot)]
               w-full sm:w-auto
               ${isSubmitting ? "opacity-70 cursor-wait" : ""}
             `}

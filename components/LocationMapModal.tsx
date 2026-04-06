@@ -56,7 +56,7 @@ export default function LocationMapModal({
           <button
             type="button"
             onClick={onCancel}
-            className="p-1 rounded-full hover:bg-zinc-100"
+            className="button-snappy p-1 rounded-full hover:bg-zinc-100"
           >
             <X className="w-5 h-5" />
           </button>
@@ -96,7 +96,7 @@ export default function LocationMapModal({
             <button
               type="button"
               onClick={onCancel}
-              className="text-xs font-semibold uppercase tracking-[0.12em] text-zinc-600 hover:text-zinc-900"
+              className="button-snappy text-xs font-semibold uppercase tracking-[0.12em] text-zinc-600 hover:text-zinc-900"
             >
               Peruuta
             </button>
@@ -105,6 +105,7 @@ export default function LocationMapModal({
               disabled={!tempCoords}
               onClick={() => tempCoords && onConfirm(tempCoords)}
               className={`
+                button-snappy
                 text-xs font-semibold uppercase tracking-[0.12em]
                 px-4 py-2 rounded-md
                 ${

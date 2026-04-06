@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { barlowCondensed, barlow } from "@/app/fonts";
@@ -27,9 +27,12 @@ export default function References({
   content: ReferencesContent;
 }) {
   const { heading, items } = content;
+  const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const [isAutoplayPaused, setIsAutoplayPaused] = useState(false);
+  const [isInView, setIsInView] = useState(false);
 
   if (!items || items.length === 0) return null;
 
@@ -40,15 +43,72 @@ export default function References({
     setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 2);
   }, []);
 
-  const scroll = (dir: "left" | "right") => {
+  useEffect(() => {
+    updateScrollState();
+  }, [items.length, updateScrollState]);
+
+  const scroll = useCallback((dir: "left" | "right") => {
     const el = trackRef.current;
     if (!el) return;
     const cardWidth = el.querySelector("article")?.offsetWidth ?? 400;
-    el.scrollBy({ left: dir === "left" ? -cardWidth - 3 : cardWidth + 3, behavior: "smooth" });
-  };
+    const scrollStep = cardWidth + 3;
+    const maxScrollLeft = Math.max(0, el.scrollWidth - el.clientWidth);
+
+    if (dir === "right") {
+      if (el.scrollLeft >= maxScrollLeft - 2) {
+        el.scrollTo({ left: 0, behavior: "auto" });
+        return;
+      }
+
+      const nextLeft = el.scrollLeft + scrollStep;
+      el.scrollTo({
+        left: Math.min(nextLeft, maxScrollLeft),
+        behavior: "smooth",
+      });
+      return;
+    }
+
+    if (el.scrollLeft <= 2) {
+      el.scrollTo({ left: maxScrollLeft, behavior: "auto" });
+      return;
+    }
+
+    const nextLeft = el.scrollLeft - scrollStep;
+    el.scrollTo({
+      left: Math.max(nextLeft, 0),
+      behavior: "smooth",
+    });
+  }, []);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.35 }
+    );
+
+    observer.observe(section);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (items.length < 2 || isAutoplayPaused || !isInView) return;
+
+    const intervalId = window.setInterval(() => {
+      scroll("right");
+    }, 4200);
+
+    return () => window.clearInterval(intervalId);
+  }, [isAutoplayPaused, isInView, items.length, scroll]);
 
   return (
     <section
+      ref={sectionRef}
       className="py-20 border-t-[3px] border-[var(--steel)]"
       id="referenssit"
     >
@@ -111,13 +171,20 @@ export default function References({
         <div
           ref={trackRef}
           onScroll={updateScrollState}
-          className="flex gap-[3px] overflow-x-auto scroll-smooth pl-6 md:pl-12 pr-6 md:pr-12 no-scrollbar"
+          onMouseEnter={() => setIsAutoplayPaused(true)}
+          onMouseLeave={() => setIsAutoplayPaused(false)}
+          onFocusCapture={() => setIsAutoplayPaused(true)}
+          onBlurCapture={() => setIsAutoplayPaused(false)}
+          onTouchStart={() => setIsAutoplayPaused(true)}
+          onTouchEnd={() => setIsAutoplayPaused(false)}
+          onTouchCancel={() => setIsAutoplayPaused(false)}
+          className="flex gap-[3px] overflow-x-auto scroll-smooth snap-x snap-mandatory pl-6 md:pl-12 pr-6 md:pr-12 no-scrollbar"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {items.map((ref, index) => (
             <article
               key={ref._key ?? `ref-${index}`}
-              className="relative overflow-hidden bg-[var(--black)] group cursor-pointer shrink-0 w-[85vw] sm:w-[45vw] lg:w-[30vw] xl:w-[22vw] aspect-[3/4]"
+              className="relative overflow-hidden bg-[var(--black)] group cursor-pointer shrink-0 snap-start w-[85vw] sm:w-[45vw] lg:w-[30vw] xl:w-[22vw] aspect-[3/4]"
             >
               {ref.imageUrl ? (
                 <Image
