@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import { barlowCondensed, barlow } from "@/app/fonts";
 
 const steps = [
@@ -8,6 +11,33 @@ const steps = [
 ];
 
 export default function Process() {
+  const [activeCount, setActiveCount] = useState(0);
+  const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639px)");
+    if (!mq.matches) return;
+
+    const observers: IntersectionObserver[] = [];
+
+    stepRefs.current.forEach((el, i) => {
+      if (!el) return;
+      const obs = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            // Highlight all steps up to and including this one
+            setActiveCount((prev) => Math.max(prev, i + 1));
+          }
+        },
+        { rootMargin: "-35% 0px -35% 0px", threshold: 0 }
+      );
+      obs.observe(el);
+      observers.push(obs);
+    });
+
+    return () => observers.forEach((o) => o.disconnect());
+  }, []);
+
   return (
     <section className="py-20 px-6 md:px-12 border-t-[3px] border-[var(--steel)]" id="prosessi">
       <div className="mb-16">
@@ -21,29 +51,40 @@ export default function Process() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[3px]">
-        {steps.map((step) => (
-          <div
-            key={step.num}
-            className="
-              bg-[var(--panel)] p-8 md:p-10
-              border-t-[3px] border-[var(--yellow)]
-              border-l-[3px] border-l-transparent
-              transition-all duration-300
-              hover:bg-[var(--steel)] hover:border-l-[var(--yellow)]
-              relative
-            "
-          >
-            <div className={`${barlowCondensed.className} font-black text-[3.5rem] text-[rgba(240,192,0,0.15)] leading-none mb-4 transition-colors duration-300`}>
-              {step.num}
+        {steps.map((step, i) => {
+          const isActive = i < activeCount;
+          return (
+            <div
+              key={step.num}
+              ref={(el) => { stepRefs.current[i] = el; }}
+              className={`
+                p-8 md:p-10
+                border-t-[3px] border-[var(--yellow)]
+                border-l-[3px]
+                transition-all duration-400
+                relative
+                ${isActive
+                  ? "bg-[var(--steel)] border-l-[var(--yellow)]"
+                  : "bg-[var(--panel)] border-l-transparent hover:bg-[var(--steel)] hover:border-l-[var(--yellow)]"
+                }
+              `}
+            >
+              <div className={`
+                ${barlowCondensed.className} font-black text-[3.5rem] leading-none mb-4
+                transition-colors duration-400
+                ${isActive ? "text-[rgba(240,192,0,0.45)]" : "text-[rgba(240,192,0,0.15)]"}
+              `}>
+                {step.num}
+              </div>
+              <div className={`${barlowCondensed.className} font-extrabold text-[1.3rem] uppercase tracking-[1.5px] text-[var(--off-white)] mb-3`}>
+                {step.name}
+              </div>
+              <div className="text-[0.85rem] text-[var(--mid)] leading-[1.7]">
+                {step.desc}
+              </div>
             </div>
-            <div className={`${barlowCondensed.className} font-extrabold text-[1.3rem] uppercase tracking-[1.5px] text-[var(--off-white)] mb-3`}>
-              {step.name}
-            </div>
-            <div className="text-[0.85rem] text-[var(--mid)] leading-[1.7]">
-              {step.desc}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

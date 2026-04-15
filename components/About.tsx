@@ -48,8 +48,11 @@ export default function About({ content }: { content: AboutContent }) {
 
       {/* Right: Content */}
       <div className="relative overflow-hidden p-10 md:p-16 lg:p-20 flex flex-col justify-center bg-[var(--panel)] border-l-0 lg:border-l-[3px] border-t-[3px] lg:border-t-0 border-[var(--steel)]">
-        <div className="pointer-events-none absolute inset-y-0 right-0 hidden md:flex items-center justify-end z-0 pr-4 lg:pr-6 xl:pr-10">
-          <div className="w-[240px] lg:w-[300px] xl:w-[360px] opacity-[0.16] mix-blend-screen">
+        <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden hidden md:block">
+          <div
+            className="absolute -right-16 w-[420px] lg:w-[500px] xl:w-[580px] opacity-[0.13] mix-blend-screen"
+            style={{ top: "50%", transform: "translateY(-50%) rotate(15deg)" }}
+          >
             <FinlandMap className="h-auto w-full" />
           </div>
         </div>

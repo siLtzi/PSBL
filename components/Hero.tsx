@@ -50,25 +50,25 @@ export default function Hero({ content }: { content: HeroContent }) {
 
         {/* H1 — per-line reveal */}
         <h1 className={`${barlowCondensed.className} mb-10`}>
-          {/* Line 1: Valetaan */}
+          {/* Line 1: Lapin */}
           <span className="hero-line-clip block font-black text-[clamp(4rem,9vw,8.5rem)] leading-[0.92] uppercase tracking-[2px] text-[var(--off-white)]">
-            <span className="hero-line-inner">Valetaan</span>
+            <span className="hero-line-inner">Lapin</span>
           </span>
-          {/* Line 2: lattiat (highlighted) */}
+          {/* Line 2: parhaat (highlighted) */}
           <span className="hero-line-clip block font-black text-[clamp(4rem,9vw,8.5rem)] leading-[0.92] uppercase tracking-[2px] text-[var(--off-white)]">
             <span className="hero-line-inner">
               <span className="hero-highlight inline-block relative">
                 <span className="hero-highlight-bg" />
-                <span className="hero-highlight-text-base">lattiat</span>
+                <span className="hero-highlight-text-base">parhaat</span>
                 <span aria-hidden="true" className="hero-highlight-text-overlay">
-                  lattiat
+                  parhaat
                 </span>
               </span>
             </span>
           </span>
-          {/* Line 3: kuntoon. */}
+          {/* Line 3: lattiat. */}
           <span className="hero-line-clip block font-black text-[clamp(4rem,9vw,8.5rem)] leading-[0.92] uppercase tracking-[2px] text-[var(--off-white)]">
-            <span className="hero-line-inner">kuntoon.</span>
+            <span className="hero-line-inner">lattiat.</span>
           </span>
         </h1>
 

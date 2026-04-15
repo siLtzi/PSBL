@@ -6,8 +6,8 @@ import { barlowCondensed, barlow } from "@/app/fonts";
 const stats = [
   { target: 500, suffix: "+", label: "Toteutettua urakkaa" },
   { target: 15, suffix: "+", label: "Vuotta kokemusta" },
-  { target: 100, suffix: "%", label: "Kiinteä hinta" },
-  { target: 24, suffix: "H", label: "Tarjous arkipäivässä" },
+  { target: 100, suffix: "%", label: "Laatutakuu" },
+  { target: 100000, suffix: "+", label: "Valettua neliötä" },
 ];
 
 function animateCounter(el: HTMLElement, target: number, suffix: string) {
