@@ -21,6 +21,14 @@ export const contactSettings = defineType({
       description: 'Lyhyt teksti otsikon alle. Esim. "Ota yhteyttä jo tänään…" ',
     }),
 
+    defineField({
+      name: "heroImage",
+      title: "Hero-kuva",
+      type: "image",
+      options: { hotspot: true },
+      description: "Taustakuva hero-alueelle.",
+    }),
+
     // ---------------- VASEN PALSTA: johdanto ----------------
     defineField({
       name: "introTitle",

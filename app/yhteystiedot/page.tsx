@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import Footer from "@/components/Footer";
 import { barlowCondensed, barlow } from "@/app/fonts";
 import ContactForm from "@/components/ContactForm";
+import { CheckCircle2 } from "lucide-react";
 import { sanityClient } from "@/sanity/config";
 import { contactSettingsQuery } from "@/sanity/queries";
 
@@ -31,6 +33,7 @@ export const metadata: Metadata = {
 type ContactSettings = {
   heroTitle?: string | null;
   heroSubtitle?: string | null;
+  heroImageUrl?: string | null;
   introTitle?: string | null;
   introBody?: string | null;
   company?: {
@@ -49,7 +52,13 @@ type ContactSettings = {
   formIntro?: string | null;
 };
 
-export default async function ContactPage() {
+export default async function ContactPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const params = await searchParams;
+  const sent = params.lahetetty === "true";
   const settings =
     (await sanityClient.fetch<ContactSettings | null>(contactSettingsQuery)) ??
     {};
@@ -58,6 +67,7 @@ export default async function ContactPage() {
   const heroSubtitle =
     settings.heroSubtitle ??
     "Ota yhteyttä jo tänään – palaamme sinulle mahdollisimman pian.";
+  const heroImageUrl = settings.heroImageUrl ?? null;
 
   const introTitle =
     settings.introTitle ?? "PALVELEMME KOKO POHJOIS-SUOMEN ALUEELLA";
@@ -130,7 +140,20 @@ export default async function ContactPage() {
 
       {/* HERO */}
       <section className="relative w-full overflow-hidden bg-[var(--black)] pt-[60px]">
-        <div className="py-16 sm:py-20 md:py-24 px-6 md:px-12">
+        {heroImageUrl && (
+          <>
+            <Image
+              src={heroImageUrl}
+              alt={heroTitle}
+              fill
+              sizes="100vw"
+              className="object-cover brightness-[0.3] contrast-[1.1]"
+              priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[var(--dark)] via-transparent to-[var(--black)]/60" />
+          </>
+        )}
+        <div className="relative py-16 sm:py-20 md:py-24 px-6 md:px-12">
           <div className="max-w-6xl mx-auto">
             <div className={`${barlow.className} text-[0.7rem] font-semibold tracking-[3px] uppercase text-[var(--yellow)] mb-4 flex items-center gap-3`}>
               <span className="w-2 h-2 bg-[var(--yellow)]" />
@@ -153,6 +176,14 @@ export default async function ContactPage() {
         </div>
         <div className="hazard-stripe" />
       </section>
+
+      {/* SUCCESS BANNER */}
+      {sent && (
+        <div className={`${barlow.className} bg-emerald-600 text-white text-center py-4 px-6 text-sm sm:text-base font-semibold tracking-wide`}>
+          <CheckCircle2 className="inline-block w-5 h-5 mr-2 -mt-0.5" />
+          Kiitos yhteydenotostasi! Palaamme sinulle mahdollisimman pian.
+        </div>
+      )}
 
       {/* MAIN CONTENT */}
       <section className="py-12 md:py-16 lg:py-20">

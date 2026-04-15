@@ -3,13 +3,22 @@ import { groq } from "next-sanity";
 export const homeSettingsQuery = `*[_type == "homeSettings"][0]{
   titleLine1,
   titleLine2,
+  heroHeadingLine1,
+  heroHeadingLine2,
+  heroHeadingLine3,
   subtitle,
   primaryCtaLabel,
   primaryCtaHref,
   secondaryCtaLabel,
   secondaryCtaHref,
   heroMessage,
-  "videoUrl": heroVideo.asset->url
+  "videoUrl": heroVideo.asset->url,
+  stats[] {
+    value,
+    suffix,
+    label
+  },
+  tickerItems
 }`;
 
 export const aboutSettingsQuery = `
@@ -42,6 +51,7 @@ export const contactSettingsQuery = groq`
   *[_type == "contactSettings"][0]{
     heroTitle,
     heroSubtitle,
+    "heroImageUrl": heroImage.asset->url,
     introTitle,
     introBody,
 
@@ -196,6 +206,20 @@ export const referencesPageSettingsQuery = groq`
   *[_type == "referencesPageSettings"][0]{
     heroTitle,
     heroSubtitle
+  }
+`;
+
+export const approvedTestimonialsQuery = groq`
+  *[_type == "testimonial" && approved == true]
+  | order(date desc, _createdAt desc) {
+    _id,
+    name,
+    location,
+    company,
+    projectType,
+    quote,
+    rating,
+    date
   }
 `;
 

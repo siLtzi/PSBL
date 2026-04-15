@@ -39,6 +39,8 @@ export default function Footer() {
             <p className={`${barlow.className} text-xs text-[var(--mid)] leading-relaxed mb-4`}>
               Pohjois-Suomen Betonilattiat Oy
               <br />
+              Roni Nyländen
+              <br />
               Y-tunnus: 3423998-4
             </p>
             <div className="flex gap-3">

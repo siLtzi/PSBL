@@ -3,11 +3,13 @@
 import { useEffect, useRef } from "react";
 import { barlowCondensed, barlow } from "@/app/fonts";
 
-const stats = [
-  { target: 500, suffix: "+", label: "Toteutettua urakkaa" },
-  { target: 15, suffix: "+", label: "Vuotta kokemusta" },
-  { target: 100, suffix: "%", label: "Laatutakuu" },
-  { target: 100000, suffix: "+", label: "Valettua neliötä" },
+export type StatItem = { value: number; suffix: string; label: string };
+
+const defaultStats: StatItem[] = [
+  { value: 500, suffix: "+", label: "Toteutettua urakkaa" },
+  { value: 15, suffix: "+", label: "Vuotta kokemusta" },
+  { value: 100, suffix: "%", label: "Laatutakuu" },
+  { value: 100000, suffix: "+", label: "Valettua neliötä" },
 ];
 
 function animateCounter(el: HTMLElement, target: number, suffix: string) {
@@ -23,7 +25,8 @@ function animateCounter(el: HTMLElement, target: number, suffix: string) {
   requestAnimationFrame(update);
 }
 
-export default function Stats() {
+export default function Stats({ items }: { items?: StatItem[] }) {
+  const stats = items?.length ? items : defaultStats;
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -66,7 +69,7 @@ export default function Stats() {
           `}
         >
           <div
-            data-target={stat.target}
+            data-target={stat.value}
             data-suffix={stat.suffix}
             className={`
               ${barlowCondensed.className}
@@ -75,7 +78,7 @@ export default function Stats() {
               [text-shadow:0_0_30px_rgba(240,192,0,0.15)]
             `}
           >
-            {stat.target}{stat.suffix}
+            {stat.value}{stat.suffix}
           </div>
           <div className={`
             ${barlow.className}

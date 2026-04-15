@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Hero, { HeroContent } from "@/components/Hero";
-import Stats from "@/components/Stats";
+import Stats, { StatItem } from "@/components/Stats";
 import Ticker from "@/components/Ticker";
 import About, { AboutContent } from "@/components/About";
 import Services, { ServicesContent } from "@/components/Services";
@@ -8,7 +8,7 @@ import References, {
   ReferencesContent,
   ReferenceItem,
 } from "@/components/References";
-import Process from "@/components/Process";
+import Testimonials, { TestimonialItem } from "@/components/Testimonials";
 import BottomCta from "@/components/BottomCta";
 import Footer from "@/components/Footer";
 
@@ -19,6 +19,7 @@ import {
   servicesSettingsQuery,
   referencesSettingsQuery,
   featuredReferencesQuery,
+  approvedTestimonialsQuery,
 } from "@/sanity/queries";
 
 import heroFallback from "@/content/heroFallback.json";
@@ -235,15 +236,21 @@ export default async function HomePage() {
     servicesSettingsResult,
     referencesSettingsResult,
     featuredReferencesResult,
+    testimonialsResult,
   ] = await Promise.all([
     sanityFetch({ query: homeSettingsQuery }),
     sanityFetch({ query: aboutSettingsQuery }),
     sanityFetch({ query: servicesSettingsQuery }),
     sanityFetch({ query: referencesSettingsQuery }),
     sanityFetch({ query: featuredReferencesQuery }),
+    sanityFetch({ query: approvedTestimonialsQuery }),
   ]);
 
-  const heroSettings = heroSettingsResult.data as Partial<HeroContent> | null;
+  const testimonials = (testimonialsResult.data ?? []) as TestimonialItem[];
+  const heroSettings = heroSettingsResult.data as (Partial<HeroContent> & {
+    stats?: StatItem[] | null;
+    tickerItems?: string[] | null;
+  }) | null;
   const aboutSettings = aboutSettingsResult.data as Partial<AboutContent> | null;
   const servicesSettings = servicesSettingsResult.data as SanityServicesSettings | null;
   const referencesSettings = referencesSettingsResult.data as SanityReferencesSettings | null;
@@ -364,12 +371,12 @@ export default async function HomePage() {
       />
 
       <Hero content={heroContent} />
-      <Stats />
-      <Ticker />
+      <Stats items={heroSettings?.stats ?? undefined} />
+      <Ticker items={heroSettings?.tickerItems ?? undefined} />
       <About content={aboutContent} />
       <Services content={servicesContent} />
       <References content={referencesContent} />
-      <Process />
+      {testimonials.length > 0 && <Testimonials items={testimonials} />}
       <BottomCta />
       <Footer />
     </main>

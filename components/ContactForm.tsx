@@ -87,8 +87,6 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
         return;
       }
 
-      setSubmitSuccess(true);
-
       // 🟢 Track successful submit
       trackEvent("contact_form_submitted", {
         has_company: Boolean(payload.company),
@@ -96,9 +94,8 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
         has_square_meters: Boolean(payload.squareMeters),
       });
 
-      form.reset();
-      setSiteLocation("");
-      setCoords(null);
+      // Redirect to success URL
+      window.location.href = "/yhteystiedot?lahetetty=true";
     } catch (err) {
       console.error("Contact submit error", err);
       setSubmitError("Viestin lähetys epäonnistui. Tarkista verkkoyhteys.");

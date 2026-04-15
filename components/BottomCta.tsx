@@ -39,7 +39,7 @@ export default function BottomCta() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
                 <div>
-                  <div className={`${barlow.className} text-[0.6rem] tracking-[2px] uppercase font-semibold opacity-60`}>Puhelin</div>
+                  <div className={`${barlow.className} text-[0.6rem] tracking-[2px] uppercase font-semibold opacity-60`}>Roni Nyländen</div>
                   <a href="tel:+358442480482" className={`${barlowCondensed.className} text-lg font-bold hover:underline`}>044 2480 482</a>
                 </div>
               </div>

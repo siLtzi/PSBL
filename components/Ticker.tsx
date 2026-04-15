@@ -1,6 +1,6 @@
 import { barlowCondensed } from "@/app/fonts";
 
-const items = [
+const defaultItems = [
   "Lattiavalut",
   "Mastertop",
   "Kuviobetoni",
@@ -11,9 +11,10 @@ const items = [
   "Kiinteä hinta",
 ];
 
-export default function Ticker() {
+export default function Ticker({ items }: { items?: string[] }) {
+  const resolved = items?.length ? items : defaultItems;
   // Duplicate for seamless loop
-  const doubled = [...items, ...items];
+  const doubled = [...resolved, ...resolved];
 
   return (
     <div className="bg-[var(--steel)] py-3 overflow-hidden whitespace-nowrap border-b border-[rgba(240,192,0,0.08)]">

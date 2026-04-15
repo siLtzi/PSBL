@@ -45,18 +45,18 @@ export default function LocationMapModal({
   const [tempCoords, setTempCoords] = useState<LatLng | null>(initialCoords);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
-      <div className="w-full max-w-2xl rounded-2xl bg-white shadow-2xl overflow-hidden">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
+      <div className="w-full max-w-2xl bg-[var(--panel)] border border-[var(--steel)] shadow-2xl overflow-hidden">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--steel)]">
           <h3
-            className={`${barlowCondensed.className} text-lg font-black tracking-tight uppercase`}
+            className={`${barlowCondensed.className} text-lg font-black tracking-tight uppercase text-[var(--off-white)]`}
           >
             Valitse työmaan sijainti kartalta
           </h3>
           <button
             type="button"
             onClick={onCancel}
-            className="button-snappy p-1 rounded-full hover:bg-zinc-100"
+            className="button-snappy p-1 hover:bg-[var(--steel)] text-[var(--mid)] hover:text-[var(--off-white)] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -86,8 +86,8 @@ export default function LocationMapModal({
           </AnyMapContainer>
         </div>
 
-        <div className="flex items-center justify-between px-4 py-3 border-t border-zinc-200 bg-zinc-50">
-          <p className="text-[11px] text-zinc-600">
+        <div className="flex items-center justify-between px-4 py-3 border-t border-[var(--steel)] bg-[var(--dark)]">
+          <p className="text-[11px] text-[var(--mid)]">
             Klikkaa karttaa valitaksesi sijainnin. Vahvista, kun paikka näyttää
             oikealta.
           </p>
@@ -96,7 +96,7 @@ export default function LocationMapModal({
             <button
               type="button"
               onClick={onCancel}
-              className="button-snappy text-xs font-semibold uppercase tracking-[0.12em] text-zinc-600 hover:text-zinc-900"
+              className="button-snappy text-xs font-semibold uppercase tracking-[0.12em] text-[var(--mid)] hover:text-[var(--off-white)]"
             >
               Peruuta
             </button>
@@ -105,13 +105,14 @@ export default function LocationMapModal({
               disabled={!tempCoords}
               onClick={() => tempCoords && onConfirm(tempCoords)}
               className={`
+                ${barlowCondensed.className}
                 button-snappy
-                text-xs font-semibold uppercase tracking-[0.12em]
-                px-4 py-2 rounded-md
+                text-xs font-bold uppercase tracking-[2px]
+                px-5 py-2
                 ${
                   tempCoords
-                    ? "bg-zinc-900 text-white hover:bg-zinc-800"
-                    : "bg-zinc-300 text-zinc-500 cursor-not-allowed"
+                    ? "bg-[var(--yellow)] text-[var(--black)] hover:brightness-110"
+                    : "bg-[var(--steel)] text-[var(--mid)] cursor-not-allowed"
                 }
               `}
             >

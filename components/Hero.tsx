@@ -10,6 +10,9 @@ function clean(text: string) {
 export type HeroContent = {
   titleLine1: string;
   titleLine2: string;
+  heroHeadingLine1: string;
+  heroHeadingLine2: string;
+  heroHeadingLine3: string;
   subtitle: string;
   primaryCtaLabel: string;
   primaryCtaHref: string;
@@ -23,6 +26,9 @@ export default function Hero({ content }: { content: HeroContent }) {
   const {
     titleLine1,
     titleLine2,
+    heroHeadingLine1,
+    heroHeadingLine2,
+    heroHeadingLine3,
     subtitle,
     primaryCtaLabel,
     primaryCtaHref,
@@ -50,25 +56,25 @@ export default function Hero({ content }: { content: HeroContent }) {
 
         {/* H1 — per-line reveal */}
         <h1 className={`${barlowCondensed.className} mb-10`}>
-          {/* Line 1: Lapin */}
+          {/* Line 1 */}
           <span className="hero-line-clip block font-black text-[clamp(4rem,9vw,8.5rem)] leading-[0.92] uppercase tracking-[2px] text-[var(--off-white)]">
-            <span className="hero-line-inner">Lapin</span>
+            <span className="hero-line-inner">{clean(heroHeadingLine1)}</span>
           </span>
-          {/* Line 2: parhaat (highlighted) */}
+          {/* Line 2 (highlighted) */}
           <span className="hero-line-clip block font-black text-[clamp(4rem,9vw,8.5rem)] leading-[0.92] uppercase tracking-[2px] text-[var(--off-white)]">
             <span className="hero-line-inner">
               <span className="hero-highlight inline-block relative">
                 <span className="hero-highlight-bg" />
-                <span className="hero-highlight-text-base">parhaat</span>
+                <span className="hero-highlight-text-base">{clean(heroHeadingLine2)}</span>
                 <span aria-hidden="true" className="hero-highlight-text-overlay">
-                  parhaat
+                  {clean(heroHeadingLine2)}
                 </span>
               </span>
             </span>
           </span>
-          {/* Line 3: lattiat. */}
+          {/* Line 3 */}
           <span className="hero-line-clip block font-black text-[clamp(4rem,9vw,8.5rem)] leading-[0.92] uppercase tracking-[2px] text-[var(--off-white)]">
-            <span className="hero-line-inner">lattiat.</span>
+            <span className="hero-line-inner">{clean(heroHeadingLine3)}</span>
           </span>
         </h1>
 
