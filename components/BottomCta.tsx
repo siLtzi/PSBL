@@ -63,7 +63,7 @@ export default function BottomCta() {
                 </svg>
                 <div>
                   <div className={`${barlow.className} text-[0.6rem] tracking-[2px] uppercase font-semibold opacity-60`}>Sijainti</div>
-                  <span className={`${barlowCondensed.className} text-lg font-bold`}>Pohjois-Suomi</span>
+                  <span className={`${barlowCondensed.className} text-lg font-bold`}>Rovaniemi</span>
                 </div>
               </div>
             </div>
