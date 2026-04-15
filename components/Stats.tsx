@@ -73,7 +73,7 @@ export default function Stats({ items }: { items?: StatItem[] }) {
             data-suffix={stat.suffix}
             className={`
               ${barlowCondensed.className}
-              font-black text-[3.5rem] text-[var(--yellow)]
+              font-black text-[clamp(2.2rem,7vw,3.5rem)] text-[var(--yellow)]
               leading-none uppercase
               [text-shadow:0_0_30px_rgba(240,192,0,0.15)]
             `}
