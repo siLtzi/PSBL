@@ -41,10 +41,16 @@ export default function Hero({ content }: { content: HeroContent }) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    // Delay adding the class so the browser can paint the H1 first (LCP)
-    requestAnimationFrame(() => {
-      sectionRef.current?.classList.add("hero-ready");
+    // Double rAF ensures the browser has painted at least one frame (and LCP
+    // has had a chance to be recorded) before we add hero-ready, which starts
+    // the slide-in animation.
+    let id: number;
+    const outer = requestAnimationFrame(() => {
+      id = requestAnimationFrame(() => {
+        sectionRef.current?.classList.add("hero-ready");
+      });
     });
+    return () => { cancelAnimationFrame(outer); cancelAnimationFrame(id); };
   }, []);
 
   return (

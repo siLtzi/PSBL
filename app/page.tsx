@@ -164,7 +164,7 @@ const faqJsonLd = {
       name: "Mitä betonilattiapalveluja PSBL tarjoaa?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Tarjoamme kattavat betonilattiapalvelut: lattiavalut, kuivasirotelattiat (Masterdur, SynTop, HardCem), kovabetonoinnin, lattiapinnoitukset (PU- ja akryylibetonipinnoitukset), kuviobetonoinnin, kiillotetut betonilattiat, holvivalut sekä lattioiden kiillotushionnat. Toteutamme urakoita niin teollisuus-, liike- kuin asuinkohteisiinkin.",
+        text: "Tarjoamme kattavat betonilattiapalvelut: lattiavalut, kuivasirotelattiat (Masterdur, SynTop, HardCem), kovabetonoinnin, lattiapinnoitukset (PU- ja akryylibetonipinnoitukset), kiillotetut betonilattiat, holvivalut sekä lattioiden kiillotushionnat. Toteutamme urakoita niin teollisuus-, liike- kuin asuinkohteisiinkin.",
       },
     },
     {

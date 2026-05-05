@@ -344,9 +344,11 @@ body::after {
   display: block;
 }
 
-/* Only animate when JS has hydrated */
+/* Only animate when JS has hydrated.
+   NOTE: No static transform here — text stays visible (translateY 0) during
+   animation-delay so LCP can measure it. The 'from' keyframe handles the
+   start state when the animation actually begins. */
 .hero-ready .hero-line-inner {
-  transform: translateY(105%);
   animation: heroLineReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
@@ -355,6 +357,7 @@ body::after {
 .hero-ready .hero-line-clip:nth-child(3) .hero-line-inner { animation-delay: 0.6s; }
 
 @keyframes heroLineReveal {
+  from { transform: translateY(105%); }
   to { transform: translateY(0); }
 }
 
