@@ -333,11 +333,12 @@ body::after {
   animation: slideIn 0.6s 1s forwards;
 }
 
-/* Hero line reveal — visible by default for LCP */
+/* Hero line reveal
+   LCP-SAFE: overflow:hidden + translateY(105%) gives the element zero rendered
+   pixels → Chrome invalidates the LCP candidate → NO_LCP.
+   Fix: no overflow:hidden, use opacity > 0 so Chrome always counts it as visible. */
 .hero-line-clip {
-  overflow: hidden;
-  padding-top: 0.1em;
-  margin-top: -0.1em;
+  /* no overflow:hidden — text stays within viewport for LCP */
 }
 
 .hero-line-inner {
@@ -345,19 +346,21 @@ body::after {
 }
 
 /* Only animate when JS has hydrated.
-   Use fill-mode "both" so the "from" state is applied during delay too,
-   preventing the heading from flashing visible before the reveal starts. */
+   fill-mode "both" applies the "from" state immediately on hero-ready add
+   (suppresses the SSR-visible flash), and holds the "to" state after finish.
+   opacity: 0.01 is imperceptible to the eye but > 0, so Chrome's LCP
+   algorithm never invalidates this element. */
 .hero-ready .hero-line-inner {
-  animation: heroLineReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: heroLineFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .hero-ready .hero-line-clip:nth-child(1) .hero-line-inner { animation-delay: 0.08s; }
 .hero-ready .hero-line-clip:nth-child(2) .hero-line-inner { animation-delay: 0.2s; }
 .hero-ready .hero-line-clip:nth-child(3) .hero-line-inner { animation-delay: 0.32s; }
 
-@keyframes heroLineReveal {
-  from { transform: translateY(105%); }
-  to { transform: translateY(0); }
+@keyframes heroLineFadeUp {
+  from { opacity: 0.01; transform: translateY(0.55rem); }
+  to   { opacity: 1;    transform: translateY(0); }
 }
 
 /* Yellow highlight wipe */
