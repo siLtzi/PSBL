@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSBL — Pohjois-Suomen Betonilattiat</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --black: #0d0d0d;
+  --dark: #161614;
+  --panel: #1c1c19;
+  --steel: #2a2a26;
+  --concrete-gray: #3d3d38;
+  --mid: #7a7a70;
+  --light: #b0afa5;
+  --off-white: #e8e6df;
+  --yellow: #f0c000;
+  --yellow-hot: #ffd500;
+  --head: 'Barlow Condensed', sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+  --body: 'Barlow', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--body);
+  background: var(--dark);
+  color: var(--off-white);
+  overflow-x: hidden;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 99999;
+  mix-blend-mode: overlay;
+  opacity: 0.12;
+  background: url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence baseFrequency='0.8' numOctaves='4' type='fractalNoise'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+::selection { background: var(--yellow); color: var(--black); }
+a { color: inherit; text-decoration: none; }
+
+/* ── TOPBAR ── */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 60px;
+  background: var(--black);
+  border-bottom: 3px solid var(--yellow);
+  transition: background 0.4s, backdrop-filter 0.4s;
+}
+
+.topbar.scrolled {
+  background: rgba(13,13,13,0.92);
+  backdrop-filter: blur(12px);
+}
+
+.topbar-logo {
+  font-family: var(--head);
+  font-weight: 900;
+  font-size: 1.4rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--yellow);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.topbar-logo .block {
+  width: 32px;
+  height: 32px;
+  background: var(--yellow);
+  color: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.topbar-links {
+  display: flex;
+  gap: 0;
+  list-style: none;
+  height: 100%;
+}
+
+.topbar-links li { height: 100%; }
+
+.topbar-links a {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 1.5rem;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--mid);
+  border-left: 1px solid var(--steel);
+  transition: all 0.2s;
+}
+
+.topbar-links a:hover {
+  color: var(--yellow);
+  background: rgba(240,192,0,0.05);
+}
+
+.topbar-cta {
+  font-family: var(--head);
+  font-weight: 800;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0.6rem 1.5rem;
+  background: var(--yellow);
+  color: var(--black);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.topbar-cta:hover {
+  background: var(--yellow-hot);
+  box-shadow: 0 0 25px rgba(240,192,0,0.3);
+}
+
+/* ── HERO ── */
+.hero {
+  margin-top: 60px;
+  position: relative;
+  height: calc(100vh - 60px);
+  min-height: 600px;
+  display: flex;
+  overflow: hidden;
+}
+
+.hero-image {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: contrast(1.15) saturate(0.7) brightness(0.4);
+  animation: heroKen 25s ease-in-out infinite alternate;
+  transform-origin: 30% 60%;
+}
+
+@keyframes heroKen {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.12); }
+}
+
+.hero-stripe {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  z-index: 10;
+  background: repeating-linear-gradient(-45deg, var(--yellow) 0px, var(--yellow) 12px, var(--black) 12px, var(--black) 24px);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 4rem 3rem;
+  width: 100%;
+}
+
+.hero-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--yellow);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  opacity: 0;
+  animation: slideIn 0.6s 0.2s forwards;
+}
+
+.hero-label::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: var(--yellow);
+  animation: labelPulse 2s ease-in-out infinite;
+}
+
+@keyframes labelPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.hero-h1 {
+  font-family: var(--head);
+  font-weight: 900;
+  font-size: clamp(4rem, 10vw, 9rem);
+  line-height: 0.88;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--off-white);
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: slideIn 0.6s 0.4s forwards;
+}
+
+.hero-h1 .highlight {
+  color: var(--black);
+  background: var(--yellow);
+  padding: 0 0.15em;
+  display: inline;
+  box-shadow: 4px 0 0 var(--yellow), -4px 0 0 var(--yellow);
+}
+
+.hero-sub {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--light);
+  max-width: 500px;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  animation: slideIn 0.6s 0.6s forwards;
+}
+
+.hero-btns {
+  display: flex;
+  gap: 1rem;
+  opacity: 0;
+  animation: slideIn 0.6s 0.8s forwards;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(25px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── BUTTONS ── */
+.btn-heavy {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 2rem;
+  font-family: var(--head);
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  transition: all 0.25s;
+}
+
+.btn-yellow {
+  background: var(--yellow);
+  color: var(--black);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-yellow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s;
+}
+
+.btn-yellow:hover::before { transform: translateX(100%); }
+
+.btn-yellow:hover {
+  background: var(--yellow-hot);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 30px rgba(240,192,0,0.4), 0 0 60px rgba(240,192,0,0.1);
+}
+
+.btn-border {
+  background: transparent;
+  color: var(--off-white);
+  border: 2px solid var(--concrete-gray);
+}
+
+.btn-border:hover {
+  border-color: var(--yellow);
+  color: var(--yellow);
+  transform: translateY(-2px);
+}
+
+.btn-heavy svg { width: 16px; height: 16px; }
+
+/* ── STATS ── */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border-bottom: 3px solid var(--steel);
+}
+
+.stat-block {
+  padding: 2.5rem 2rem;
+  background: var(--panel);
+  border-right: 1px solid var(--steel);
+  text-align: center;
+  transition: background 0.3s;
+}
+
+.stat-block:last-child { border-right: none; }
+.stat-block:hover { background: var(--steel); }
+
+.stat-val {
+  font-family: var(--head);
+  font-weight: 900;
+  font-size: 3.5rem;
+  color: var(--yellow);
+  line-height: 1;
+  text-transform: uppercase;
+  text-shadow: 0 0 30px rgba(240,192,0,0.15);
+}
+
+.stat-lbl {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-top: 0.5rem;
+}
+
+/* ── MARQUEE TICKER ── */
+.ticker {
+  background: var(--steel);
+  padding: 0.75rem 0;
+  overflow: hidden;
+  white-space: nowrap;
+  border-bottom: 1px solid rgba(240,192,0,0.08);
+}
+
+.ticker-track {
+  display: inline-flex;
+  animation: tickScroll 22s linear infinite;
+}
+
+.ticker-item {
+  font-family: var(--head);
+  font-weight: 800;
+  font-size: 0.75rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--mid);
+  padding: 0 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.ticker-item .tdot {
+  width: 6px;
+  height: 6px;
+  background: var(--yellow);
+  flex-shrink: 0;
+}
+
+@keyframes tickScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ── SECTION STYLE ── */
+.section-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--yellow);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.section-label::before {
+  content: '//';
+  color: var(--concrete-gray);
+}
+
+.section-heading {
+  font-family: var(--head);
+  font-weight: 900;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  line-height: 0.95;
+  color: var(--off-white);
+}
+
+/* ── ABOUT ── */
+.about {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 80vh;
+}
+
+.about-img {
+  position: relative;
+  overflow: hidden;
+}
+
+.about-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.6) contrast(1.1);
+  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.8s;
+}
+
+.about-img:hover img {
+  transform: scale(1.04);
+  filter: saturate(0.8) contrast(1.1);
+}
+
+.about-img::before,
+.about-img::after {
+  content: '';
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-color: var(--yellow);
+  border-style: solid;
+  z-index: 2;
+  transition: all 0.4s;
+}
+
+.about-img:hover::before,
+.about-img:hover::after {
+  width: 65px;
+  height: 65px;
+}
+
+.about-img::before {
+  top: 2rem;
+  left: 2rem;
+  border-width: 3px 0 0 3px;
+}
+
+.about-img::after {
+  bottom: 2rem;
+  right: 2rem;
+  border-width: 0 3px 3px 0;
+}
+
+.about-content {
+  padding: 5rem 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--panel);
+  border-left: 3px solid var(--steel);
+}
+
+.about-text {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--light);
+  margin-top: 2rem;
+  max-width: 480px;
+}
+
+.about-text strong {
+  color: var(--off-white);
+  font-weight: 600;
+}
+
+.about-list {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.about-list-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--light);
+  transition: color 0.2s;
+}
+
+.about-list-item:hover {
+  color: var(--off-white);
+}
+
+.about-list-item::before {
+  content: '';
+  width: 10px;
+  height: 3px;
+  background: var(--yellow);
+  flex-shrink: 0;
+  transition: width 0.3s;
+}
+
+.about-list-item:hover::before {
+  width: 18px;
+}
+
+/* ── SERVICES ── */
+.services {
+  padding: 5rem 3rem;
+  border-top: 3px solid var(--steel);
+}
+
+.services-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 3rem;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+}
+
+.svc {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1;
+  background: var(--black);
+  cursor: pointer;
+}
+
+.svc img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(50%) brightness(0.45) contrast(1.1);
+  transition: all 0.5s;
+}
+
+.svc:hover img {
+  filter: grayscale(0%) brightness(0.25) contrast(1.1);
+  transform: scale(1.1);
+}
+
+.svc::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 0px solid var(--yellow);
+  transition: border-width 0.3s;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.svc:hover::after {
+  border-width: 2px;
+}
+
+.svc-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem;
+  z-index: 2;
+}
+
+.svc-idx {
+  font-family: var(--head);
+  font-weight: 900;
+  font-size: 4.5rem;
+  color: rgba(240,192,0,0.12);
+  line-height: 1;
+  align-self: flex-end;
+  transition: color 0.4s;
+}
+
+.svc:hover .svc-idx {
+  color: rgba(240,192,0,0.25);
+}
+
+.svc-tag {
+  font-family: var(--mono);
+  font-size: 0.55rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--yellow);
+  margin-bottom: 0.4rem;
+}
+
+.svc-name {
+  font-family: var(--head);
+  font-weight: 800;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--off-white);
+  line-height: 1.1;
+}
+
+.svc-detail {
+  font-size: 0.8rem;
+  color: var(--mid);
+  line-height: 1.6;
+  margin-top: 0.5rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s, opacity 0.3s;
+  opacity: 0;
+}
+
+.svc:hover .svc-detail {
+  max-height: 80px;
+  opacity: 1;
+}
+
+.svc-stripe {
+  width: 100%;
+  height: 3px;
+  background: var(--yellow);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s;
+  z-index: 4;
+}
+
+.svc:hover .svc-stripe { transform: scaleX(1); }
+
+/* ── REFS ── */
+.refs {
+  padding: 5rem 3rem;
+  background: var(--black);
+  border-top: 3px solid var(--yellow);
+}
+
+.refs-head { margin-bottom: 3rem; }
+
+.refs-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: 300px 300px;
+  gap: 3px;
+}
+
+.ref {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.ref:first-child { grid-row: 1 / 3; }
+
+.ref img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(50%) brightness(0.5);
+  transition: all 0.5s;
+}
+
+.ref:hover img {
+  filter: grayscale(0%) brightness(0.65);
+  transform: scale(1.04);
+}
+
+.ref-data {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem;
+  background: linear-gradient(0deg, rgba(13,13,13,0.95) 0%, transparent 100%);
+}
+
+.ref-type {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: var(--yellow);
+  color: var(--black);
+  padding: 0.2rem 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.ref-title {
+  font-family: var(--head);
+  font-weight: 800;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--off-white);
+}
+
+.ref:first-child .ref-title { font-size: 1.6rem; }
+
+.ref-size {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--mid);
+  margin-top: 0.25rem;
+}
+
+/* ── PROCESS ── */
+.process {
+  padding: 5rem 3rem;
+  border-top: 3px solid var(--steel);
+}
+
+.process-head { margin-bottom: 4rem; }
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3px;
+}
+
+.step {
+  background: var(--panel);
+  padding: 2.5rem 2rem;
+  border-top: 3px solid var(--yellow);
+  border-left: 3px solid transparent;
+  transition: background 0.3s, border-left-color 0.3s;
+  position: relative;
+}
+
+.step:hover {
+  background: var(--steel);
+  border-left-color: var(--yellow);
+}
+
+.step-num {
+  font-family: var(--head);
+  font-weight: 900;
+  font-size: 3.5rem;
+  color: rgba(240,192,0,0.15);
+  line-height: 1;
+  margin-bottom: 1rem;
+  transition: color 0.3s;
+}
+
+.step:hover .step-num {
+  color: rgba(240,192,0,0.3);
+}
+
+.step-name {
+  font-family: var(--head);
+  font-weight: 800;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--off-white);
+  margin-bottom: 0.75rem;
+}
+
+.step-desc {
+  font-size: 0.85rem;
+  color: var(--mid);
+  line-height: 1.7;
+}
+
+/* ── CTA ── */
+.cta {
+  position: relative;
+  padding: 6rem 3rem;
+  background: var(--yellow);
+  color: var(--black);
+  overflow: hidden;
+}
+
+.cta-stripe-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: repeating-linear-gradient(-45deg, var(--black) 0px, var(--black) 12px, var(--yellow) 12px, var(--yellow) 24px);
+}
+
+.cta-inner {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.cta-heading {
+  font-family: var(--head);
+  font-weight: 900;
+  font-size: clamp(3rem, 6vw, 5rem);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  line-height: 0.92;
+}
+
+.cta-right p {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: rgba(0,0,0,0.7);
+  margin-bottom: 2rem;
+}
+
+.cta-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cta-info a {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--black);
+  padding: 0.75rem 0;
+  border-bottom: 2px solid rgba(0,0,0,0.15);
+  transition: all 0.3s;
+}
+
+.cta-info a:hover {
+  border-color: var(--black);
+  padding-left: 0.5rem;
+}
+
+.cta-info a svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--black);
+  padding: 3rem;
+  border-top: 3px solid var(--steel);
+}
+
+.footer-inner {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 3rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid var(--steel);
+}
+
+.footer-brand {
+  font-family: var(--head);
+  font-weight: 900;
+  font-size: 1.2rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--yellow);
+  margin-bottom: 0.75rem;
+}
+
+.footer-desc {
+  font-size: 0.85rem;
+  color: var(--mid);
+  line-height: 1.7;
+  max-width: 300px;
+}
+
+.footer-col h4 {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 1rem;
+}
+
+.footer-col a {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--concrete-gray);
+  padding: 0.3rem 0;
+  transition: color 0.2s;
+}
+
+.footer-col a:hover { color: var(--yellow); }
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 1.5rem;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 1px;
+  color: var(--concrete-gray);
+}
+
+/* ── REVEAL ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.vis {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .refs-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+  .refs-grid .ref:first-child { grid-row: auto; }
+  .steps { grid-template-columns: 1fr 1fr; }
+  .cta-inner { grid-template-columns: 1fr; }
+  .footer-inner { grid-template-columns: 1fr 1fr; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .about { grid-template-columns: 1fr; }
+  .about-content { border-left: none; border-top: 3px solid var(--steel); }
+}
+
+@media (max-width: 768px) {
+  .topbar-links { display: none; }
+  .topbar { padding: 0 1.25rem; }
+  .hero-content { padding: 3rem 1.5rem; }
+  .services { padding: 4rem 1.5rem; }
+  .services-grid { grid-template-columns: 1fr; }
+  .svc { aspect-ratio: 16/10; }
+  .refs { padding: 4rem 1.5rem; }
+  .refs-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+  .process { padding: 4rem 1.5rem; }
+  .steps { grid-template-columns: 1fr; }
+  .cta { padding: 4rem 1.5rem; }
+  footer { padding: 2rem 1.5rem; }
+  .footer-inner { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; gap: 0.5rem; }
+  .about-content { padding: 3rem 1.5rem; }
+  .hero-btns { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar" id="topbar">
+  <a href="#" class="topbar-logo">
+    <div class="block">PSBL</div>
+    Betonilattiat
+  </a>
+  <ul class="topbar-links">
+    <li><a href="#palvelut">Palvelut</a></li>
+    <li><a href="#referenssit">Referenssit</a></li>
+    <li><a href="#prosessi">Prosessi</a></li>
+  </ul>
+  <a href="#yhteystiedot" class="topbar-cta">Pyydä tarjous</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-image">
+    <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=80" alt="Betonivalu" />
+  </div>
+  <div class="hero-content">
+    <div class="hero-label">Pohjois-Suomen Betonilattiat Oy</div>
+    <h1 class="hero-h1">Valetaan<br><span class="highlight">lattiat</span><br>kuntoon.</h1>
+    <p class="hero-sub">Lattiaurakat yrityksille ja yksityisille koko Pohjois-Suomen alueella. Valutyöt, kuljetus, pumppaus — kiinteällä hinnalla.</p>
+    <div class="hero-btns">
+      <a href="#palvelut" class="btn-heavy btn-yellow">
+        Katso palvelut
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#yhteystiedot" class="btn-heavy btn-border">Ota yhteyttä</a>
+    </div>
+  </div>
+  <div class="hero-stripe"></div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat-block">
+    <div class="stat-val" data-target="500" data-suffix="+">500+</div>
+    <div class="stat-lbl">Projektia</div>
+  </div>
+  <div class="stat-block">
+    <div class="stat-val" data-target="15" data-suffix="+">15+</div>
+    <div class="stat-lbl">Vuotta</div>
+  </div>
+  <div class="stat-block">
+    <div class="stat-val" data-target="100" data-suffix="%">100%</div>
+    <div class="stat-lbl">Kiinteä hinta</div>
+  </div>
+  <div class="stat-block">
+    <div class="stat-val" data-target="24" data-suffix="H">24H</div>
+    <div class="stat-lbl">Tarjous</div>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <div class="ticker-item"><span class="tdot"></span>Lattiavalut</div>
+    <div class="ticker-item"><span class="tdot"></span>Mastertop</div>
+    <div class="ticker-item"><span class="tdot"></span>Kuviobetoni</div>
+    <div class="ticker-item"><span class="tdot"></span>Pinnoitukset</div>
+    <div class="ticker-item"><span class="tdot"></span>Kovabetonointi</div>
+    <div class="ticker-item"><span class="tdot"></span>Kiillotettu betoni</div>
+    <div class="ticker-item"><span class="tdot"></span>Pohjois-Suomi</div>
+    <div class="ticker-item"><span class="tdot"></span>Kiinteä hinta</div>
+    <div class="ticker-item"><span class="tdot"></span>Lattiavalut</div>
+    <div class="ticker-item"><span class="tdot"></span>Mastertop</div>
+    <div class="ticker-item"><span class="tdot"></span>Kuviobetoni</div>
+    <div class="ticker-item"><span class="tdot"></span>Pinnoitukset</div>
+    <div class="ticker-item"><span class="tdot"></span>Kovabetonointi</div>
+    <div class="ticker-item"><span class="tdot"></span>Kiillotettu betoni</div>
+    <div class="ticker-item"><span class="tdot"></span>Pohjois-Suomi</div>
+    <div class="ticker-item"><span class="tdot"></span>Kiinteä hinta</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about">
+  <div class="about-img">
+    <img src="https://images.unsplash.com/photo-1590644365607-1c5e64071e24?w=1000&q=80" alt="Betonityö" />
+  </div>
+  <div class="about-content">
+    <div class="section-label reveal">Yritys</div>
+    <h2 class="section-heading reveal">Ammattitaitoa<br>joka kestää.</h2>
+    <div class="about-text reveal">
+      <strong>Pohjois-Suomen Betonilattiat</strong> toteuttaa lattiaurakat yrityksille sekä yksityisille koko Pohjois-Suomen alueella. Meidän kauttamme saat betonilattiatyön, kuljetuksen ja pumppauksen helposti samassa paketissa kiinteällä hinnalla.
+    </div>
+    <div class="about-list reveal">
+      <div class="about-list-item">Kaikki valutyöt avaimet käteen</div>
+      <div class="about-list-item">Kuljetus &amp; pumppaus sisältyy hintaan</div>
+      <div class="about-list-item">Kiinteä hinnoittelu — ei yllätyksiä</div>
+      <div class="about-list-item">Koko Pohjois-Suomen alue</div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="palvelut">
+  <div class="services-head">
+    <div>
+      <div class="section-label reveal">Palvelut</div>
+      <h2 class="section-heading reveal">Mitä me<br>tehdään.</h2>
+    </div>
+  </div>
+  <div class="services-grid">
+    <div class="svc reveal">
+      <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=75" alt="" />
+      <div class="svc-inner">
+        <div class="svc-idx">01</div>
+        <div class="svc-info">
+          <div class="svc-tag">Peruspalvelu</div>
+          <div class="svc-name">Betonilattia-<br>valut</div>
+          <div class="svc-detail">Maanvaraiset lattiat, holvivalut ja kaikki betonilattiatyöt.</div>
+        </div>
+      </div>
+      <div class="svc-stripe"></div>
+    </div>
+    <div class="svc reveal">
+      <img src="https://images.unsplash.com/photo-1621155346337-1d19476ba7d4?w=600&q=75" alt="" />
+      <div class="svc-inner">
+        <div class="svc-idx">02</div>
+        <div class="svc-info">
+          <div class="svc-tag">Teollisuus</div>
+          <div class="svc-name">Mastertop-<br>lattiat</div>
+          <div class="svc-detail">Kuivasirotelattiat teollisuus- ja varastotiloihin.</div>
+        </div>
+      </div>
+      <div class="svc-stripe"></div>
+    </div>
+    <div class="svc reveal">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&q=75" alt="" />
+      <div class="svc-inner">
+        <div class="svc-idx">03</div>
+        <div class="svc-info">
+          <div class="svc-tag">Erikoistyö</div>
+          <div class="svc-name">Kuvio-<br>betoni</div>
+          <div class="svc-detail">Kuvioidut betonipinnat piha-alueille ja sisätiloihin.</div>
+        </div>
+      </div>
+      <div class="svc-stripe"></div>
+    </div>
+    <div class="svc reveal">
+      <img src="https://images.unsplash.com/photo-1517581177682-a085bb7ffb15?w=600&q=75" alt="" />
+      <div class="svc-inner">
+        <div class="svc-idx">04</div>
+        <div class="svc-info">
+          <div class="svc-tag">Pinnoitus</div>
+          <div class="svc-name">Lattia-<br>pinnoitukset</div>
+          <div class="svc-detail">Epoksi- ja polyuretaanipinnoitukset liiketiloihin.</div>
+        </div>
+      </div>
+      <div class="svc-stripe"></div>
+    </div>
+    <div class="svc reveal">
+      <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=600&q=75" alt="" />
+      <div class="svc-inner">
+        <div class="svc-idx">05</div>
+        <div class="svc-info">
+          <div class="svc-tag">Kovuus</div>
+          <div class="svc-name">Kova-<br>betonointi</div>
+          <div class="svc-detail">Erityisen kulutuskestävät betonilattiat.</div>
+        </div>
+      </div>
+      <div class="svc-stripe"></div>
+    </div>
+    <div class="svc reveal">
+      <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600&q=75" alt="" />
+      <div class="svc-inner">
+        <div class="svc-idx">06</div>
+        <div class="svc-info">
+          <div class="svc-tag">Viimeistely</div>
+          <div class="svc-name">Kiillotettu<br>betoni</div>
+          <div class="svc-detail">Mekaanisesti kiillotetut betonilattiat.</div>
+        </div>
+      </div>
+      <div class="svc-stripe"></div>
+    </div>
+  </div>
+</section>
+
+<!-- REFERENCES -->
+<section class="refs" id="referenssit">
+  <div class="refs-head">
+    <div class="section-label reveal">Referenssit</div>
+    <h2 class="section-heading reveal">Toteutetut<br>urakat.</h2>
+  </div>
+  <div class="refs-grid">
+    <div class="ref reveal">
+      <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800&q=75" alt="" />
+      <div class="ref-data">
+        <div class="ref-type">Julkinen kohde</div>
+        <div class="ref-title">AB Oy Rovaniemen Riistakeskus</div>
+        <div class="ref-size">Rovaniemi — 380 m²</div>
+      </div>
+    </div>
+    <div class="ref reveal">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&q=75" alt="" />
+      <div class="ref-data">
+        <div class="ref-type">Matkailu</div>
+        <div class="ref-title">Jänkä Resort</div>
+        <div class="ref-size">Levi — 520 m²</div>
+      </div>
+    </div>
+    <div class="ref reveal">
+      <img src="https://images.unsplash.com/photo-1590644365607-1c5e64071e24?w=600&q=75" alt="" />
+      <div class="ref-data">
+        <div class="ref-type">Julkinen</div>
+        <div class="ref-title">Lapin Keskussairaala</div>
+        <div class="ref-size">Rovaniemi — 740 m²</div>
+      </div>
+    </div>
+    <div class="ref reveal">
+      <img src="https://images.unsplash.com/photo-1517581177682-a085bb7ffb15?w=600&q=75" alt="" />
+      <div class="ref-data">
+        <div class="ref-type">Matkailu</div>
+        <div class="ref-title">Kaklauttanen Art Gallery</div>
+        <div class="ref-size">Saariselkä — 460 m²</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="prosessi">
+  <div class="process-head">
+    <div class="section-label reveal">Prosessi</div>
+    <h2 class="section-heading reveal">Näin homma<br>etenee.</h2>
+  </div>
+  <div class="steps">
+    <div class="step reveal">
+      <div class="step-num">01</div>
+      <div class="step-name">Yhteydenotto</div>
+      <div class="step-desc">Soita tai laita viestiä. Vastaamme 24 tunnin sisällä.</div>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">02</div>
+      <div class="step-name">Tarjous</div>
+      <div class="step-desc">Kiinteähintainen tarjous kartoituksen perusteella.</div>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">03</div>
+      <div class="step-name">Toteutus</div>
+      <div class="step-desc">Tiimimme hoitaa urakan sovitussa aikataulussa.</div>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">04</div>
+      <div class="step-name">Luovutus</div>
+      <div class="step-desc">Lattia luovutetaan tarkastettuna — takuulla.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="yhteystiedot">
+  <div class="cta-stripe-top"></div>
+  <div class="cta-inner">
+    <div class="reveal">
+      <h2 class="cta-heading">Tehdäänkö<br>tarjous<br>urakallesi?</h2>
+    </div>
+    <div class="cta-right reveal">
+      <p>Betonilattiatyön, kuljetuksen ja pumppauksen saat samassa paketissa kiinteällä hinnalla. Ota yhteyttä.</p>
+      <div class="cta-info">
+        <a href="tel:+3580442480482">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.11 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          044 2480 482
+        </a>
+        <a href="mailto:toimisto@psbl.fi">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          toimisto@psbl.fi
+        </a>
+        <a href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Oulu, Suomi
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">PSBL</div>
+      <div class="footer-desc">Pohjois-Suomen Betonilattiat Oy — Lattiaurakat laatutakuulla.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Palvelut</h4>
+      <a href="#">Lattiavalut</a>
+      <a href="#">Mastertop-lattiat</a>
+      <a href="#">Kuviobetoni</a>
+    </div>
+    <div class="footer-col">
+      <h4>Lisää</h4>
+      <a href="#">Lattiapinnoitukset</a>
+      <a href="#">Kovabetonointi</a>
+      <a href="#">Kiillotettu betoni</a>
+    </div>
+    <div class="footer-col">
+      <h4>Yhteystiedot</h4>
+      <a href="mailto:toimisto@psbl.fi">toimisto@psbl.fi</a>
+      <a href="tel:+3580442480482">044 2480 482</a>
+      <a href="#">Oulu</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 PSBL Oy</span>
+    <span>Tietosuojaseloste</span>
+  </div>
+</footer>
+
+<script>
+// Scroll reveal with stagger
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e) => {
+    if (e.isIntersecting) {
+      const parent = e.target.parentElement;
+      const siblings = [...parent.querySelectorAll('.reveal')];
+      const idx = siblings.indexOf(e.target);
+      setTimeout(() => e.target.classList.add('vis'), idx * 100);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Counter animation for stats
+function animateCounter(el, target, suffix) {
+  const duration = 1800;
+  const start = performance.now();
+  el.textContent = '0' + suffix;
+  const update = (now) => {
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.round(eased * target) + suffix;
+    if (progress < 1) requestAnimationFrame(update);
+  };
+  requestAnimationFrame(update);
+}
+
+const statObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const el = e.target;
+      const target = parseInt(el.dataset.target);
+      const suffix = el.dataset.suffix || '';
+      animateCounter(el, target, suffix);
+      statObs.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.stat-val').forEach(el => statObs.observe(el));
+
+// Topbar scroll effect
+const topbar = document.getElementById('topbar');
+window.addEventListener('scroll', () => {
+  topbar.classList.toggle('scrolled', window.scrollY > 80);
+}, { passive: true });
+</script>
+
+</body>
+</html>

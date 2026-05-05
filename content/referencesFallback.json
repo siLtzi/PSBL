@@ -1,0 +1,20 @@
+{
+  "heading": "REFERENSSIT",
+  "subheading": "Esimerkkejä toteuttamistamme lattiaurakoista Pohjois-Suomessa.",
+  "items": [
+    {
+      "_key": "ref1",
+      "imageUrl": "/images/references/ref1.jpg",
+      "caption": "Kauppakeskus Kuukkeli, Saariselkä 2024",
+      "tag": "Liiketila",
+      "location": "Saariselkä"
+    },
+    {
+      "_key": "ref2",
+      "imageUrl": "/images/references/ref2.jpg",
+      "caption": "Tokmanni Ivalo 2025",
+      "tag": "Liiketila",
+      "location": "Ivalo"
+    }
+  ]
+}

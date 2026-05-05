@@ -1,0 +1,442 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+:root {
+  --black: #0d0d0d;
+  --dark: #161614;
+  --panel: #1c1c19;
+  --steel: #2a2a26;
+  --concrete-gray: #3d3d38;
+  --mid: #7a7a70;
+  --light: #b0afa5;
+  --off-white: #e8e6df;
+  --yellow: #f0c000;
+  --yellow-hot: #ffd500;
+  --background: #161614;
+  --foreground: #e8e6df;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--dark);
+  color: var(--off-white);
+  font-family: var(--font-barlow), Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Grain overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 99999;
+  mix-blend-mode: overlay;
+  opacity: 0.12;
+  background: url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence baseFrequency='0.8' numOctaves='4' type='fractalNoise'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+::selection {
+  background: var(--yellow);
+  color: var(--black);
+}
+
+/* ── BUTTON INTERACTIONS ── */
+.button-snappy {
+  position: relative;
+  transform: translateY(0);
+  transition:
+    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.button-snappy:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.button-snappy:active:not(:disabled) {
+  transform: translateY(0) scale(0.985);
+}
+
+.button-snappy:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--yellow);
+}
+
+.button-arrow svg {
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.button-arrow:hover:not(:disabled) svg {
+  transform: translateX(3px);
+}
+
+/* ── CTA BUTTON SYSTEM ──
+   Matches the GitHub Hero.tsx pattern:
+   - Visible 4px accent bar at bottom (h-1) that fills to 100% on hover
+   - Arrow swap (slides out right, new arrow slides in from left)
+   - Padding shift on arrow buttons (pl-8 → pl-10, pr-16 → pr-14)
+   - Text color changes for contrast against fill
+── */
+
+.button-cta {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    padding 0.15s ease-in-out,
+    background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out,
+    color 0.15s ease-in-out,
+    transform 0.15s ease-in-out;
+}
+
+/* Fill bar — visible 4px accent at bottom, grows to full on hover */
+.button-cta::before {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 4px;
+  background: var(--button-cta-fill, transparent);
+  transition: height 0.15s ease-in-out;
+  z-index: 0;
+}
+
+.button-cta:hover:not(:disabled)::before {
+  height: 100%;
+}
+
+.button-cta:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+.button-cta:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--yellow);
+}
+
+/* ── Fill color variants ── */
+/* Yellow bg → brighter hot-yellow fill (lifts from the base yellow) */
+.button-cta-fill-yellow  { --button-cta-fill: var(--yellow-hot); }
+/* Outline/transparent → warm yellow glow */
+.button-cta-fill-soft-yellow { --button-cta-fill: rgba(240, 192, 0, 0.15); }
+/* Dark bg on yellow section → warm charcoal (distinct from both black bg and yellow section) */
+.button-cta-fill-dark    { --button-cta-fill: var(--concrete-gray); }
+
+/* ── Hover text/icon colors per variant ── */
+/* Dark variant on yellow section: text goes yellow for contrast */
+.button-cta.button-cta-fill-dark:hover:not(:disabled) .button-cta-label {
+  color: var(--yellow);
+}
+
+/* Dark variant: incoming arrow is yellow */
+.button-cta.button-cta-fill-dark .button-cta-icon-in {
+  color: var(--yellow);
+}
+
+/* ── Label — stays above fill ── */
+.button-cta-label {
+  position: relative;
+  z-index: 1;
+  transition: color 0.2s ease-in-out;
+}
+
+/* ── Arrow button: padding shift + sliding arrows ── */
+.button-cta-arrow {
+  padding-right: 4rem;
+}
+
+.button-cta-arrow:hover:not(:disabled) {
+  padding-left: 2.5rem;
+  padding-right: 3.5rem;
+}
+
+/* ── Sliding icons ── */
+.button-cta-icon-out,
+.button-cta-icon-in {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  pointer-events: none;
+  transition: transform 0.2s ease-out, color 0.2s ease-in-out;
+}
+
+.button-cta-icon-out {
+  right: 0;
+  padding-right: 1.5rem;
+  transform: translateY(-50%) translateX(0);
+}
+
+.button-cta-icon-in {
+  left: 0;
+  padding-left: 1rem;
+  transform: translateY(-50%) translateX(-3rem);
+}
+
+.button-cta-arrow:hover:not(:disabled) .button-cta-icon-out {
+  transform: translateY(-50%) translateX(3rem);
+}
+
+.button-cta-arrow:hover:not(:disabled) .button-cta-icon-in {
+  transform: translateY(-50%) translateX(0);
+}
+
+/* ── HAZARD STRIPE ── */
+.hazard-stripe {
+  height: 8px;
+  background: repeating-linear-gradient(-45deg, var(--yellow) 0px, var(--yellow) 12px, var(--black) 12px, var(--black) 24px);
+}
+
+.hazard-stripe-reverse {
+  height: 8px;
+  background: repeating-linear-gradient(-45deg, var(--black) 0px, var(--black) 12px, var(--yellow) 12px, var(--yellow) 24px);
+}
+
+/* ── TICKER ── */
+.ticker-track {
+  display: inline-flex;
+  animation: tickScroll 22s linear infinite;
+}
+
+@keyframes tickScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ── HERO KEN BURNS ── */
+@keyframes heroKen {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.12); }
+}
+
+/* ── LABEL PULSE ── */
+@keyframes labelPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ── SLIDE IN ── */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(25px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── REVEAL ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.vis {
+  opacity: 1;
+  transform: none;
+}
+
+/* Cookie consent banner slide-up animation */
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.animate-slide-up {
+  animation: slide-up 0.4s ease-out forwards;
+}
+
+/* ── HERO SPLIT LAYOUT ── */
+.hero-right-clip {
+  clip-path: polygon(12% 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+/* Yellow line tracing the diagonal cut */
+.hero-right-clip::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 3;
+  pointer-events: none;
+  background: var(--yellow);
+  clip-path: polygon(12% 0, calc(12% + 3px) 0, 3px 100%, 0% 100%);
+}
+
+/* Gradient over right panel edge */
+.hero-right-clip::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--black) 0%, transparent 30%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Hero label line grow */
+.hero-label-line {
+  display: inline-block;
+  width: 40px;
+  height: 2px;
+  background: var(--yellow);
+}
+
+.hero-ready .hero-label-line {
+  width: 0;
+  animation: heroLineGrow 0.6s 0.3s forwards;
+}
+
+@keyframes heroLineGrow {
+  to { width: 40px; }
+}
+
+/* Hero label / subtitle / buttons — visible by default, animated after JS */
+.hero-label,
+.hero-subtitle,
+.hero-buttons {
+  opacity: 1;
+}
+
+.hero-ready .hero-label {
+  opacity: 0;
+  animation: heroFadeIn 0.5s 0.2s forwards;
+}
+
+.hero-ready .hero-subtitle {
+  opacity: 0;
+  animation: slideIn 0.6s 0.85s forwards;
+}
+
+.hero-ready .hero-buttons {
+  opacity: 0;
+  animation: slideIn 0.6s 1s forwards;
+}
+
+/* Hero line reveal — visible by default for LCP */
+.hero-line-clip {
+  overflow: hidden;
+  padding-top: 0.1em;
+  margin-top: -0.1em;
+}
+
+.hero-line-inner {
+  display: block;
+}
+
+/* Only animate when JS has hydrated */
+.hero-ready .hero-line-inner {
+  transform: translateY(105%);
+  animation: heroLineReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-ready .hero-line-clip:nth-child(1) .hero-line-inner { animation-delay: 0.3s; }
+.hero-ready .hero-line-clip:nth-child(2) .hero-line-inner { animation-delay: 0.45s; }
+.hero-ready .hero-line-clip:nth-child(3) .hero-line-inner { animation-delay: 0.6s; }
+
+@keyframes heroLineReveal {
+  to { transform: translateY(0); }
+}
+
+/* Yellow highlight wipe */
+.hero-highlight {
+  position: relative;
+  display: inline-block;
+  isolation: isolate;
+}
+
+.hero-highlight-bg {
+  position: absolute;
+  top: 0.02em;
+  right: -0.15em;
+  bottom: -0.1em;
+  left: -0.15em;
+  background: var(--yellow);
+  z-index: -1;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.hero-ready .hero-highlight-bg {
+  animation: heroHighlightWipe 0.6s 0.82s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.hero-highlight-text-base,
+.hero-highlight-text-overlay {
+  position: relative;
+  z-index: 1;
+  display: block;
+}
+
+.hero-highlight-text-base {
+  color: var(--off-white);
+}
+
+.hero-highlight-text-overlay {
+  position: absolute;
+  inset: 0;
+  color: var(--black);
+  clip-path: inset(0 100% 0 0);
+}
+
+.hero-ready .hero-highlight-text-overlay {
+  animation: heroHighlightTextReveal 0.6s 0.82s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes heroHighlightWipe {
+  to { transform: scaleX(1); }
+}
+
+@keyframes heroHighlightTextReveal {
+  to { clip-path: inset(0 0 0 0); }
+}
+
+/* Hero badge */
+@keyframes heroBadgeIn {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Hero scroll indicator */
+@keyframes heroScrollPulse {
+  0%, 100% { opacity: 1; transform: scaleY(1); }
+  50% { opacity: 0.3; transform: scaleY(0.6); }
+}
+
+/* Hero fade in */
+@keyframes heroFadeIn {
+  to { opacity: 1; }
+}
+
+/* ── HERO RESPONSIVE ── */
+@media (max-width: 768px) {
+  .hero-right-clip {
+    clip-path: none;
+  }
+  .hero-right-clip::before {
+    display: none;
+  }
+  .hero-right-clip::after {
+    background: linear-gradient(0deg, var(--black) 10%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.3) 100%);
+  }
+}
