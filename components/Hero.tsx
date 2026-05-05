@@ -51,6 +51,10 @@ export default function Hero({ content }: { content: HeroContent }) {
 
   return (
     <section ref={sectionRef} className="relative mt-[60px] h-[calc(100vh-60px)] min-h-[650px] grid grid-cols-1 md:grid-cols-[auto_1fr] overflow-hidden bg-[var(--black)]">
+      <noscript>
+        <style>{`.hero-line-lcp{opacity:1 !important}.hero-line-overlay{display:none !important}`}</style>
+      </noscript>
+
       {/* ── Left content panel ── */}
       <div className="relative z-[5] flex flex-col justify-end md:justify-center p-6 md:py-16 md:pl-12 md:pr-8 bg-transparent md:bg-[var(--black)]">
         {/* Label */}
@@ -70,23 +74,32 @@ export default function Hero({ content }: { content: HeroContent }) {
         <h1 className={`${barlowCondensed.className} mb-10`}>
           {/* Line 1 */}
           <span className="hero-line-clip block font-black text-[clamp(2.5rem,9vw,8.5rem)] leading-[0.92] uppercase tracking-[2px] text-[var(--off-white)] break-words">
-            <span className="hero-line-inner">{clean(heroHeadingLine1)}</span>
+            <span className="hero-line-lcp">{clean(heroHeadingLine1)}</span>
+            <span aria-hidden="true" className="hero-line-overlay">
+              <span className="hero-line-overlay-inner">{clean(heroHeadingLine1)}</span>
+            </span>
           </span>
           {/* Line 2 (highlighted) */}
           <span className="hero-line-clip block font-black text-[clamp(2.5rem,9vw,8.5rem)] leading-[0.92] uppercase tracking-[2px] text-[var(--off-white)] break-words">
-            <span className="hero-line-inner">
-              <span className="hero-highlight inline-block relative">
-                <span className="hero-highlight-bg" />
-                <span className="hero-highlight-text-base">{clean(heroHeadingLine2)}</span>
-                <span aria-hidden="true" className="hero-highlight-text-overlay">
-                  {clean(heroHeadingLine2)}
+            <span className="hero-line-lcp">{clean(heroHeadingLine2)}</span>
+            <span aria-hidden="true" className="hero-line-overlay">
+              <span className="hero-line-overlay-inner">
+                <span className="hero-highlight inline-block relative">
+                  <span className="hero-highlight-bg" />
+                  <span className="hero-highlight-text-base">{clean(heroHeadingLine2)}</span>
+                  <span aria-hidden="true" className="hero-highlight-text-overlay">
+                    {clean(heroHeadingLine2)}
+                  </span>
                 </span>
               </span>
             </span>
           </span>
           {/* Line 3 */}
           <span className="hero-line-clip block font-black text-[clamp(2.5rem,9vw,8.5rem)] leading-[0.92] uppercase tracking-[2px] text-[var(--off-white)] break-words">
-            <span className="hero-line-inner">{clean(heroHeadingLine3)}</span>
+            <span className="hero-line-lcp">{clean(heroHeadingLine3)}</span>
+            <span aria-hidden="true" className="hero-line-overlay">
+              <span className="hero-line-overlay-inner">{clean(heroHeadingLine3)}</span>
+            </span>
           </span>
         </h1>
 

@@ -336,31 +336,46 @@ body::after {
 /* Hero line reveal
    LCP-SAFE: overflow:hidden + translateY(105%) gives the element zero rendered
    pixels → Chrome invalidates the LCP candidate → NO_LCP.
-   Fix: no overflow:hidden, use opacity > 0 so Chrome always counts it as visible. */
+   Fix: keep a nearly invisible base text layer for LCP measurement, and animate
+   a separate overlay layer with the old bottom-up reveal. */
 .hero-line-clip {
-  /* no overflow:hidden — text stays within viewport for LCP */
+  position: relative;
 }
 
-.hero-line-inner {
+.hero-line-lcp {
   display: block;
+  opacity: 0.015;
 }
 
-/* Only animate when JS has hydrated.
-   fill-mode "both" applies the "from" state immediately on hero-ready add
-   (suppresses the SSR-visible flash), and holds the "to" state after finish.
-   opacity: 0.01 is imperceptible to the eye but > 0, so Chrome's LCP
-   algorithm never invalidates this element. */
-.hero-ready .hero-line-inner {
-  animation: heroLineFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+.hero-line-overlay {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
 
-.hero-ready .hero-line-clip:nth-child(1) .hero-line-inner { animation-delay: 0.08s; }
-.hero-ready .hero-line-clip:nth-child(2) .hero-line-inner { animation-delay: 0.2s; }
-.hero-ready .hero-line-clip:nth-child(3) .hero-line-inner { animation-delay: 0.32s; }
+.hero-line-overlay-inner {
+  display: block;
+  will-change: transform, opacity;
+}
 
-@keyframes heroLineFadeUp {
-  from { opacity: 0.01; transform: translateY(0.55rem); }
-  to   { opacity: 1;    transform: translateY(0); }
+.hero-ready .hero-line-overlay-inner {
+  animation: heroLineOverlayReveal 0.72s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero-ready .hero-line-clip:nth-child(1) .hero-line-overlay-inner { animation-delay: 0.08s; }
+.hero-ready .hero-line-clip:nth-child(2) .hero-line-overlay-inner { animation-delay: 0.22s; }
+.hero-ready .hero-line-clip:nth-child(3) .hero-line-overlay-inner { animation-delay: 0.36s; }
+
+@keyframes heroLineOverlayReveal {
+  from {
+    opacity: 1;
+    transform: translateY(108%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Yellow highlight wipe */
@@ -383,7 +398,7 @@ body::after {
 }
 
 .hero-ready .hero-highlight-bg {
-  animation: heroHighlightWipe 0.6s 0.82s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: heroHighlightWipe 0.55s 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .hero-highlight-text-base,
@@ -405,7 +420,7 @@ body::after {
 }
 
 .hero-ready .hero-highlight-text-overlay {
-  animation: heroHighlightTextReveal 0.6s 0.82s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: heroHighlightTextReveal 0.55s 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 @keyframes heroHighlightWipe {
