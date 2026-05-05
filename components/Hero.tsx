@@ -41,16 +41,12 @@ export default function Hero({ content }: { content: HeroContent }) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    // Double rAF ensures the browser has painted at least one frame (and LCP
-    // has had a chance to be recorded) before we add hero-ready, which starts
-    // the slide-in animation.
-    let id: number;
-    const outer = requestAnimationFrame(() => {
-      id = requestAnimationFrame(() => {
-        sectionRef.current?.classList.add("hero-ready");
-      });
+    // Add hero-ready on the first RAF so the reveal starts immediately after
+    // initial mount, without a visible pre-animation state.
+    const id = requestAnimationFrame(() => {
+      sectionRef.current?.classList.add("hero-ready");
     });
-    return () => { cancelAnimationFrame(outer); cancelAnimationFrame(id); };
+    return () => cancelAnimationFrame(id);
   }, []);
 
   return (

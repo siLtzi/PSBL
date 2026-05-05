@@ -345,16 +345,15 @@ body::after {
 }
 
 /* Only animate when JS has hydrated.
-   NOTE: No static transform here — text stays visible (translateY 0) during
-   animation-delay so LCP can measure it. The 'from' keyframe handles the
-   start state when the animation actually begins. */
+   Use fill-mode "both" so the "from" state is applied during delay too,
+   preventing the heading from flashing visible before the reveal starts. */
 .hero-ready .hero-line-inner {
-  animation: heroLineReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: heroLineReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.hero-ready .hero-line-clip:nth-child(1) .hero-line-inner { animation-delay: 0.3s; }
-.hero-ready .hero-line-clip:nth-child(2) .hero-line-inner { animation-delay: 0.45s; }
-.hero-ready .hero-line-clip:nth-child(3) .hero-line-inner { animation-delay: 0.6s; }
+.hero-ready .hero-line-clip:nth-child(1) .hero-line-inner { animation-delay: 0.08s; }
+.hero-ready .hero-line-clip:nth-child(2) .hero-line-inner { animation-delay: 0.2s; }
+.hero-ready .hero-line-clip:nth-child(3) .hero-line-inner { animation-delay: 0.32s; }
 
 @keyframes heroLineReveal {
   from { transform: translateY(105%); }
