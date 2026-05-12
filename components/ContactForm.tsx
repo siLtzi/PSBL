@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useEffect, useRef, useState, FormEvent, FormEventHandler } from "react";
 import dynamic from "next/dynamic";
 import { barlowCondensed, barlow } from "@/app/fonts";
 import { MapPin, CheckCircle2 } from "lucide-react";
@@ -27,8 +27,40 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
+  const statusRef = useRef<HTMLDivElement | null>(null);
+
+  // When a server/network error appears, scroll the status message into view
+  // so users at the bottom of the page on mobile actually see it.
+  useEffect(() => {
+    if (submitError && statusRef.current) {
+      statusRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [submitError]);
+
   const handleOpenMap = () => {
     setIsMapOpen(true);
+  };
+
+  // Scrolls the first invalid field into view + focuses it, so users on
+  // mobile (who may be at the bottom of the page when tapping submit) can
+  // see the browser's native validation message.
+  const handleInvalid: FormEventHandler<HTMLFormElement> = (e) => {
+    const target = e.target as HTMLElement | null;
+    if (!target || typeof target.scrollIntoView !== "function") return;
+
+    // Only act on the first invalid field per submit attempt.
+    const form = e.currentTarget;
+    if (form.dataset.scrolledInvalid === "1") return;
+    form.dataset.scrolledInvalid = "1";
+    // Reset the flag on the next tick so subsequent submits work too.
+    setTimeout(() => {
+      delete form.dataset.scrolledInvalid;
+    }, 0);
+
+    target.scrollIntoView({ behavior: "smooth", block: "center" });
+    if (typeof (target as HTMLInputElement).focus === "function") {
+      (target as HTMLInputElement).focus({ preventScroll: true });
+    }
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -94,6 +126,14 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
         has_square_meters: Boolean(payload.squareMeters),
       });
 
+      // Scroll to top so the success banner is visible after navigation
+      // (some mobile browsers preserve scroll on same-URL navigations).
+      try {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } catch {
+        window.scrollTo(0, 0);
+      }
+
       // Redirect to success URL
       window.location.href = "/yhteystiedot?lahetetty=true";
     } catch (err) {
@@ -135,6 +175,7 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
           mt-6 space-y-4 text-left
         `}
         onSubmit={handleSubmit}
+        onInvalid={handleInvalid}
       >
         {/* FIRST ROW: Name + Email */}
         <div className="grid gap-4 sm:grid-cols-2">
@@ -276,7 +317,12 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
         </div>
 
         {/* STATUS MESSAGES */}
-        <div className="text-center lg:text-left min-h-[1.25rem]">
+        <div
+          ref={statusRef}
+          className="text-center lg:text-left min-h-[1.25rem]"
+          aria-live="polite"
+          role="status"
+        >
           {submitError && (
             <p className="text-xs text-red-400">{submitError}</p>
           )}
