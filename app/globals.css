@@ -116,8 +116,10 @@ body::after {
   z-index: 0;
 }
 
-.button-cta:hover:not(:disabled)::before {
-  height: 100%;
+@media (hover: hover) and (pointer: fine) {
+  .button-cta:hover:not(:disabled)::before {
+    height: 100%;
+  }
 }
 
 .button-cta:active:not(:disabled) {
@@ -139,8 +141,10 @@ body::after {
 
 /* ── Hover text/icon colors per variant ── */
 /* Dark variant on yellow section: text goes yellow for contrast */
-.button-cta.button-cta-fill-dark:hover:not(:disabled) .button-cta-label {
-  color: var(--yellow);
+@media (hover: hover) and (pointer: fine) {
+  .button-cta.button-cta-fill-dark:hover:not(:disabled) .button-cta-label {
+    color: var(--yellow);
+  }
 }
 
 /* Dark variant: incoming arrow is yellow */
@@ -160,9 +164,11 @@ body::after {
   padding-right: 4rem;
 }
 
-.button-cta-arrow:hover:not(:disabled) {
-  padding-left: 2.5rem;
-  padding-right: 3.5rem;
+@media (hover: hover) and (pointer: fine) {
+  .button-cta-arrow:hover:not(:disabled) {
+    padding-left: 2.5rem;
+    padding-right: 3.5rem;
+  }
 }
 
 /* ── Sliding icons ── */
@@ -191,12 +197,14 @@ body::after {
   transform: translateY(-50%) translateX(-3rem);
 }
 
-.button-cta-arrow:hover:not(:disabled) .button-cta-icon-out {
-  transform: translateY(-50%) translateX(3rem);
-}
+@media (hover: hover) and (pointer: fine) {
+  .button-cta-arrow:hover:not(:disabled) .button-cta-icon-out {
+    transform: translateY(-50%) translateX(3rem);
+  }
 
-.button-cta-arrow:hover:not(:disabled) .button-cta-icon-in {
-  transform: translateY(-50%) translateX(0);
+  .button-cta-arrow:hover:not(:disabled) .button-cta-icon-in {
+    transform: translateY(-50%) translateX(0);
+  }
 }
 
 /* ── HAZARD STRIPE ── */

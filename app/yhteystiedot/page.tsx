@@ -227,6 +227,10 @@ export default async function ContactPage({
                     {company.location && <p>{company.location}</p>}
 
                     <div className="mt-4 space-y-1">
+                      <p>
+                        <span className="font-semibold text-[var(--off-white)]">Yhteyshenkilö: </span>
+                        Roni Nyländen
+                      </p>
                       {company.email && (
                         <p>
                           <span className="font-semibold text-[var(--off-white)]">Sähköposti: </span>
