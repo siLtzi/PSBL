@@ -26,6 +26,24 @@ alone does not implement that workflow. Administrator approval in the app
 is not customer consent. Do not add a mandatory AI-consent checkbox as a
 substitute for determining a lawful processing basis.
 
+## Contact form attachments
+
+The form sends multipart data to `POST /api/contact`. Customers may select up to
+5 PDF, JPG/JPEG or PNG files, with a combined size of at most 4,000,000 bytes.
+The browser checks filenames, MIME types, count and combined size; the server
+repeats these checks and verifies file signatures. Signature checks are not
+malware scanning, so recipients must treat customer attachments as untrusted.
+
+The request body is capped at 4,100,000 bytes, including fields and multipart
+overhead, to stay below Vercel's function payload limit. Larger requests are
+rejected explicitly; files are not silently dropped or compressed.
+Resend receives the validated files as email attachments. No new storage
+service, credentials or AI attachment-processing integration is introduced.
+Existing JSON contact requests without attachments remain supported.
+
+Validation: `node --test tests/contact-attachments.test.mjs`.
+The tests mock Resend and do not send email.
+
 ## Getting Started
 
 First, run the development server:

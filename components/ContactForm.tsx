@@ -6,6 +6,10 @@ import Link from "next/link";
 import { barlowCondensed, barlow } from "@/app/fonts";
 import { MapPin, CheckCircle2 } from "lucide-react";
 import { trackEvent } from "@/lib/analytics"; // 👈 NEW
+import {
+  ATTACHMENT_ACCEPT,
+  validateAttachments,
+} from "@/lib/contact-attachments";
 
 type ContactFormProps = {
   heading: string;
@@ -27,8 +31,11 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [attachments, setAttachments] = useState<File[]>([]);
+  const [attachmentError, setAttachmentError] = useState<string | null>(null);
 
   const statusRef = useRef<HTMLDivElement | null>(null);
+  const attachmentInputRef = useRef<HTMLInputElement | null>(null);
 
   // When a server/network error appears, scroll the status message into view
   // so users at the bottom of the page on mobile actually see it.
@@ -69,6 +76,11 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
 
     const form = e.currentTarget;
     const formData = new FormData(form);
+    const fileError = validateAttachments(attachments);
+    if (fileError || attachmentError) {
+      setSubmitError(fileError ?? attachmentError);
+      return;
+    }
 
     const payload = {
       name: formData.get("name") as string | null,
@@ -80,6 +92,11 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
       message: formData.get("message") as string | null,
       coords,
     };
+    formData.set("coords", JSON.stringify(coords));
+    formData.delete("attachments");
+    for (const file of attachments) {
+      formData.append("attachments", file);
+    }
 
     setIsSubmitting(true);
     setSubmitError(null);
@@ -88,15 +105,18 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: formData,
       });
 
       if (!res.ok) {
         let extra = "";
+        let errorMessage = "Viestin lähetys epäonnistui. Yritä hetken päästä uudelleen.";
         try {
           const data = await res.json();
           if (data?.error) {
+            if (res.status === 400 || res.status === 413 || res.status === 415) {
+              if (typeof data.error === "string") errorMessage = data.error;
+            }
             extra = ` (${
               typeof data.error === "string"
                 ? data.error
@@ -108,9 +128,7 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
         }
 
         console.error("Contact API failed:", res.status, extra);
-        setSubmitError(
-          "Viestin lähetys epäonnistui. Yritä hetken päästä uudelleen."
-        );
+        setSubmitError(errorMessage);
 
         // 🔴 Track failed submit
         trackEvent("contact_form_error", {
@@ -316,6 +334,66 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
             placeholder="Esim. betonimäärä, aikataulu, työmaan kuvaus…"
             className="w-full border border-[var(--steel)] bg-[var(--panel)] px-3 py-2 text-sm text-[var(--off-white)] placeholder:text-[var(--concrete-gray)] focus:outline-none focus:ring-2 focus:ring-[var(--yellow)] focus:border-[var(--yellow)] resize-vertical"
           />
+        </div>
+
+        <div>
+          <label
+            htmlFor="contact-attachments"
+            className="block text-xs font-semibold uppercase tracking-[0.15em] text-[var(--mid)] mb-1"
+          >
+            Liitteet
+          </label>
+          <input
+            id="contact-attachments"
+            ref={attachmentInputRef}
+            type="file"
+            accept={ATTACHMENT_ACCEPT}
+            multiple
+            disabled={isSubmitting}
+            aria-describedby="contact-attachments-help contact-attachments-error"
+            aria-invalid={Boolean(attachmentError)}
+            onChange={(event) => {
+              const files = Array.from(event.target.files ?? []);
+              const error = validateAttachments(files);
+              setAttachmentError(error);
+              setSubmitError(null);
+              setAttachments(files);
+            }}
+            className="w-full border border-[var(--steel)] bg-[var(--panel)] px-3 py-2 text-sm text-[var(--off-white)] file:mr-3 file:cursor-pointer file:border-0 file:bg-[var(--yellow)] file:px-3 file:py-2 file:text-[var(--black)] focus:outline-none focus:ring-2 focus:ring-[var(--yellow)]"
+          />
+          <p id="contact-attachments-help" className="mt-2 text-xs text-[var(--light)]">
+            PDF, JPG tai PNG. Enintään 5 tiedostoa, yhteensä enintään 4 Mt.
+            Liitteet toimitetaan sähköpostitse yhteydenoton mukana.
+          </p>
+          <p id="contact-attachments-error" role="alert" className="mt-1 text-xs text-red-400">
+            {attachmentError}
+          </p>
+          {attachments.length > 0 && (
+            <ul className="mt-2 space-y-1 text-sm text-[var(--light)]">
+              {attachments.map((file, index) => (
+                <li key={`${file.name}-${index}`} className="flex items-center justify-between gap-3">
+                  <span className="min-w-0 break-all">
+                    {file.name} ({(file.size / 1_000_000).toFixed(2)} Mt)
+                  </span>
+                  <button
+                    type="button"
+                    disabled={isSubmitting}
+                    onClick={() => {
+                      const remaining = attachments.filter((_, position) => position !== index);
+                      setAttachments(remaining);
+                      setAttachmentError(validateAttachments(remaining));
+                      setSubmitError(null);
+                      if (attachmentInputRef.current) attachmentInputRef.current.value = "";
+                    }}
+                    className="shrink-0 text-[var(--yellow)] underline underline-offset-2"
+                    aria-label={`Poista liite ${file.name}`}
+                  >
+                    Poista
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         {/* STATUS MESSAGES */}

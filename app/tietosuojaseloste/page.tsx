@@ -126,6 +126,7 @@ export default function TietosuojaselosteRage() {
             <li className={li}>Työmaan sijainti (osoite ja/tai karttakoordinaatit)</li>
             <li className={li}>Arvioitu neliömäärä (m²)</li>
             <li className={li}>Vapaamuotoinen viesti</li>
+            <li className={li}>Vapaaehtoisten liitteiden tiedostonimet ja sisältö (PDF, JPG tai PNG)</li>
           </ul>
           <p className={p}>
             Lomakkeella nimi, sähköpostiosoite, puhelinnumero, työmaan
@@ -133,6 +134,14 @@ export default function TietosuojaselosteRage() {
             käsittelyä varten. Muut kentät ovat
             vapaaehtoisia. Älä lähetä henkilötunnuksia, terveystietoja tai
             muita tarjouspyynnön kannalta tarpeettomia henkilötietoja.
+          </p>
+          <p className={p}>
+            Voit liittää yhteydenottoon enintään 5 PDF-tiedostoa tai JPG/PNG-kuvaa,
+            yhteensä enintään 4 Mt. Liitteet välitetään Resend-palvelun kautta
+            PSBL:n sähköpostiin, eikä lomake tallenna niitä erilliseen
+            tiedostopalveluun tai lähetä niitä tekoälykäsittelyyn. Sähköpostissa
+            säilytettäviin liitteisiin sovelletaan kohdan 7 säilytyskäytäntöä.
+            Lähetä vain yhteydenoton käsittelyyn tarpeellista aineistoa.
           </p>
 
           {/* 5. Tietojen siirto */}

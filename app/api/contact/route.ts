@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import {
+  attachmentContentType,
+  matchesAttachmentSignature,
+  MAX_CONTACT_REQUEST_BYTES,
+  validateAttachments,
+} from "@/lib/contact-attachments";
 
 type ContactPayload = {
   name?: string | null;
@@ -15,6 +19,103 @@ type ContactPayload = {
   squareMeters?: string | null;
 };
 
+class ContactInputError extends Error {
+  constructor(message: string, readonly status = 400) {
+    super(message);
+  }
+}
+
+async function readContactRequest(req: Request) {
+  const reader = req.body?.getReader();
+  if (!reader) throw new ContactInputError("Yhteydenoton tiedot puuttuvat.");
+  const chunks: Uint8Array[] = [];
+  let size = 0;
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    size += value.byteLength;
+    if (size > MAX_CONTACT_REQUEST_BYTES) {
+      await reader.cancel();
+      throw new ContactInputError("Yhteydenotto on liian suuri. Liitteiden yhteiskoko saa olla enintään 4 Mt.", 413);
+    }
+    chunks.push(value);
+  }
+  const contentType = req.headers.get("content-type") ?? "";
+  const request = new Request(req.url, {
+    method: "POST",
+    headers: { "content-type": contentType },
+    body: Buffer.concat(chunks),
+  });
+  let input: unknown;
+  let files: File[] = [];
+  try {
+    if (contentType.startsWith("multipart/form-data")) {
+      const form = await request.formData();
+      const entries = form.getAll("attachments");
+      if (entries.some((entry) => typeof entry === "string")) {
+        throw new ContactInputError("Liitteiden tiedot ovat virheelliset.");
+      }
+      files = entries.filter((entry): entry is File => typeof entry !== "string");
+      const coords = form.get("coords");
+      input = {
+        ...Object.fromEntries(
+          ["name", "email", "phone", "company", "siteLocationText", "squareMeters", "message"]
+            .map((key) => [key, form.get(key)]),
+        ),
+        coords: coords === null ? null : typeof coords === "string" ? JSON.parse(coords) : coords,
+      };
+    } else if (contentType.startsWith("application/json")) {
+      input = await request.json();
+    } else {
+      throw new ContactInputError("Yhteydenoton tiedostomuotoa ei tueta.", 415);
+    }
+  } catch (error) {
+    if (error instanceof ContactInputError) throw error;
+    if (error instanceof SyntaxError || error instanceof TypeError) {
+      throw new ContactInputError("Yhteydenoton tiedot ovat virheelliset.");
+    }
+    throw error;
+  }
+  if (!input || typeof input !== "object" || Array.isArray(input)) {
+    throw new ContactInputError("Yhteydenoton tiedot ovat virheelliset.");
+  }
+  const fields = input as Record<string, unknown>;
+  const body: ContactPayload = {};
+  for (const key of ["name", "email", "phone", "company", "siteLocationText", "squareMeters", "message"] as const) {
+    const value = fields[key];
+    if (value !== undefined && value !== null && (typeof value !== "string" || value.length > 20_000)) {
+      throw new ContactInputError("Yhteydenoton tekstikentät ovat virheelliset tai liian pitkiä.");
+    }
+    body[key] = typeof value === "string" ? value : null;
+  }
+  const coords = fields.coords;
+  if (coords != null) {
+    if (typeof coords !== "object" || Array.isArray(coords)) {
+      throw new ContactInputError("Työmaan koordinaatit ovat virheelliset.");
+    }
+    const coordinates = coords as Record<string, unknown>;
+    if (
+      typeof coordinates.lat !== "number" || !Number.isFinite(coordinates.lat) || Math.abs(coordinates.lat) > 90 ||
+      typeof coordinates.lng !== "number" || !Number.isFinite(coordinates.lng) || Math.abs(coordinates.lng) > 180
+    ) {
+      throw new ContactInputError("Työmaan koordinaatit ovat virheelliset.");
+    }
+    body.coords = { lat: coordinates.lat, lng: coordinates.lng };
+  }
+  const fileError = validateAttachments(files);
+  if (fileError) throw new ContactInputError(fileError);
+  const attachments = [];
+  for (const file of files) {
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    const type = attachmentContentType(file.name);
+    if (!type || !matchesAttachmentSignature(bytes, type)) {
+      throw new ContactInputError("Liitteen sisältö ei vastaa PDF-, JPG- tai PNG-tiedostomuotoa.");
+    }
+    attachments.push({ filename: file.name, content: Buffer.from(bytes), contentType: type });
+  }
+  return { body, attachments };
+}
+
 export async function POST(req: Request) {
   try {
     if (!process.env.RESEND_API_KEY) {
@@ -25,7 +126,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const body = (await req.json()) as ContactPayload;
+    const { body, attachments } = await readContactRequest(req);
 
     const {
       name,
@@ -81,16 +182,16 @@ export async function POST(req: Request) {
           <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 16px 0 20px;" />
 
           <h3 style="margin: 0 0 8px; font-size: 16px; color: #111827;">Asiakkaan tiedot</h3>
-          <p style="margin: 4px 0; font-size: 14px;"><strong>Nimi:</strong> ${name || "-"}</p>
-          <p style="margin: 4px 0; font-size: 14px;"><strong>Sähköposti:</strong> ${email || "-"}</p>
-          <p style="margin: 4px 0; font-size: 14px;"><strong>Puhelin:</strong> ${phone || "-"}</p>
-          <p style="margin: 4px 0 12px; font-size: 14px;"><strong>Yritys:</strong> ${company || "-"}</p>
+          <p style="margin: 4px 0; font-size: 14px;"><strong>Nimi:</strong> ${escapeHtml(name || "-")}</p>
+          <p style="margin: 4px 0; font-size: 14px;"><strong>Sähköposti:</strong> ${escapeHtml(email || "-")}</p>
+          <p style="margin: 4px 0; font-size: 14px;"><strong>Puhelin:</strong> ${escapeHtml(phone || "-")}</p>
+          <p style="margin: 4px 0 12px; font-size: 14px;"><strong>Yritys:</strong> ${escapeHtml(company || "-")}</p>
 
           <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 16px 0 20px;" />
 
           <h3 style="margin: 0 0 8px; font-size: 16px; color: #111827;">Työmaan sijainti</h3>
           <p style="margin: 4px 0; font-size: 14px;">
-            <strong>Osoite / kuvaus:</strong> ${siteLocationText || "-"}
+            <strong>Osoite / kuvaus:</strong> ${escapeHtml(siteLocationText || "-")}
           </p>
           ${coordsText && googleMapsUrl ? `
           <p style="margin: 8px 0 12px; font-size: 13px;">
@@ -100,7 +201,7 @@ export async function POST(req: Request) {
           </p>
           ` : ""}
           <p style="margin: 4px 0 12px; font-size: 14px;">
-            <strong>Neliömäärä (m²):</strong> ${squareMeters || "-"}
+            <strong>Neliömäärä (m²):</strong> ${escapeHtml(squareMeters || "-")}
           </p>
 
           <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 16px 0 20px;" />
@@ -134,6 +235,7 @@ export async function POST(req: Request) {
       message || "-",
     ].join("\n");
 
+    const resend = new Resend(process.env.RESEND_API_KEY);
     const result = await resend.emails.send({
       from: "PSBL Yhteydenotto <noreply@psbl.fi>",
       to: toEmails,
@@ -141,6 +243,7 @@ export async function POST(req: Request) {
       subject,
       html,
       text,
+      attachments: attachments.length ? attachments : undefined,
     });
 
     if (result.error) {
@@ -152,10 +255,14 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ ok: true });
-  } catch (err: any) {
+  } catch (err: unknown) {
+    if (err instanceof ContactInputError) {
+      console.warn("Contact request rejected:", err.message);
+      return NextResponse.json({ ok: false, error: err.message }, { status: err.status });
+    }
     console.error("Contact API error", err);
     return NextResponse.json(
-      { ok: false, error: err?.message ?? String(err) },
+      { ok: false, error: "Viestin lähetys epäonnistui. Yritä hetken päästä uudelleen." },
       { status: 500 }
     );
   }
