@@ -1,5 +1,31 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Privacy notice and AI processing
+
+The [contact form](components/ContactForm.tsx) links to the
+[privacy notice](app/tietosuojaseloste/page.tsx). The form does not include a
+separate AI-processing statement; the privacy notice describes the internal
+application as in use and its administrator-selected Anthropic Claude API
+extraction workflow. Retention and transfer details still need to be completed
+with verified information. These text changes do not enable AI,
+forward messages to the internal application, or collect AI consent.
+The existing [contact endpoint](app/api/contact/route.ts) still sends email
+through Resend.
+
+Before using real customer messages in the internal application or AI service,
+PSBL must approve the processing basis, processor agreements, international
+transfer destinations and safeguards, retention/deletion rules, and data
+minimization procedure. Publish the verified details in the privacy notice
+and ensure customers receive appropriate information when processing goes live.
+The internal application's deployment checklist is maintained separately
+in the `psblapp` repository.
+
+Direct email inquiries and previously received messages need an appropriate
+notification workflow before new processing begins; updating this website
+alone does not implement that workflow. Administrator approval in the app
+is not customer consent. Do not add a mandatory AI-consent checkbox as a
+substitute for determining a lawful processing basis.
+
 ## Getting Started
 
 First, run the development server:

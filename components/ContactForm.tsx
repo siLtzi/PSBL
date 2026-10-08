@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, FormEvent, FormEventHandler } from "react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { barlowCondensed, barlow } from "@/app/fonts";
 import { MapPin, CheckCircle2 } from "lucide-react";
 import { trackEvent } from "@/lib/analytics"; // 👈 NEW
@@ -176,6 +177,7 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
         `}
         onSubmit={handleSubmit}
         onInvalid={handleInvalid}
+        aria-describedby="contact-privacy-notice"
       >
         {/* FIRST ROW: Name + Email */}
         <div className="grid gap-4 sm:grid-cols-2">
@@ -335,6 +337,19 @@ export default function ContactForm({ heading, intro }: ContactFormProps) {
 
         {/* FOOTER SECTION */}
         <div className="pt-2 flex flex-col gap-3 items-center lg:items-start">
+          <p
+            id="contact-privacy-notice"
+            className="text-sm text-[var(--light)] leading-relaxed"
+          >
+            Tietoa henkilötietojen käsittelystä:{" "}
+            <Link
+              href="/tietosuojaseloste"
+              className="text-[var(--yellow)] underline underline-offset-2"
+            >
+              tietosuojaseloste
+            </Link>
+            .
+          </p>
           <button
             type="submit"
             disabled={isSubmitting}

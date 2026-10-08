@@ -33,7 +33,7 @@ export default function TietosuojaselosteRage() {
               Tietosuojaseloste
             </h1>
             <p className={`${barlow.className} mt-3 text-sm text-[var(--mid)]`}>
-              Päivitetty: 9.3.2026
+              Päivitetty: 8.10.2026
             </p>
           </div>
         </div>
@@ -91,8 +91,9 @@ export default function TietosuojaselosteRage() {
           <ul className="list-disc pl-6 space-y-1 mb-4">
             <li className={li}>
               <strong>Yhteydenottopyyntöjen käsittely:</strong> Kun lähetät
-              yhteydenottolomakkeen, tallennamme lähettämäsi tiedot tarjouksen
-              laatimista ja yhteydenottoa varten.
+              yhteydenottolomakkeen tai otat yhteyttä sähköpostitse,
+              käsittelemme lähettämäsi tiedot tarjouksen laatimista ja
+              yhteydenottoa varten.
             </li>
             <li className={li}>
               <strong>Asiakassuhteen hoitaminen:</strong> Urakkasopimusten
@@ -100,15 +101,22 @@ export default function TietosuojaselosteRage() {
             </li>
           </ul>
           <p className={p}>
-            Käsittelyn oikeusperuste on <strong>oikeutettu etu</strong>{" "}
-            (yhteydenottopyyntöihin vastaaminen ja liiketoiminnan hoitaminen)
-            sekä tarvittaessa <strong>sopimuksen täytäntöönpano</strong>.
+            Kun pyydät tarjousta omaa sopimustasi varten, käsittelyn
+            oikeusperuste on <strong>sopimusta edeltävien toimenpiteiden
+            toteuttaminen pyynnöstäsi</strong> ja asiakassuhteessa{" "}
+            <strong>sopimuksen täytäntöönpano</strong>. Muuhun
+            yhteydenottopyyntöihin vastaamiseen ja yritysasiakkaiden
+            yhteyshenkilöiden tietojen käsittelyyn sovelletaan{" "}
+            <strong>oikeutettua etua</strong>, joka on asiakasviestinnän
+            ja liiketoiminnan hoitaminen. Oikeutettuun etuun perustuvaa
+            käsittelyä voi vastustaa kohdassa 9 kuvatulla tavalla.
           </p>
 
           {/* 4. Kerättävät tiedot */}
           <h2 className={h2}>4. Kerättävät henkilötiedot</h2>
           <p className={p}>
-            Yhteydenottolomakkeen kautta voidaan kerätä seuraavia tietoja:
+            Yhteydenottolomakkeesta ja sähköpostiviesteistä voidaan käsitellä
+            seuraavia tietoja:
           </p>
           <ul className="list-disc pl-6 space-y-1 mb-4">
             <li className={li}>Nimi</li>
@@ -120,9 +128,11 @@ export default function TietosuojaselosteRage() {
             <li className={li}>Vapaamuotoinen viesti</li>
           </ul>
           <p className={p}>
-            Kaikki kentät ovat vapaaehtoisia. Et ole velvollinen antamaan
-            henkilötietojasi, mutta yhteydenottoomme vastaaminen edellyttää
-            vähintään nimen ja yhteystiedon.
+            Lomakkeella nimi, sähköpostiosoite, puhelinnumero, työmaan
+            osoite tai sijainti ja viesti ovat pakollisia yhteydenoton
+            käsittelyä varten. Muut kentät ovat
+            vapaaehtoisia. Älä lähetä henkilötunnuksia, terveystietoja tai
+            muita tarjouspyynnön kannalta tarpeettomia henkilötietoja.
           </p>
 
           {/* 5. Tietojen siirto */}
@@ -135,8 +145,89 @@ export default function TietosuojaselosteRage() {
             vakiosopimuslausekkeiden (SCC) perusteella.
           </p>
           <p className={p}>
-            Tietoja ei luovuteta muille kolmansille osapuolille, ellei laki
-            sitä edellytä.
+            Sähköpostiviestejä käsitellään myös PSBL:n sähköpostipalvelussa
+            (Domainhotelli). Sisäisen sovelluksen palveluntarjoajat
+            ja tekoälykäsittely kuvataan alla. Tietoja ei myydä eikä luovuteta
+            ulkopuolisten omaan markkinointiin. Tietoja voidaan luovuttaa
+            viranomaiselle, jos laki sitä edellyttää.
+          </p>
+
+          <h3 id="tekoaly" className={`${h3} scroll-mt-24`}>
+            5.1 Tekoälyavusteinen tarjouspyyntöjen käsittely
+          </h3>
+          <p className={p}>
+            Käytössämme on sisäinen sovellus tarjouspyyntöjen käsittelyyn.
+            Sovelluksessa voidaan käyttää{" "}
+            <strong>Anthropicin Claude API -palvelua</strong> tarjouspyynnön
+            tekstissä olevien työmaan ja pyydetyn työn tietojen poimintaan
+            ja jäsentämiseen. Tekoälykäsittely koskee erikseen valittuja
+            viestejä, ei automaattisesti kaikkia yhteydenottoja.
+          </p>
+          <p className={p}>
+            PSBL:n ylläpitäjä valitsee viestin
+            ja hyväksyy sen lähettämisen tekoälypalveluun erikseen.
+            Pelkkä lomakkeen lähettäminen tai viestin vastaanottaminen ei
+            käynnistä tekoälykäsittelyä. Ylläpitäjän hyväksyntä on sisäinen
+            työvaihe, ei asiakkaan antama suostumus tai käsittelyn oikeusperuste.
+          </p>
+          <p className={p}>
+            Palveluun lähetettävä teksti voi sisältää viestiin kirjoitettuja
+            nimiä, yhteystietoja, työmaan sijaintitietoja ja muita henkilötietoja.
+            Tietojen automaattista anonymisointia ei pidä olettaa. Ennen
+            lähettämistä on rajattava pois tarpeettomat henkilötiedot ja
+            aineisto, jonka luovuttamisen esimerkiksi salassapitosopimus
+            estää. Tämä kuvaus koskee tarjouspyyntöjen tekstiä, eikä tarkoita
+            lupaa lähettää kaikkia sopimuksia tai sähköpostiliitteitä
+            tekoälypalveluun.
+          </p>
+          <p className={p}>
+            Tekoälyn poiminta voi olla virheellinen tai puutteellinen.
+            Ihminen tarkistaa ja hyväksyy poimitut tiedot ennen niiden
+            käyttämistä tarjouksessa. Hinnat lasketaan erillisellä
+            sääntöpohjaisella laskennalla, eivät tekoälyllä. Tarjouksen
+            tarkistaa ihminen, eikä tässä työnkulussa tehdä asiakkaaseen
+            kohdistuvia yksinomaan automaattisia päätöksiä.
+          </p>
+          <p className={p}>
+            Anthropicin kaupallisten API-ehtojen mukaan asiakkaan sisältöä
+            ei käytetä mallien kouluttamiseen. Tämä ei tarkoita, ettei
+            palveluntarjoaja säilyttäisi tietoja tai käsittelisi niitä
+            EU/ETA-alueen ulkopuolella. Palvelun säilytysaikaa koskevat
+            tiedot kuvataan kohdassa 7.
+          </p>
+          <p className={p}>
+            Sisäisen sovelluksen palveluntarjoajia ovat{" "}
+            <strong>Vercel</strong> (sovelluksen ja tiedostojen ylläpito),{" "}
+            <strong>Neon</strong> (tietokanta EU-alueella),{" "}
+            <strong>Resend</strong> (sähköpostien välitys) ja{" "}
+            <strong>Anthropic</strong> (tekoälyavusteinen tiedonpoiminta).
+            Tietokannan EU-sijainti ei yksin takaa kaiken käsittelyn
+            rajoittumista EU/ETA-alueelle. Mahdollisten EU/ETA-alueen
+            ulkopuolisten siirtojen kohteita ja sovellettavia suojatoimia
+            ei ole vielä yksilöity tässä selosteessa.
+            Lisätietoja ja soveltuvien siirtosuojatoimien jäljennöksiä voi
+            pyytää kohdassa 2 mainitusta osoitteesta.
+          </p>
+          <p className={p}>
+            Lisätietoja palveluntarjoajan ehdoista:{" "}
+            <a
+              href="https://www.anthropic.com/legal/commercial-terms"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-yellow-400 underline underline-offset-2"
+            >
+              Anthropicin kaupalliset ehdot
+            </a>{" "}
+            ja{" "}
+            <a
+              href="https://www.anthropic.com/legal/data-processing-addendum"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-yellow-400 underline underline-offset-2"
+            >
+              henkilötietojen käsittelysopimus
+            </a>
+            .
           </p>
 
           {/* 6. Analytiikka */}
@@ -174,6 +265,13 @@ export default function TietosuojaselosteRage() {
             sitä edellyttää. Tarpeettomat tiedot poistetaan viimeistään
             kahden (2) vuoden kuluttua yhteydenottohetkestä, ellei
             laki edellytä pidempää säilytysaikaa.
+          </p>
+          <p className={p}>
+            Sisäisen sovelluksen asiakasviestien, poimintatulosten ja
+            palveluntarjoajille lähetettävän aineiston säilytysaikoja sekä
+            poistokäytäntöjä ei ole vielä vahvistettu tässä selosteessa.
+            Sähköpostin säilytysaika ei sellaisenaan kuvaa tekoälypalvelun
+            säilytysaikaa.
           </p>
 
           {/* 8. Tietoturva */}
@@ -275,8 +373,11 @@ export default function TietosuojaselosteRage() {
           <p className={p}>
             Pidätämme oikeuden päivittää tätä tietosuojaselostetta
             tarvittaessa. Muuttunut versio julkaistaan tällä sivulla
-            päivitetyn päivämäärän kanssa. Suosittelemme tutustumaan
-            tietosuojaselosteeseen säännöllisesti.
+            päivitetyn päivämäärän kanssa. Olennaisista käsittelyn muutoksista
+            annetaan tieto myös suoraan asianomaisille asiakkaille silloin,
+            kun informointivelvollisuus sitä edellyttää. Pelkkä tämän sivun
+            päivittäminen ei korvaa aiemmin saatujen tietojen uutta käyttöä
+            koskevaa informointia.
           </p>
         </div>
       </section>
