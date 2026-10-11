@@ -8,9 +8,14 @@ import referencesSettings from "./referencesSettings";
 import referencesPageSettings from "./referencesPageSettings";
 import videoObject from "./videoObject";
 import testimonial from "./testimonial";
+import blogPost, { blogBody } from './blogPost';
+import blogSettings from './blogSettings';
 
 
 export const schemaTypes = [
+  blogPost,
+  blogBody,
+  blogSettings,
   homeSettings,
   aboutSettings,
   servicesSettings,

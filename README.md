@@ -1,5 +1,7 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+Blogin kirjoittajan ohjeet ja esikatselun käyttöönotto: [docs/blogi.md](docs/blogi.md).
+
 ## Privacy notice and AI processing
 
 The [contact form](components/ContactForm.tsx) links to the

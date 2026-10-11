@@ -112,6 +112,7 @@ export default function Footer() {
                 </a>
               </li>
               <li className="text-[var(--mid)]">Pohjois-Suomi</li>
+              <li><Link href="/blogi" className="hover:text-[var(--yellow)] transition-colors duration-200">Blogi – Pinnan alta</Link></li>
             </ul>
 
             {/* Legal links */}

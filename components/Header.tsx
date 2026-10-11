@@ -14,6 +14,10 @@ export default function Header() {
     return null;
   }
 
+  return <SiteHeader key={pathname} />;
+}
+
+function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -27,13 +31,8 @@ export default function Header() {
 
   useEffect(() => {
     document.body.style.overflow = isMenuOpen ? "hidden" : "unset";
+    return () => { document.body.style.overflow = ''; };
   }, [isMenuOpen]);
-
-  // Close dropdown on route change
-  useEffect(() => {
-    setDropdownOpen(false);
-    setIsMenuOpen(false);
-  }, [pathname]);
 
   useEffect(() => {
     if (!isMenuOpen || !menuRef.current) return;
@@ -47,6 +46,7 @@ export default function Header() {
   const navLinks = [
     { label: "Palvelut", href: "/palvelut", id: "palvelut", hasDropdown: true },
     { label: "Referenssit", href: "/referenssit", id: "referenssit" },
+    { label: "Blogi", href: "/blogi", id: "blogi" },
     { label: "Yhteystiedot", href: "/yhteystiedot", id: "yhteystiedot" },
   ];
 
@@ -111,7 +111,7 @@ export default function Header() {
                 href={link.href}
                 className={`
                   ${barlow.className}
-                  flex items-center h-full px-6 gap-1.5
+                  flex items-center h-full px-3 lg:px-6 gap-1.5
                   text-[0.7rem] font-semibold tracking-[2px] uppercase
                   text-[var(--mid)] border-l border-[var(--steel)]
                   transition-all duration-200
@@ -219,6 +219,10 @@ export default function Header() {
 
               <Link href="/referenssit" onClick={() => setIsMenuOpen(false)} className="mobile-link text-2xl font-black text-[var(--off-white)] uppercase tracking-[2px] hover:text-[var(--yellow)] transition-colors">
                 Referenssit
+              </Link>
+
+              <Link href="/blogi" onClick={() => setIsMenuOpen(false)} className="mobile-link text-2xl font-black text-[var(--off-white)] uppercase tracking-[2px] hover:text-[var(--yellow)] transition-colors">
+                Blogi
               </Link>
 
               <Link href="/yhteystiedot" onClick={() => setIsMenuOpen(false)} className="mobile-link text-2xl font-black text-[var(--off-white)] uppercase tracking-[2px] hover:text-[var(--yellow)] transition-colors mt-2">

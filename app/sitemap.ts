@@ -2,6 +2,7 @@ import { MetadataRoute } from "next";
 import { sanityClient } from "@/sanity/config";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://psbl.fi";
+export const revalidate = 300;
 
 // Fetch dynamic routes from Sanity
 async function getServiceSlugs(): Promise<string[]> {
@@ -33,6 +34,7 @@ async function getReferenceSlugs(): Promise<string[]> {
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [
+    { url: `${SITE_URL}/blogi/`, changeFrequency: 'weekly', priority: 0.8 },
     {
       url: SITE_URL,
       lastModified: new Date(),
@@ -89,5 +91,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  return [...staticPages, ...servicePages, ...referencePages];
+  const posts = await sanityClient.fetch<{ slug: string; _updatedAt: string }[]>(
+    '*[_type == "blogPost" && defined(slug.current)]{"slug": slug.current, _updatedAt}',
+    {},
+    { perspective: 'published', stega: false },
+  );
+  const blogPages: MetadataRoute.Sitemap = posts.map(post => ({
+    url: `${SITE_URL}/blogi/${encodeURIComponent(post.slug)}/`,
+    lastModified: new Date(post._updatedAt), changeFrequency: 'monthly', priority: 0.7,
+  }));
+  return [...staticPages, ...servicePages, ...referencePages, ...blogPages];
 }

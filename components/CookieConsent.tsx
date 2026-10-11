@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Script from "next/script";
+import { usePathname } from 'next/navigation';
 import { barlow, barlowCondensed } from "@/app/fonts";
 
 const CONSENT_KEY = "psbl-cookie-consent";
@@ -16,15 +17,18 @@ function getStoredConsent(): ConsentValue {
 }
 
 export default function CookieConsent() {
-  const [consent, setConsent] = useState<ConsentValue>(null);
+  const pathname = usePathname();
+  if (pathname.startsWith('/studio')) return null;
+  return <SiteCookieConsent />;
+}
+
+function SiteCookieConsent() {
   const [visible, setVisible] = useState(false);
 
   // Check stored consent on mount
   useEffect(() => {
     const stored = getStoredConsent();
-    if (stored) {
-      setConsent(stored);
-    } else {
+    if (!stored) {
       // Small delay so banner doesn't flash on first paint
       const timer = setTimeout(() => setVisible(true), 800);
       return () => clearTimeout(timer);
@@ -34,7 +38,6 @@ export default function CookieConsent() {
   // Listen for "reset-cookie-consent" event (from Footer / evästekäytäntö page)
   const handleReset = useCallback(() => {
     localStorage.removeItem(CONSENT_KEY);
-    setConsent(null);
     setVisible(true);
   }, []);
 
@@ -46,13 +49,11 @@ export default function CookieConsent() {
 
   const accept = () => {
     localStorage.setItem(CONSENT_KEY, "all");
-    setConsent("all");
     setVisible(false);
   };
 
   const reject = () => {
     localStorage.setItem(CONSENT_KEY, "necessary");
-    setConsent("necessary");
     setVisible(false);
   };
 
